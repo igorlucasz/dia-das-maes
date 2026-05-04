@@ -1,0 +1,33 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --color-space: #0a0015;
+  --color-deep: #06000f;
+  --color-star: #e8e0ff;
+  --color-accent: #c084fc;
+  --color-glow: #a855f7;
+  --font-primary: 'Georgia', serif;
+  --font-mono: 'Courier New', monospace;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-space);
+  color: var(--color-star);
+  font-family: var(--font-primary);
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100dvh;
+}

@@ -1,0 +1,12 @@
+.root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+}
+
+.coming {
+  font-size: 1.25rem;
+  color: var(--color-accent);
+  letter-spacing: 0.1em;
+}
