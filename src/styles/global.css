@@ -10,7 +10,8 @@
   --color-star: #e8e0ff;
   --color-accent: #c084fc;
   --color-glow: #a855f7;
-  --font-primary: 'Georgia', serif;
+  --font-heading: 'Space Grotesk', sans-serif;
+  --font-primary: 'Space Grotesk', sans-serif;
   --font-mono: 'Courier New', monospace;
 }
 

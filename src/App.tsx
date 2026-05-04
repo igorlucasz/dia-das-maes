@@ -1,9 +1,12 @@
-import styles from './App.module.css'
+import { useState } from 'react'
+import DateGate from './components/DateGate'
+import MainScene from './components/MainScene'
+
+type Screen = 'gate' | 'main'
 
 export default function App() {
-  return (
-    <main className={styles.root}>
-      <p className={styles.coming}>em construção 🚀</p>
-    </main>
-  )
+  const [screen, setScreen] = useState<Screen>('gate')
+
+  if (screen === 'main') return <MainScene />
+  return <DateGate onSuccess={() => setScreen('main')} />
 }

@@ -1,3 +1,173 @@
-export default function DateGate() {
-  return null
+import { useState, useMemo, useEffect } from 'react'
+import { motion } from 'framer-motion'
+import DateInput from './DateInput'
+import { generateStars } from './starfield'
+import styles from './DateGate.module.css'
+
+// hash da data — não decifrável a olho nu
+const CORRECT_HASH =
+  '3a794b9c0ab82aee74fc126cab085f86cc3a2783b535201088d5a166685fe188'
+
+type Status = 'idle' | 'checking' | 'error' | 'success' | 'exiting'
+
+interface Props {
+  onSuccess: () => void
+}
+
+// Web Crypto API é nativa do navegador — sem dependências externas e roda
+// apenas no client-side, o que é suficiente para um site estático.
+async function hashDate(date: string): Promise<string> {
+  const buf = await crypto.subtle.digest(
+    'SHA-256',
+    new TextEncoder().encode(date),
+  )
+  return Array.from(new Uint8Array(buf))
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('')
+}
+
+export default function DateGate({ onSuccess }: Props) {
+  const [value, setValue] = useState('')
+  const [status, setStatus] = useState<Status>('idle')
+
+  // Geradas uma vez — Math.random() dentro de useMemo não viola nenhuma regra
+  // pois não precisa ser determinístico entre renders.
+  const stars = useMemo(() => generateStars(65), [])
+
+  async function handleSubmit(submittedValue: string) {
+    if (submittedValue.length !== 10 || status !== 'idle') return
+    setStatus('checking')
+
+    const hash = await hashDate(submittedValue)
+
+    if (hash === CORRECT_HASH) {
+      setStatus('success')
+      // 2s de mensagem → inicia transição cinematográfica
+      setTimeout(() => setStatus('exiting'), 2000)
+    } else {
+      setStatus('error')
+      setTimeout(() => {
+        setStatus('idle')
+        setValue('')
+      }, 1500)
+    }
+  }
+
+  // Auto-submit quando os 8 dígitos estão preenchidos (UX mobile)
+  useEffect(() => {
+    if (value.length === 10 && status === 'idle') {
+      handleSubmit(value)
+    }
+    // handleSubmit é definida dentro do render e recaptura status corretamente
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value])
+
+  const isDisabled = status !== 'idle'
+  const isExiting = status === 'exiting'
+
+  return (
+    <motion.div
+      className={styles.wrapper}
+      initial="visible"
+      animate={isExiting ? 'exiting' : 'visible'}
+      variants={{
+        visible: { opacity: 1 },
+        exiting: { opacity: 0, transition: { duration: 0.8, delay: 0.4 } },
+      }}
+      onAnimationComplete={def => {
+        if (def === 'exiting') onSuccess()
+      }}
+    >
+      {/* Starfield — escala para criar efeito de "voando para o espaço" */}
+      <motion.div
+        className={styles.starfield}
+        animate={isExiting ? 'exiting' : 'visible'}
+        variants={{
+          visible: { scale: 1 },
+          exiting: { scale: 2.5, transition: { duration: 1.2, ease: 'easeIn' } },
+        }}
+      >
+        {stars.map(star => (
+          <span
+            key={star.id}
+            className={`${styles.star} ${star.twinkle ? styles.twinkle : ''}`}
+            style={{
+              left: `${star.x}%`,
+              top: `${star.y}%`,
+              width: `${star.size}px`,
+              height: `${star.size}px`,
+              opacity: star.opacity,
+              animationDelay: `${star.delay}s`,
+            }}
+          />
+        ))}
+      </motion.div>
+
+      <div className={styles.rocket} aria-hidden="true">🚀</div>
+
+      {/* Conteúdo central — entra com fade + slide */}
+      <motion.div
+        className={styles.content}
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, delay: 0.3, ease: 'easeOut' }}
+      >
+        <h1 className={styles.title}>Quem está aí?</h1>
+        <p className={styles.subtitle}>
+          Digite sua data de nascimento para entrar
+        </p>
+
+        {/* Wrapper do input recebe o shake */}
+        <motion.div
+          className={styles.inputGroup}
+          animate={status === 'error' ? 'shake' : 'idle'}
+          variants={{
+            idle: { x: 0 },
+            shake: {
+              x: [0, -8, 8, -6, 6, -3, 3, 0],
+              transition: { duration: 0.4 },
+            },
+          }}
+        >
+          <DateInput
+            value={value}
+            onChange={setValue}
+            disabled={isDisabled}
+            onSubmit={() => handleSubmit(value)}
+          />
+
+          <motion.button
+            className={styles.button}
+            onClick={() => handleSubmit(value)}
+            disabled={value.length !== 10 || isDisabled}
+            whileTap={{ scale: 0.96 }}
+          >
+            {status === 'checking' ? '...' : 'Confirmar →'}
+          </motion.button>
+        </motion.div>
+
+        {(status === 'success' || status === 'exiting') && (
+          <motion.p
+            className={styles.messageSuccess}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            É você mesmo, mãe! Preparei algo especial pra você ver.
+          </motion.p>
+        )}
+
+        {status === 'error' && (
+          <motion.p
+            className={styles.messageError}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            Hmm, essa não é a astronauta que estou esperando... Tenta de novo?
+          </motion.p>
+        )}
+      </motion.div>
+    </motion.div>
+  )
 }
