@@ -46,11 +46,13 @@ export default function DateGate({ onSuccess }: Props) {
       setTimeout(() => setStatus('exiting'), 2000)
     } else {
       setStatus('error')
-      setTimeout(() => {
-        setStatus('idle')
-        setValue('')
-      }, 1500)
     }
+  }
+
+  // Qualquer mudança no input enquanto há erro descarta a mensagem imediatamente
+  function handleChange(newValue: string) {
+    if (status === 'error') setStatus('idle')
+    setValue(newValue)
   }
 
   // Auto-submit quando os 8 dígitos estão preenchidos (UX mobile)
@@ -58,11 +60,12 @@ export default function DateGate({ onSuccess }: Props) {
     if (value.length === 10 && status === 'idle') {
       handleSubmit(value)
     }
-    // handleSubmit é definida dentro do render e recaptura status corretamente
+    // handleSubmit captura status do render atual — eslint-disable intencional
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value])
 
-  const isDisabled = status !== 'idle'
+  // 'error' não bloqueia o input: a usuária precisa digitar para limpar a mensagem
+  const isDisabled = status === 'checking' || status === 'success' || status === 'exiting'
   const isExiting = status === 'exiting'
 
   return (
@@ -131,19 +134,10 @@ export default function DateGate({ onSuccess }: Props) {
         >
           <DateInput
             value={value}
-            onChange={setValue}
+            onChange={handleChange}
             disabled={isDisabled}
             onSubmit={() => handleSubmit(value)}
           />
-
-          <motion.button
-            className={styles.button}
-            onClick={() => handleSubmit(value)}
-            disabled={value.length !== 10 || isDisabled}
-            whileTap={{ scale: 0.96 }}
-          >
-            {status === 'checking' ? '...' : 'Confirmar →'}
-          </motion.button>
         </motion.div>
 
         {(status === 'success' || status === 'exiting') && (

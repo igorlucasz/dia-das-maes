@@ -90,7 +90,7 @@
   line-height: 1.5;
 }
 
-/* ── Input group (input + botão, recebe shake) ───────────── */
+/* ── Input group (recebe o shake de erro) ───────────────── */
 
 .inputGroup {
   display: flex;
@@ -135,30 +135,6 @@
 
 .input:disabled {
   opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* ── Botão confirmar ─────────────────────────────────────── */
-
-.button {
-  width: 100%;
-  max-width: 280px;
-  height: 52px;
-  font-family: var(--font-heading);
-  font-size: 1rem;
-  font-weight: 600;
-  color: #fff;
-  background: linear-gradient(135deg, var(--color-glow), #7c3aed);
-  border: none;
-  border-radius: 14px;
-  cursor: pointer;
-  transition: opacity 0.2s;
-  /* Garante área de toque confortável */
-  min-height: 48px;
-}
-
-.button:disabled {
-  opacity: 0.35;
   cursor: not-allowed;
 }
 
