@@ -1,0 +1,46 @@
+.field {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.star {
+  position: absolute;
+  border-radius: 50%;
+  transform-origin: center;
+}
+
+/* ── Decorative: pure CSS twinkle, audio-agnostic ── */
+.decorative {
+  opacity: 0.45;
+  animation: twinkle var(--twinkle-duration, 3s) ease-in-out infinite;
+  animation-delay: var(--twinkle-delay, 0s);
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.25; }
+  50%       { opacity: 1; }
+}
+
+/* ── Mid-reactive: brightens with --audio-mids ── */
+/* Base opacity 0.35 when silent, up to ~1.0 at peak mids */
+.midReactive {
+  opacity: calc(0.35 + var(--reactivity, 0.5) * var(--audio-mids, 0.2) * 2);
+  will-change: opacity;
+}
+
+/* ── High-reactive: brightens AND scales with mids + treble ── */
+.highReactive {
+  opacity: calc(
+    0.3 +
+    var(--reactivity, 0.8) * (
+      var(--audio-mids, 0.15) * 1.2 +
+      var(--audio-treble, 0.15) * 1.2
+    )
+  );
+  transform: scale(
+    calc(1 + var(--reactivity, 0.8) * var(--audio-treble, 0) * 0.6)
+  );
+  will-change: transform, opacity;
+}
