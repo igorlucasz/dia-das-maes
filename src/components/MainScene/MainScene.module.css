@@ -1,29 +1,27 @@
+/* Wrapper expande para 300vh — fundo cobre toda a página */
 .wrapper {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100dvh;
+  min-height: 300vh;
   background: var(--color-space);
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
-/* Full-bleed layer that sits behind the text */
+/* Full-bleed layer, esticado para cobrir as 300vh */
 .background {
   position: absolute;
   inset: 0;
   z-index: 0;
 }
 
-/* Text placeholder sits above everything */
+/* Texto placeholder na primeira viewport, z-index acima do fundo */
 .content {
   position: relative;
   z-index: 1;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
+  justify-content: center;
   text-align: center;
   padding: 2rem;
 }
