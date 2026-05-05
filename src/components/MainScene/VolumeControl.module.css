@@ -1,0 +1,72 @@
+.wrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  pointer-events: all;
+}
+
+.iconBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.65);
+  padding: 0.45rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: color 0.2s ease, background-color 0.2s ease;
+  line-height: 0;
+}
+
+.iconBtn:hover {
+  color: rgba(255, 255, 255, 1);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.iconBtn:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.45);
+  outline-offset: 2px;
+}
+
+/* Range slider — minimal white-on-dark aesthetic */
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 72px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 1px;
+  outline: none;
+  cursor: pointer;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.82);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.slider::-webkit-slider-thumb:hover {
+  transform: scale(1.35);
+}
+
+.slider::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.82);
+  border: none;
+  cursor: pointer;
+}
+
+.slider::-moz-range-track {
+  background: rgba(255, 255, 255, 0.22);
+  height: 2px;
+  border-radius: 1px;
+}

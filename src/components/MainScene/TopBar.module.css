@@ -7,10 +7,9 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  gap: 2px;
   padding: 0 1rem;
-  background: rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  /* Totalmente transparente — ícones flutuam sobre o cenário */
   z-index: 100;
   pointer-events: none;
 }
@@ -36,12 +35,10 @@
 }
 
 .btn:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline: 2px solid rgba(255, 255, 255, 0.45);
   outline-offset: 2px;
 }
 
 @media (max-width: 768px) {
-  .bar {
-    height: 44px;
-  }
+  .bar { height: 44px; }
 }

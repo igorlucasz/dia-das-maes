@@ -1,13 +1,16 @@
+import VolumeControl from './VolumeControl'
 import styles from './TopBar.module.css'
 
 interface Props {
   isPlaying: boolean
   onToggle: () => void
+  audioRef: React.RefObject<HTMLAudioElement>
 }
 
-export default function TopBar({ isPlaying, onToggle }: Props) {
+export default function TopBar({ isPlaying, onToggle, audioRef }: Props) {
   return (
     <div className={styles.bar}>
+      <VolumeControl audioRef={audioRef} />
       <button
         className={styles.btn}
         onClick={onToggle}
