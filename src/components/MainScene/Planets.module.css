@@ -2,226 +2,346 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  overflow: hidden;
+  overflow: visible; /* drift pode sair levemente do container sem clip */
 }
 
 /* ════════════════════════════════════════════
-   Shared wrapper pattern
-   Each wrapper is positioned absolute; it's
-   a zero-size anchor so children can be
-   centered via negative margin.
+   Drift keyframes — valores pequenos (±18px)
+   para movimento orgânico quase imperceptível.
+   Cada planeta tem duração e caminho únicos.
+════════════════════════════════════════════ */
+@keyframes drift0 {
+  0%   { transform: translate(0px, 0px); }
+  18%  { transform: translate(14px, -10px); }
+  37%  { transform: translate(-8px, 16px); }
+  56%  { transform: translate(18px, 6px); }
+  75%  { transform: translate(-12px, -16px); }
+  100% { transform: translate(0px, 0px); }
+}
+@keyframes drift1 {
+  0%   { transform: translate(0px, 0px); }
+  22%  { transform: translate(-16px, 12px); }
+  44%  { transform: translate(10px, -14px); }
+  67%  { transform: translate(14px, 18px); }
+  88%  { transform: translate(-8px, -8px); }
+  100% { transform: translate(0px, 0px); }
+}
+@keyframes drift2 {
+  0%   { transform: translate(0px, 0px); }
+  25%  { transform: translate(14px, 12px); }
+  50%  { transform: translate(-18px, -6px); }
+  75%  { transform: translate(10px, -16px); }
+  100% { transform: translate(0px, 0px); }
+}
+@keyframes drift3 {
+  0%   { transform: translate(0px, 0px); }
+  20%  { transform: translate(-10px, -14px); }
+  42%  { transform: translate(16px, 8px); }
+  62%  { transform: translate(-14px, 12px); }
+  82%  { transform: translate(8px, -10px); }
+  100% { transform: translate(0px, 0px); }
+}
+@keyframes drift4 {
+  0%   { transform: translate(0px, 0px); }
+  30%  { transform: translate(-12px, 14px); }
+  60%  { transform: translate(16px, -8px); }
+  80%  { transform: translate(-6px, 14px); }
+  100% { transform: translate(0px, 0px); }
+}
+
+/* ════════════════════════════════════════════
+   Wrappers — posição na página (% de 300vh)
+   + animação de drift CSS (GPU-composited)
 ════════════════════════════════════════════ */
 .wrapper0,
 .wrapper1,
 .wrapper2,
-.wrapper3 {
+.wrapper3,
+.wrapper4 {
   position: absolute;
+}
+
+.wrapper0 {
+  top: 8%;
+  left: 5%;
+  animation: drift0 55s ease-in-out infinite;
+}
+.wrapper1 {
+  top: 5%;
+  right: 6%;
+  animation: drift1 48s ease-in-out infinite;
+}
+.wrapper2 {
+  top: 40%;
+  right: 5%;
+  animation: drift2 63s ease-in-out infinite;
+}
+.wrapper3 {
+  top: 56%;
+  left: 4%;
+  animation: drift3 42s ease-in-out infinite;
+}
+.wrapper4 {
+  top: 80%;
+  right: 7%;
+  animation: drift4 50s ease-in-out infinite;
 }
 
 /* ════════════════════════════════════════════
-   Planet 0 — Roxo neon com anéis
-   Position: top-left quadrant
+   PLANETA 0 — Roxo neon com dois anéis
+   Tamanho: 120px
 ════════════════════════════════════════════ */
-.wrapper0 {
-  top: 12%;
-  left: 6%;
-}
-
 .glow0 {
   position: absolute;
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
-  background: rgba(176, 38, 255, 0.45);
-  filter: blur(22px);
-  /* Expand/brighten on bass using GPU-composited transform + opacity */
-  transform: scale(calc(1.2 + var(--audio-bass-0, 0.1) * 1.8));
-  opacity: calc(0.5 + var(--audio-bass-0, 0.1) * 0.5);
+  background: rgba(176, 38, 255, 0.48);
+  filter: blur(28px);
+  transform: scale(calc(1.1 + var(--audio-bass-0, 0.05) * 2.2));
+  opacity: calc(0.45 + var(--audio-bass-0, 0.05) * 0.55);
   will-change: transform, opacity;
 }
 
 .planet0 {
   position: relative;
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #e040fb, #8b00d4, #3d006b);
-  box-shadow: inset -8px -6px 18px rgba(0, 0, 0, 0.5);
+  background:
+    radial-gradient(circle at 32% 32%, rgba(255, 120, 255, 0.35) 0%, transparent 38%),
+    radial-gradient(circle at 70% 68%, rgba(40, 0, 100, 0.45) 0%, transparent 32%),
+    radial-gradient(circle at 35% 35%, #e040fb, #8b00d4, #3d006b);
+  box-shadow: inset -12px -8px 26px rgba(0, 0, 0, 0.55);
   z-index: 1;
 }
 
-/* Ring: flat ellipse at angle — no 3D transform needed */
+/* Anel principal — mais espesso, roxo-lavanda */
 .ring0 {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 148px;
-  height: 44px;
-  margin-top: -22px;
-  margin-left: -74px;
-  border: 3px solid rgba(220, 120, 255, 0.65);
+  width: 230px;
+  height: 68px;
+  margin-top: -34px;
+  margin-left: -115px;
+  border: 3.5px solid rgba(220, 130, 255, 0.68);
   border-radius: 50%;
   transform: rotate(-18deg);
+  z-index: 2;
+}
+
+/* Segundo anel — mais fino, amarelo neon */
+.ring0b {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 258px;
+  height: 56px;
+  margin-top: -28px;
+  margin-left: -129px;
+  border: 1.8px solid rgba(255, 220, 60, 0.42);
+  border-radius: 50%;
+  transform: rotate(-22deg);
   z-index: 0;
 }
 
 /* ════════════════════════════════════════════
-   Planet 1 — Verde ácido com lua orbitando
-   Position: top-right quadrant
+   PLANETA 1 — Verde ácido com lua orbitando
+   Tamanho: 90px
 ════════════════════════════════════════════ */
-.wrapper1 {
-  top: 8%;
-  right: 8%;
-}
-
 .glow1 {
   position: absolute;
-  width: 60px;
-  height: 60px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
-  background: rgba(100, 255, 0, 0.4);
-  filter: blur(18px);
-  transform: scale(calc(1.2 + var(--audio-bass-1, 0.1) * 2));
-  opacity: calc(0.45 + var(--audio-bass-1, 0.1) * 0.55);
+  background: rgba(100, 255, 10, 0.42);
+  filter: blur(22px);
+  transform: scale(calc(1.1 + var(--audio-bass-1, 0.05) * 2.4));
+  opacity: calc(0.42 + var(--audio-bass-1, 0.05) * 0.58);
   will-change: transform, opacity;
 }
 
 .planet1 {
   position: relative;
-  width: 60px;
-  height: 60px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
-  background: radial-gradient(circle at 40% 35%, #ccff00, #76ff03, #1b5e20);
-  box-shadow: inset -6px -5px 14px rgba(0, 0, 0, 0.5);
+  background:
+    radial-gradient(circle at 64% 28%, rgba(0, 0, 0, 0.28) 0%, transparent 32%),
+    radial-gradient(circle at 28% 70%, rgba(200, 255, 100, 0.18) 0%, transparent 28%),
+    radial-gradient(circle at 40% 35%, #ccff00, #76ff03, #1b5e20);
+  box-shadow: inset -9px -7px 20px rgba(0, 0, 0, 0.5);
   z-index: 1;
 }
 
-/* Moon orbit: rotates around planet center */
 .moonOrbit {
   position: absolute;
   top: 50%;
   left: 50%;
   width: 0;
   height: 0;
-  animation: orbit 5s linear infinite;
-  transform-origin: center;
+  animation: orbit 6s linear infinite;
   z-index: 2;
 }
 
 @keyframes orbit {
-  from { transform: rotate(0deg) translateX(48px); }
-  to   { transform: rotate(360deg) translateX(48px); }
+  from { transform: rotate(0deg) translateX(70px); }
+  to   { transform: rotate(360deg) translateX(70px); }
 }
 
 .moon {
-  width: 12px;
-  height: 12px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #e0e0e0, #9e9e9e, #616161);
-  box-shadow: inset -2px -2px 5px rgba(0, 0, 0, 0.5);
-  margin-top: -6px;
-  margin-left: -6px;
+  margin: -8px;
+  background: radial-gradient(circle at 35% 30%, #eaeaea, #a8a8a8, #606060);
+  box-shadow: inset -2px -2px 6px rgba(0, 0, 0, 0.6);
 }
 
 /* ════════════════════════════════════════════
-   Planet 2 — Rosa magenta com crateras
-   Position: bottom-left quadrant
+   PLANETA 2 — Rosa magenta texturizado + aura ciano
+   Tamanho: 80px
 ════════════════════════════════════════════ */
-.wrapper2 {
-  bottom: 18%;
-  left: 10%;
-}
-
 .glow2 {
   position: absolute;
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  background: rgba(255, 30, 120, 0.4);
-  filter: blur(26px);
-  transform: scale(calc(1.2 + var(--audio-bass-2, 0.1) * 1.6));
-  opacity: calc(0.45 + var(--audio-bass-2, 0.1) * 0.55);
+  background: rgba(255, 40, 120, 0.44);
+  filter: blur(22px);
+  transform: scale(calc(1.1 + var(--audio-bass-2, 0.05) * 2));
+  opacity: calc(0.42 + var(--audio-bass-2, 0.05) * 0.58);
   will-change: transform, opacity;
 }
 
 .planet2 {
   position: relative;
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  /* Craters: dark radial gradients layered over the base color */
   background:
-    radial-gradient(circle at 62% 22%, rgba(0, 0, 0, 0.35) 0%, transparent 28%),
-    radial-gradient(circle at 25% 68%, rgba(0, 0, 0, 0.28) 0%, transparent 22%),
-    radial-gradient(circle at 78% 72%, rgba(0, 0, 0, 0.22) 0%, transparent 18%),
-    radial-gradient(circle at 48% 45%, rgba(255, 100, 160, 0.3) 0%, transparent 40%),
+    radial-gradient(circle at 62% 22%, rgba(0, 0, 0, 0.38) 0%, transparent 24%),
+    radial-gradient(circle at 25% 68%, rgba(0, 0, 0, 0.30) 0%, transparent 20%),
+    radial-gradient(circle at 78% 72%, rgba(0, 0, 0, 0.24) 0%, transparent 16%),
+    radial-gradient(circle at 42% 42%, rgba(0, 0, 0, 0.18) 0%, transparent 14%),
+    radial-gradient(circle at 58% 55%, rgba(255, 60, 140, 0.22) 0%, transparent 28%),
     radial-gradient(circle at 35% 30%, #ff4081, #c2185b, #880e4f);
-  box-shadow: inset -10px -8px 22px rgba(0, 0, 0, 0.55);
+  /* Leve aura ciano nas bordas (box-shadow externo) */
+  box-shadow:
+    inset -8px -6px 18px rgba(0, 0, 0, 0.55),
+    0 0 28px 6px rgba(0, 220, 255, 0.1);
   z-index: 1;
 }
 
 /* ════════════════════════════════════════════
-   Planet 3 — Azul ciano gasoso (tipo Júpiter)
-   Position: bottom-right quadrant
+   PLANETA 3 — Azul ciano gasoso (maior, listras irregulares)
+   Tamanho: 150px
 ════════════════════════════════════════════ */
-.wrapper3 {
-  bottom: 12%;
-  right: 7%;
-}
-
 .glow3 {
   position: absolute;
-  width: 70px;
-  height: 70px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
-  background: rgba(0, 220, 255, 0.4);
-  filter: blur(20px);
-  transform: scale(calc(1.2 + var(--audio-bass-3, 0.1) * 2));
-  opacity: calc(0.45 + var(--audio-bass-3, 0.1) * 0.55);
+  background: rgba(0, 220, 255, 0.42);
+  filter: blur(34px);
+  transform: scale(calc(1.1 + var(--audio-bass-3, 0.05) * 2));
+  opacity: calc(0.42 + var(--audio-bass-3, 0.05) * 0.58);
   will-change: transform, opacity;
 }
 
 .planet3 {
   position: relative;
-  width: 70px;
-  height: 70px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
-  /* Horizontal stripes (gas giant) */
-  background: linear-gradient(
-    180deg,
-    #00e5ff 0%,
-    #00e5ff 12%,
-    #006064 14%,
-    #006064 24%,
-    #4dd0e1 26%,
-    #4dd0e1 40%,
-    #0097a7 42%,
-    #0097a7 54%,
-    #00b0ff 56%,
-    #00b0ff 70%,
-    #006064 72%,
-    #006064 82%,
-    #00e5ff 84%,
-    #00e5ff 100%
-  );
-  box-shadow: inset -8px -6px 18px rgba(0, 0, 0, 0.5);
+  overflow: hidden; /* clips as listras no círculo */
+  background:
+    linear-gradient(180deg, rgba(0, 240, 255, 0.65) 0%, transparent 9%),
+    linear-gradient(180deg, transparent 6%, rgba(0, 55, 100, 0.88) 13%, transparent 23%),
+    linear-gradient(180deg, transparent 19%, rgba(80, 215, 255, 0.52) 29%, transparent 38%),
+    linear-gradient(180deg, transparent 33%, rgba(160, 245, 255, 0.58) 42%, transparent 49%),
+    linear-gradient(180deg, transparent 44%, rgba(0, 75, 140, 0.92) 53%, transparent 62%),
+    linear-gradient(180deg, transparent 58%, rgba(0, 195, 240, 0.56) 68%, transparent 76%),
+    linear-gradient(180deg, transparent 72%, rgba(25, 55, 100, 0.82) 81%, transparent 90%),
+    linear-gradient(180deg, transparent 86%, rgba(0, 215, 255, 0.52) 94%, transparent 100%),
+    radial-gradient(circle at 50% 50%, #00bcd4, #006064, #003d44);
+  box-shadow: inset -15px -10px 30px rgba(0, 0, 0, 0.52);
   z-index: 1;
 }
 
-/* ── Mobile: recenter planets slightly so they don't crowd center text ── */
+/* ════════════════════════════════════════════
+   PLANETA 4 — Coral cristalino (gem shape)
+   Tamanho: 100px
+════════════════════════════════════════════ */
+.glow4 {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: rgba(255, 155, 50, 0.52);
+  filter: blur(24px);
+  transform: scale(calc(1.15 + var(--audio-bass-0, 0.05) * 2.2));
+  opacity: calc(0.48 + var(--audio-bass-0, 0.05) * 0.52);
+  will-change: transform, opacity;
+}
+
+.planet4 {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  /* Gem shape — polígono com 9 vértices */
+  clip-path: polygon(
+    50% 2%,
+    82% 14%,
+    98% 48%,
+    86% 82%,
+    60% 98%,
+    40% 98%,
+    14% 82%,
+    2% 48%,
+    18% 14%
+  );
+  background:
+    linear-gradient(55deg,  rgba(255, 225, 80, 0.78) 0%, transparent 44%),
+    linear-gradient(145deg, rgba(255, 90, 30, 0.72) 0%, transparent 44%),
+    linear-gradient(235deg, rgba(255, 180, 60, 0.58) 0%, transparent 44%),
+    linear-gradient(325deg, rgba(255, 230, 120, 0.62) 0%, transparent 44%),
+    radial-gradient(circle at 42% 38%, #ffde34, #ff8c1a, #c23b00);
+  /* filter:drop-shadow funciona com clip-path; box-shadow não */
+  filter: drop-shadow(0 0 12px rgba(255, 160, 50, 0.6));
+  z-index: 1;
+}
+
+/* ════════════════════════════════════════════
+   Desktop — escala proporcional todos os planetas
+════════════════════════════════════════════ */
+@media (min-width: 900px) {
+  .planet0          { width: 180px; height: 180px; }
+  .glow0            { width: 180px; height: 180px; }
+  .ring0            { width: 342px; height: 102px; margin-top: -51px; margin-left: -171px; }
+  .ring0b           { width: 384px; height: 84px;  margin-top: -42px; margin-left: -192px; }
+
+  .planet1          { width: 135px; height: 135px; }
+  .glow1            { width: 135px; height: 135px; }
+
+  .planet2          { width: 120px; height: 120px; }
+  .glow2            { width: 120px; height: 120px; }
+
+  .planet3          { width: 225px; height: 225px; }
+  .glow3            { width: 225px; height: 225px; }
+
+  .planet4          { width: 150px; height: 150px; }
+  .glow4            { width: 150px; height: 150px; }
+}
+
+/* ════════════════════════════════════════════
+   Mobile — pequenos ajustes de posição
+════════════════════════════════════════════ */
 @media (max-width: 480px) {
-  .wrapper0 { top: 8%; left: 2%; }
-  .wrapper1 { top: 6%; right: 2%; }
-  .wrapper2 { bottom: 10%; left: 2%; }
-  .wrapper3 { bottom: 8%; right: 2%; }
-
-  .planet0 { width: 60px; height: 60px; }
-  .glow0   { width: 60px; height: 60px; }
-  .ring0   { width: 112px; height: 34px; margin-top: -17px; margin-left: -56px; }
-
-  .planet2 { width: 75px; height: 75px; }
-  .glow2   { width: 75px; height: 75px; }
-
-  .planet3 { width: 55px; height: 55px; }
-  .glow3   { width: 55px; height: 55px; }
+  .wrapper0 { left: 2%; }
+  .wrapper1 { right: 2%; }
+  .wrapper2 { right: 2%; }
+  .wrapper3 { left: 2%; }
+  .wrapper4 { right: 2%; }
 }
