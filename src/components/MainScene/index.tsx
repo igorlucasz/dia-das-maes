@@ -2,8 +2,12 @@ import { useRef, useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useAudioAnalyzer } from '../../hooks/useAudioAnalyzer'
 import TopBar from './TopBar'
+import Nebulae from './Nebulae'
+import Constellations from './Constellations'
+import CosmicDust from './CosmicDust'
 import StarField from './StarField'
 import Planets from './Planets'
+import ShootingStars from './ShootingStars'
 import audioSrc from '../../assets/audio/astronauta-de-marmore.mp3'
 import styles from './MainScene.module.css'
 
@@ -11,8 +15,7 @@ export default function MainScene() {
   const audioRef = useRef<HTMLAudioElement>(null)
   const [isPlaying, setIsPlaying] = useState(false)
 
-  // Connects Web Audio API to the <audio> element and writes CSS vars to :root.
-  // Must come before the play effect so AudioContext is ready first.
+  // Conecta Web Audio API e escreve CSS vars no :root (sem re-renders)
   useAudioAnalyzer(audioRef)
 
   useEffect(() => {
@@ -20,7 +23,7 @@ export default function MainScene() {
     if (!audio) return
     audio.play()
       .then(() => setIsPlaying(true))
-      .catch(() => setIsPlaying(false)) // autoplay blocked: user clicks play
+      .catch(() => setIsPlaying(false))
   }, [])
 
   function togglePlay() {
@@ -41,18 +44,24 @@ export default function MainScene() {
       animate={{ opacity: 1 }}
       transition={{ duration: 1, ease: 'easeOut' }}
     >
-      {/* Hidden audio element — controlled via ref */}
       <audio ref={audioRef} src={audioSrc} loop preload="auto" />
 
-      <TopBar isPlaying={isPlaying} onToggle={togglePlay} />
+      {/* TopBar fica fixo no topo durante o scroll */}
+      <TopBar isPlaying={isPlaying} onToggle={togglePlay} audioRef={audioRef} />
 
-      {/* Background layer: stars + planets */}
+      {/* Camada de fundo: cobre toda a altura de 300vh */}
       <div className={styles.background} aria-hidden="true">
-        <StarField />
-        <Planets />
+        <Nebulae />         {/* atrás de tudo — z-index 0 */}
+        <Constellations />  {/* z-index 1 */}
+        <CosmicDust />      {/* z-index 2, só desktop */}
+        <StarField />       {/* z-index 3 */}
+        <Planets />         {/* z-index 4 */}
       </div>
 
-      {/* Placeholder text — mantido conforme brief */}
+      {/* Estrelas cadentes: position:fixed, independe do scroll */}
+      <ShootingStars />
+
+      {/* Texto placeholder — visível na primeira viewport */}
       <div className={styles.content}>
         <p className={styles.label}>Bem-vinda 🌟</p>
         <p className={styles.sub}>A cena principal vem na próxima etapa…</p>
