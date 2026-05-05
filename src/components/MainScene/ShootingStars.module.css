@@ -1,0 +1,31 @@
+/* Fixed ao viewport — aparece independente da posição de scroll */
+.container {
+  position: fixed;
+  z-index: 50;
+  pointer-events: none;
+  transform-origin: left center;
+}
+
+/* Trilha: gradiente transparente (cauda) → branco (cabeça) */
+.trail {
+  width: 180px;
+  height: 1.5px;
+  /* Cabeça (lado direito = direção de viagem) é branca, cauda some */
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0.95) 85%,
+    white 100%
+  );
+  border-radius: 1px;
+  animation: shoot 1.4s ease-in forwards;
+  transform-origin: left center;
+}
+
+@keyframes shoot {
+  0%   { transform: translateX(0px);               opacity: 0; }
+  6%   { opacity: 1; }
+  82%  { opacity: 0.8; }
+  100% { transform: translateX(calc(110vw + 200px)); opacity: 0; }
+}
