@@ -1,0 +1,227 @@
+.container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* ════════════════════════════════════════════
+   Shared wrapper pattern
+   Each wrapper is positioned absolute; it's
+   a zero-size anchor so children can be
+   centered via negative margin.
+════════════════════════════════════════════ */
+.wrapper0,
+.wrapper1,
+.wrapper2,
+.wrapper3 {
+  position: absolute;
+}
+
+/* ════════════════════════════════════════════
+   Planet 0 — Roxo neon com anéis
+   Position: top-left quadrant
+════════════════════════════════════════════ */
+.wrapper0 {
+  top: 12%;
+  left: 6%;
+}
+
+.glow0 {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(176, 38, 255, 0.45);
+  filter: blur(22px);
+  /* Expand/brighten on bass using GPU-composited transform + opacity */
+  transform: scale(calc(1.2 + var(--audio-bass-0, 0.1) * 1.8));
+  opacity: calc(0.5 + var(--audio-bass-0, 0.1) * 0.5);
+  will-change: transform, opacity;
+}
+
+.planet0 {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #e040fb, #8b00d4, #3d006b);
+  box-shadow: inset -8px -6px 18px rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+/* Ring: flat ellipse at angle — no 3D transform needed */
+.ring0 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 148px;
+  height: 44px;
+  margin-top: -22px;
+  margin-left: -74px;
+  border: 3px solid rgba(220, 120, 255, 0.65);
+  border-radius: 50%;
+  transform: rotate(-18deg);
+  z-index: 0;
+}
+
+/* ════════════════════════════════════════════
+   Planet 1 — Verde ácido com lua orbitando
+   Position: top-right quadrant
+════════════════════════════════════════════ */
+.wrapper1 {
+  top: 8%;
+  right: 8%;
+}
+
+.glow1 {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(100, 255, 0, 0.4);
+  filter: blur(18px);
+  transform: scale(calc(1.2 + var(--audio-bass-1, 0.1) * 2));
+  opacity: calc(0.45 + var(--audio-bass-1, 0.1) * 0.55);
+  will-change: transform, opacity;
+}
+
+.planet1 {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #ccff00, #76ff03, #1b5e20);
+  box-shadow: inset -6px -5px 14px rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+/* Moon orbit: rotates around planet center */
+.moonOrbit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  animation: orbit 5s linear infinite;
+  transform-origin: center;
+  z-index: 2;
+}
+
+@keyframes orbit {
+  from { transform: rotate(0deg) translateX(48px); }
+  to   { transform: rotate(360deg) translateX(48px); }
+}
+
+.moon {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #e0e0e0, #9e9e9e, #616161);
+  box-shadow: inset -2px -2px 5px rgba(0, 0, 0, 0.5);
+  margin-top: -6px;
+  margin-left: -6px;
+}
+
+/* ════════════════════════════════════════════
+   Planet 2 — Rosa magenta com crateras
+   Position: bottom-left quadrant
+════════════════════════════════════════════ */
+.wrapper2 {
+  bottom: 18%;
+  left: 10%;
+}
+
+.glow2 {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: rgba(255, 30, 120, 0.4);
+  filter: blur(26px);
+  transform: scale(calc(1.2 + var(--audio-bass-2, 0.1) * 1.6));
+  opacity: calc(0.45 + var(--audio-bass-2, 0.1) * 0.55);
+  will-change: transform, opacity;
+}
+
+.planet2 {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  /* Craters: dark radial gradients layered over the base color */
+  background:
+    radial-gradient(circle at 62% 22%, rgba(0, 0, 0, 0.35) 0%, transparent 28%),
+    radial-gradient(circle at 25% 68%, rgba(0, 0, 0, 0.28) 0%, transparent 22%),
+    radial-gradient(circle at 78% 72%, rgba(0, 0, 0, 0.22) 0%, transparent 18%),
+    radial-gradient(circle at 48% 45%, rgba(255, 100, 160, 0.3) 0%, transparent 40%),
+    radial-gradient(circle at 35% 30%, #ff4081, #c2185b, #880e4f);
+  box-shadow: inset -10px -8px 22px rgba(0, 0, 0, 0.55);
+  z-index: 1;
+}
+
+/* ════════════════════════════════════════════
+   Planet 3 — Azul ciano gasoso (tipo Júpiter)
+   Position: bottom-right quadrant
+════════════════════════════════════════════ */
+.wrapper3 {
+  bottom: 12%;
+  right: 7%;
+}
+
+.glow3 {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: rgba(0, 220, 255, 0.4);
+  filter: blur(20px);
+  transform: scale(calc(1.2 + var(--audio-bass-3, 0.1) * 2));
+  opacity: calc(0.45 + var(--audio-bass-3, 0.1) * 0.55);
+  will-change: transform, opacity;
+}
+
+.planet3 {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  /* Horizontal stripes (gas giant) */
+  background: linear-gradient(
+    180deg,
+    #00e5ff 0%,
+    #00e5ff 12%,
+    #006064 14%,
+    #006064 24%,
+    #4dd0e1 26%,
+    #4dd0e1 40%,
+    #0097a7 42%,
+    #0097a7 54%,
+    #00b0ff 56%,
+    #00b0ff 70%,
+    #006064 72%,
+    #006064 82%,
+    #00e5ff 84%,
+    #00e5ff 100%
+  );
+  box-shadow: inset -8px -6px 18px rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+/* ── Mobile: recenter planets slightly so they don't crowd center text ── */
+@media (max-width: 480px) {
+  .wrapper0 { top: 8%; left: 2%; }
+  .wrapper1 { top: 6%; right: 2%; }
+  .wrapper2 { bottom: 10%; left: 2%; }
+  .wrapper3 { bottom: 8%; right: 2%; }
+
+  .planet0 { width: 60px; height: 60px; }
+  .glow0   { width: 60px; height: 60px; }
+  .ring0   { width: 112px; height: 34px; margin-top: -17px; margin-left: -56px; }
+
+  .planet2 { width: 75px; height: 75px; }
+  .glow2   { width: 75px; height: 75px; }
+
+  .planet3 { width: 55px; height: 55px; }
+  .glow3   { width: 55px; height: 55px; }
+}
