@@ -1,6 +1,7 @@
 import styles from './Planets.module.css'
 import planetaAmarelo from '../../assets/images/planeta-amarelo.svg'
 import planetaAzul from '../../assets/images/planeta-azul.svg'
+import planetaVerde from '../../assets/images/planeta-verde.svg'
 
 // Glow pulsing: CSS vars --audio-bass-{0-3} atualizados pelo useAudioAnalyzer
 // Drift: keyframe CSS puro (transform:translate) — GPU-composited, sem JS
@@ -16,12 +17,16 @@ export default function Planets() {
         <div className={styles.planet0} />
       </div>
 
-      {/* ── Planeta 1 — Verde ácido com lua orbitando — 1ª viewport direita ── */}
+      {/* ── Planeta 1 — Verde (imagem SVG) — 1ª viewport direita ── */}
       <div className={styles.wrapper1}>
         <div className={styles.glow1} />
-        <div className={styles.planet1} />
-        <div className={styles.moonOrbit}>
-          <div className={styles.moon} />
+        <div className={styles.planet1}>
+          <img
+            src={planetaVerde}
+            alt="Planeta verde esmeralda"
+            className={styles.planetImg}
+            loading="eager"
+          />
         </div>
       </div>
 

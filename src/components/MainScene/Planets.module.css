@@ -147,8 +147,8 @@
 }
 
 /* ════════════════════════════════════════════
-   PLANETA 1 — Verde ácido com lua orbitando
-   Tamanho: 90px
+   PLANETA 1 — Verde (imagem SVG)
+   Tamanho: 90px mobile / 135px desktop
 ════════════════════════════════════════════ */
 .glow1 {
   position: absolute;
@@ -166,39 +166,7 @@
   position: relative;
   width: 90px;
   height: 90px;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 64% 28%, rgba(0, 0, 0, 0.28) 0%, transparent 32%),
-    radial-gradient(circle at 28% 70%, rgba(200, 255, 100, 0.18) 0%, transparent 28%),
-    radial-gradient(circle at 40% 35%, #ccff00, #76ff03, #1b5e20);
-  box-shadow: inset -9px -7px 20px rgba(0, 0, 0, 0.5);
   z-index: 1;
-}
-
-.moonOrbit {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  /* ~156% do raio mobile (45px). Override no desktop abaixo. */
-  --orbit-r: 70px;
-  animation: orbit 6s linear infinite;
-  z-index: 2;
-}
-
-@keyframes orbit {
-  from { transform: rotate(0deg)   translateX(var(--orbit-r)); }
-  to   { transform: rotate(360deg) translateX(var(--orbit-r)); }
-}
-
-.moon {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  margin: -8px;
-  background: radial-gradient(circle at 35% 30%, #eaeaea, #a8a8a8, #606060);
-  box-shadow: inset -2px -2px 6px rgba(0, 0, 0, 0.6);
 }
 
 /* ════════════════════════════════════════════
@@ -345,8 +313,6 @@
 
   .planet1          { width: 135px; height: 135px; }
   .glow1            { width: 135px; height: 135px; }
-  /* ~140% do raio desktop (67.5px × 1.4 ≈ 95px) — proporcional ao mobile */
-  .moonOrbit        { --orbit-r: 95px; }
 
   .planet2          { width: 120px; height: 120px; }
   .glow2            { width: 120px; height: 120px; }
