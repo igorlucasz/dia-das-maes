@@ -1,0 +1,136 @@
+<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="pB" cx="38%" cy="32%" r="68%">
+      <stop offset="0%" stop-color="#c8f7f9"/>
+      <stop offset="15%" stop-color="#6de4ea"/>
+      <stop offset="38%" stop-color="#2abcc8"/>
+      <stop offset="62%" stop-color="#1188a0"/>
+      <stop offset="82%" stop-color="#0a5e72"/>
+      <stop offset="100%" stop-color="#042030"/>
+    </radialGradient>
+    <radialGradient id="sp" cx="33%" cy="28%" r="32%">
+      <stop offset="0%" stop-color="#e8fcfd" stop-opacity="0.75"/>
+      <stop offset="55%" stop-color="#a8f0f4" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#a8f0f4" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="limb" cx="50%" cy="50%" r="50%">
+      <stop offset="60%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.42"/>
+    </radialGradient>
+    <clipPath id="cl">
+      <circle cx="250" cy="250" r="232"/>
+    </clipPath>
+    <style>
+      .band { animation: drift linear infinite; }
+      .b1  { animation-duration: 18s; }
+      .b2  { animation-duration: 22s; animation-direction: reverse; }
+      .b3  { animation-duration: 15s; }
+      .b4  { animation-duration: 25s; animation-direction: reverse; }
+      .b5  { animation-duration: 20s; }
+      .b6  { animation-duration: 28s; animation-direction: reverse; }
+      .b7  { animation-duration: 17s; }
+      .b8  { animation-duration: 23s; animation-direction: reverse; }
+      .b9  { animation-duration: 19s; }
+      .b10 { animation-duration: 26s; animation-direction: reverse; }
+      @keyframes drift {
+        from { transform: translateX(0px); }
+        to   { transform: translateX(464px); }
+      }
+      .sp1 { animation: spin1 28s linear infinite; transform-origin: 183px 150px; }
+      .sp2 { animation: spin1 20s linear infinite reverse; transform-origin: 356px 171px; }
+      .sp3 { animation: spin1 24s linear infinite; transform-origin: 148px 345px; }
+      @keyframes spin1 {
+        from { transform: rotate(0deg); }
+        to   { transform: rotate(360deg); }
+      }
+      .globe { animation: floatY 8s ease-in-out infinite; transform-origin: 250px 250px; }
+      @keyframes floatY {
+        0%,100% { transform: translateY(0px); }
+        50%     { transform: translateY(-8px); }
+      }
+    </style>
+  </defs>
+
+  <g class="globe">
+    <circle cx="250" cy="250" r="232" fill="url(#pB)"/>
+    <g clip-path="url(#cl)">
+
+      <g class="band b1">
+        <ellipse cx="0"   cy="108" rx="232" ry="20" fill="#b8f2f6" opacity="0.45"/>
+        <ellipse cx="464" cy="108" rx="232" ry="20" fill="#b8f2f6" opacity="0.45"/>
+      </g>
+      <g class="band b2">
+        <ellipse cx="0"   cy="155" rx="232" ry="14" fill="#7de8ee" opacity="0.4"/>
+        <ellipse cx="464" cy="155" rx="232" ry="14" fill="#7de8ee" opacity="0.4"/>
+      </g>
+      <g class="band b3">
+        <ellipse cx="0"   cy="198" rx="232" ry="22" fill="#9af0f5" opacity="0.5"/>
+        <ellipse cx="464" cy="198" rx="232" ry="22" fill="#9af0f5" opacity="0.5"/>
+      </g>
+      <g class="band b4">
+        <ellipse cx="0"   cy="238" rx="232" ry="12" fill="#5dd8e2" opacity="0.4"/>
+        <ellipse cx="464" cy="238" rx="232" ry="12" fill="#5dd8e2" opacity="0.4"/>
+      </g>
+      <g class="band b5">
+        <ellipse cx="0"   cy="268" rx="232" ry="18" fill="#b0eef4" opacity="0.45"/>
+        <ellipse cx="464" cy="268" rx="232" ry="18" fill="#b0eef4" opacity="0.45"/>
+      </g>
+      <g class="band b6">
+        <ellipse cx="0"   cy="308" rx="232" ry="20" fill="#7adce8" opacity="0.4"/>
+        <ellipse cx="464" cy="308" rx="232" ry="20" fill="#7adce8" opacity="0.4"/>
+      </g>
+      <g class="band b7">
+        <ellipse cx="0"   cy="350" rx="232" ry="14" fill="#3ec0ce" opacity="0.38"/>
+        <ellipse cx="464" cy="350" rx="232" ry="14" fill="#3ec0ce" opacity="0.38"/>
+      </g>
+      <g class="band b8">
+        <ellipse cx="0"   cy="385" rx="232" ry="18" fill="#8ce6ee" opacity="0.35"/>
+        <ellipse cx="464" cy="385" rx="232" ry="18" fill="#8ce6ee" opacity="0.35"/>
+      </g>
+      <g class="band b9">
+        <ellipse cx="0"   cy="425" rx="232" ry="14" fill="#60d4de" opacity="0.3"/>
+        <ellipse cx="464" cy="425" rx="232" ry="14" fill="#60d4de" opacity="0.3"/>
+      </g>
+      <g class="band b10">
+        <ellipse cx="0"   cy="460" rx="232" ry="16" fill="#2a9fae" opacity="0.3"/>
+        <ellipse cx="464" cy="460" rx="232" ry="16" fill="#2a9fae" opacity="0.3"/>
+      </g>
+
+      <g class="band b3" opacity="0.5">
+        <path d="M18,130 Q80,118 145,130 Q210,142 275,128 Q340,114 400,126 Q440,134 482,128" fill="none" stroke="#c0f4f8" stroke-width="3" stroke-linecap="round"/>
+        <path d="M482,130 Q544,118 609,130 Q674,142 739,128 Q804,114 864,126 Q904,134 946,128" fill="none" stroke="#c0f4f8" stroke-width="3" stroke-linecap="round"/>
+      </g>
+      <g class="band b2" opacity="0.5">
+        <path d="M18,220 Q70,208 140,218 Q210,228 280,212 Q350,196 420,210 Q455,218 482,212" fill="none" stroke="#90e8f0" stroke-width="3.5" stroke-linecap="round"/>
+        <path d="M482,220 Q534,208 604,218 Q674,228 744,212 Q814,196 884,210 Q919,218 946,212" fill="none" stroke="#90e8f0" stroke-width="3.5" stroke-linecap="round"/>
+      </g>
+      <g class="band b5" opacity="0.45">
+        <path d="M18,290 Q75,278 148,290 Q222,302 295,285 Q368,268 440,282 Q465,288 482,282" fill="none" stroke="#a8eef4" stroke-width="3" stroke-linecap="round"/>
+        <path d="M482,290 Q539,278 612,290 Q686,302 759,285 Q832,268 904,282 Q929,288 946,282" fill="none" stroke="#a8eef4" stroke-width="3" stroke-linecap="round"/>
+      </g>
+      <g class="band b4" opacity="0.42">
+        <path d="M18,358 Q80,346 155,358 Q230,370 305,354 Q375,338 445,352 Q467,358 482,352" fill="none" stroke="#78dce8" stroke-width="3" stroke-linecap="round"/>
+        <path d="M482,358 Q544,346 619,358 Q694,370 769,354 Q839,338 909,352 Q931,358 946,352" fill="none" stroke="#78dce8" stroke-width="3" stroke-linecap="round"/>
+      </g>
+
+      <g class="sp1">
+        <path d="M148,155 C148,130 168,118 188,124 C208,130 215,150 208,168 C201,186 182,190 168,183 C154,176 152,162 158,152 C164,142 175,140 183,145 C191,150 192,160 186,165"
+          fill="none" stroke="#a0eef4" stroke-width="5" stroke-linecap="round" opacity="0.78"/>
+      </g>
+      <g class="sp2">
+        <path d="M338,178 C338,162 350,154 362,158 C374,162 378,174 373,184 C368,194 356,196 348,190 C340,184 341,174 347,168 C353,162 362,162 366,167"
+          fill="none" stroke="#88e4ec" stroke-width="3.5" stroke-linecap="round" opacity="0.68"/>
+      </g>
+      <g class="sp3">
+        <path d="M120,345 C120,323 138,312 156,317 C174,322 180,340 174,356 C168,372 151,375 140,368 C129,361 130,347 137,339 C144,331 155,330 162,335 C169,340 170,351 165,357"
+          fill="none" stroke="#70dce8" stroke-width="4" stroke-linecap="round" opacity="0.68"/>
+      </g>
+
+      <circle cx="250" cy="250" r="232" fill="url(#sp)"/>
+      <circle cx="250" cy="250" r="232" fill="url(#limb)"/>
+    </g>
+
+    <circle cx="250" cy="250" r="232" fill="none" stroke="#40d4e0" stroke-width="5" opacity="0.35"/>
+    <circle cx="250" cy="250" r="232" fill="none" stroke="#90eef4" stroke-width="1.5" opacity="0.25"/>
+  </g>
+</svg>

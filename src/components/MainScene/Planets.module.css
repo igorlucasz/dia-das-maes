@@ -235,8 +235,8 @@
 }
 
 /* ════════════════════════════════════════════
-   PLANETA 3 — Azul ciano gasoso (maior, listras irregulares)
-   Tamanho: 150px
+   PLANETA 3 — Azul gigante gasoso (imagem SVG)
+   Tamanho: 150px mobile / 225px desktop
 ════════════════════════════════════════════ */
 .glow3 {
   position: absolute;
@@ -254,21 +254,53 @@
   position: relative;
   width: 150px;
   height: 150px;
-  border-radius: 50%;
-  overflow: hidden; /* clips as listras no círculo */
-  background:
-    linear-gradient(180deg, rgba(0, 240, 255, 0.65) 0%, transparent 9%),
-    linear-gradient(180deg, transparent 6%, rgba(0, 55, 100, 0.88) 13%, transparent 23%),
-    linear-gradient(180deg, transparent 19%, rgba(80, 215, 255, 0.52) 29%, transparent 38%),
-    linear-gradient(180deg, transparent 33%, rgba(160, 245, 255, 0.58) 42%, transparent 49%),
-    linear-gradient(180deg, transparent 44%, rgba(0, 75, 140, 0.92) 53%, transparent 62%),
-    linear-gradient(180deg, transparent 58%, rgba(0, 195, 240, 0.56) 68%, transparent 76%),
-    linear-gradient(180deg, transparent 72%, rgba(25, 55, 100, 0.82) 81%, transparent 90%),
-    linear-gradient(180deg, transparent 86%, rgba(0, 215, 255, 0.52) 94%, transparent 100%),
-    radial-gradient(circle at 50% 50%, #00bcd4, #006064, #003d44);
-  box-shadow: inset -15px -10px 30px rgba(0, 0, 0, 0.52);
   z-index: 1;
 }
+
+/* ── Luas do planeta azul ──────────────────────────────────
+   Cada lua orbita via rotate(angle) translateX(radius) rotate(-angle)
+   — o counter-rotate cancela a rotação própria da lua.
+   CSS vars --orbit-r permitem ajuste responsivo sem duplicar keyframes.
+─────────────────────────────────────────────────────────── */
+@keyframes moon1Orbit {
+  from { transform: rotate(0deg)   translateX(var(--orbit-r)) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(var(--orbit-r)) rotate(-360deg); }
+}
+@keyframes moon2Orbit {
+  /* sentido anti-horário: ângulo decresce de 80° → -280° */
+  from { transform: rotate(80deg)   translateX(var(--orbit-r)) rotate(-80deg); }
+  to   { transform: rotate(-280deg) translateX(var(--orbit-r)) rotate(280deg); }
+}
+@keyframes moon3Orbit {
+  from { transform: rotate(210deg) translateX(var(--orbit-r)) rotate(-210deg); }
+  to   { transform: rotate(570deg) translateX(var(--orbit-r)) rotate(-570deg); }
+}
+
+.moonOrbit1,
+.moonOrbit2,
+.moonOrbit3 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+}
+
+/* raios mobile: 110% / 140% / 170% do raio do planeta (75px) */
+.moonOrbit1 { --orbit-r: 82.5px; animation: moon1Orbit  8s linear infinite; }
+.moonOrbit2 { --orbit-r: 105px;  animation: moon2Orbit 14s linear infinite; }
+.moonOrbit3 { --orbit-r: 127.5px; animation: moon3Orbit 22s linear infinite; }
+
+.moon1, .moon2, .moon3 {
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #e8e8e8, #b8b8b8, #686868);
+  box-shadow: inset -2px -2px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* tamanhos mobile: 8% / 12% / 16% do diâmetro (150px) */
+.moon1 { width: 12px; height: 12px; margin: -6px; }
+.moon2 { width: 18px; height: 18px; margin: -9px; }
+.moon3 { width: 24px; height: 24px; margin: -12px; }
 
 /* ════════════════════════════════════════════
    PLANETA 4 — Coral cristalino (gem shape)
@@ -317,6 +349,16 @@
 
   .planet3          { width: 225px; height: 225px; }
   .glow3            { width: 225px; height: 225px; }
+
+  /* raios desktop: 110% / 140% / 170% do raio do planeta (112.5px) */
+  .moonOrbit1 { --orbit-r: 124px; }
+  .moonOrbit2 { --orbit-r: 158px; }
+  .moonOrbit3 { --orbit-r: 191px; }
+
+  /* tamanhos desktop: 8% / 12% / 16% do diâmetro (225px) */
+  .moon1 { width: 18px; height: 18px; margin: -9px; }
+  .moon2 { width: 27px; height: 27px; margin: -13.5px; }
+  .moon3 { width: 36px; height: 36px; margin: -18px; }
 
   .planet4          { width: 150px; height: 150px; }
   .glow4            { width: 150px; height: 150px; }
