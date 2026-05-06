@@ -2,6 +2,7 @@ import styles from './Planets.module.css'
 import planetaAmarelo from '../../assets/images/planeta-amarelo.svg'
 import planetaAzul from '../../assets/images/planeta-azul.svg'
 import planetaVerde from '../../assets/images/planeta-verde.svg'
+import nebulaVibrante from '../../assets/images/nebula-vibrante.svg'
 
 // Glow pulsing: CSS vars --audio-bass-{0-3} atualizados pelo useAudioAnalyzer
 // Drift: keyframe CSS puro (transform:translate) — GPU-composited, sem JS
@@ -34,6 +35,12 @@ export default function Planets() {
       <div className={styles.wrapper2}>
         <div className={styles.glow2} />
         <div className={styles.planet2} />
+        <img
+          src={nebulaVibrante}
+          alt=""
+          aria-hidden="true"
+          className={styles.nebula2}
+        />
       </div>
 
       {/* ── Planeta 3 — Azul gigante gasoso (maior) — 2ª viewport ── */}

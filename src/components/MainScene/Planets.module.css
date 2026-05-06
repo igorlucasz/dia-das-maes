@@ -204,6 +204,33 @@
   z-index: 1;
 }
 
+/* Nebula como halo ao redor do planeta rosa — 170% do diâmetro (136px mobile).
+   Centralizada no planeta com translate(-50%,-50%), rotação lenta (75s).
+   Vai dentro do mesmo wrapper → acompanha o drift automaticamente. */
+@keyframes nebulaRotate {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.nebula2 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 136px;
+  height: 136px;
+  animation: nebulaRotate 75s linear infinite;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.72;
+}
+
+@media (min-width: 900px) {
+  .nebula2 {
+    width: 204px;  /* 170% de 120px */
+    height: 204px;
+  }
+}
+
 /* ════════════════════════════════════════════
    PLANETA 3 — Azul gigante gasoso (imagem SVG)
    Tamanho: 150px mobile / 225px desktop
