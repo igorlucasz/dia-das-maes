@@ -1,4 +1,5 @@
 import styles from './Planets.module.css'
+import planetaAmarelo from '../../assets/images/planeta-amarelo.svg'
 
 // Glow pulsing: CSS vars --audio-bass-{0-3} atualizados pelo useAudioAnalyzer
 // Drift: keyframe CSS puro (transform:translate) — GPU-composited, sem JS
@@ -35,10 +36,17 @@ export default function Planets() {
         <div className={styles.planet3} />
       </div>
 
-      {/* ── Planeta 4 — Coral cristalino (gem) — 3ª viewport ── */}
+      {/* ── Planeta 4 — Amarelo cristalino — 3ª viewport ── */}
       <div className={styles.wrapper4}>
         <div className={styles.glow4} />
-        <div className={styles.planet4} />
+        <div className={styles.planet4}>
+          <img
+            src={planetaAmarelo}
+            alt="Planeta dourado cristalino"
+            className={styles.planetImg}
+            loading="eager"
+          />
+        </div>
       </div>
 
     </div>
