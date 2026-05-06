@@ -70,6 +70,15 @@ export default function Planets() {
             loading="eager"
           />
         </div>
+        {/* Partículas de energia/fogo ao redor — posicionadas na borda do planeta */}
+        <div className={`${styles.particle} ${styles.fp1}`} />
+        <div className={`${styles.particle} ${styles.fp2}`} />
+        <div className={`${styles.particle} ${styles.fp3}`} />
+        <div className={`${styles.particle} ${styles.fp4}`} />
+        <div className={`${styles.particle} ${styles.fp5}`} />
+        <div className={`${styles.particle} ${styles.fp6}`} />
+        <div className={`${styles.particle} ${styles.fp7}`} />
+        <div className={`${styles.particle} ${styles.fp8}`} />
       </div>
 
     </div>

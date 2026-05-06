@@ -330,6 +330,37 @@
 }
 
 /* ════════════════════════════════════════════
+   PLANETA 4 — Partículas de energia/fogo
+   Posicionadas na borda do círculo (raio ≈50% do wrapper).
+   Posições em % escalam com o wrapper em ambos os breakpoints.
+   --dx / --dy: direção de saída (perpendicular ao centro).
+════════════════════════════════════════════ */
+@keyframes fireFloat {
+  0%   { transform: translate(0, 0) scale(1);   opacity: 0.88; }
+  70%  { opacity: 0.55; }
+  100% { transform: translate(var(--dx), var(--dy)) scale(0.15); opacity: 0; }
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  z-index: 2;
+  will-change: transform, opacity;
+  animation: fireFloat var(--dur) ease-out infinite var(--delay);
+}
+
+/* 8 posições ao redor da circunferência do planeta (wrapper = diâmetro do planeta) */
+/* top/left em % escalam com o tamanho do wrapper (100px mobile → 150px desktop) */
+.fp1 { /* 12h */ width: 5px; height: 5px; top: -2px; left: calc(50% - 2px); background: #ffd700; --dx: 1px;   --dy: -24px; --dur: 2.4s; --delay: 0s; }
+.fp2 { /* 2h  */ width: 4px; height: 4px; top: 11%;  left: 86%;             background: #ff8c00; --dx: 18px;  --dy: -18px; --dur: 2.2s; --delay: 0.4s; }
+.fp3 { /* 3h  */ width: 6px; height: 6px; top: calc(50% - 3px); left: 97%;  background: #ff6600; --dx: 24px;  --dy: 0px;   --dur: 2.6s; --delay: 0.8s; }
+.fp4 { /* 5h  */ width: 4px; height: 4px; top: 84%;  left: 84%;             background: #ffd700; --dx: 16px;  --dy: 18px;  --dur: 2.1s; --delay: 1.2s; }
+.fp5 { /* 6h  */ width: 5px; height: 5px; top: 97%;  left: calc(50% - 2px); background: #ff8c00; --dx: 0px;   --dy: 24px;  --dur: 2.4s; --delay: 0.2s; }
+.fp6 { /* 8h  */ width: 4px; height: 4px; top: 84%;  left: 12%;             background: #ff4500; --dx: -18px; --dy: 18px;  --dur: 2.3s; --delay: 1.5s; }
+.fp7 { /* 9h  */ width: 5px; height: 5px; top: calc(50% - 2px); left: -2px; background: #ffd700; --dx: -24px; --dy: 0px;   --dur: 2.5s; --delay: 1.0s; }
+.fp8 { /* 11h */ width: 4px; height: 4px; top: 11%;  left: 12%;             background: #ff6600; --dx: -18px; --dy: -18px; --dur: 2.2s; --delay: 0.6s; }
+
+/* ════════════════════════════════════════════
    Desktop — escala proporcional todos os planetas
 ════════════════════════════════════════════ */
 @media (min-width: 900px) {
