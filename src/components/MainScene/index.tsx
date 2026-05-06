@@ -15,22 +15,43 @@ export default function MainScene() {
   const audioRef = useRef<HTMLAudioElement>(null)
   const [isPlaying, setIsPlaying] = useState(false)
 
-  // Conecta Web Audio API e escreve CSS vars no :root (sem re-renders)
-  useAudioAnalyzer(audioRef)
+  // Conecta Web Audio API e escreve CSS vars no :root (sem re-renders).
+  // Retorna ctxRef para que possamos chamar ctx.resume() em gestos do usuário.
+  const audioCtxRef = useAudioAnalyzer(audioRef)
 
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
+    // Resume the AudioContext before play — on page load without a prior user
+    // gesture the context starts suspended; this call may silently fail but
+    // clicking Play (togglePlay) will retry it with a real user gesture.
+    audioCtxRef.current?.resume().catch(() => {})
     audio.play()
-      .then(() => setIsPlaying(true))
-      .catch(() => setIsPlaying(false))
+      .then(() => {
+        console.log('[AUDIO_DEBUG] audio.play() resolved — paused:', audio.paused, 'currentTime:', audio.currentTime)
+        setIsPlaying(true)
+      })
+      .catch(e => {
+        console.warn('[AUDIO_DEBUG] audio.play() blocked (autoplay policy):', e)
+        setIsPlaying(false)
+      })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   function togglePlay() {
     const audio = audioRef.current
     if (!audio) return
     if (audio.paused) {
-      audio.play().then(() => setIsPlaying(true)).catch(() => {})
+      // User gesture — resume the AudioContext first so the pipeline is running
+      audioCtxRef.current?.resume()
+        .then(() => console.log('[AUDIO_DEBUG] ctx.resume() after user gesture — state:', audioCtxRef.current?.state))
+        .catch(() => {})
+      audio.play()
+        .then(() => {
+          console.log('[AUDIO_DEBUG] audio.play() resolved — currentTime:', audio.currentTime)
+          setIsPlaying(true)
+        })
+        .catch(() => {})
     } else {
       audio.pause()
       setIsPlaying(false)

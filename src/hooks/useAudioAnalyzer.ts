@@ -1,4 +1,4 @@
-import { RefObject, useEffect, useRef } from 'react'
+import { RefObject, MutableRefObject, useEffect, useRef } from 'react'
 
 // At 44100 Hz sample rate with FFT size 2048 → 1024 bins, ~43 Hz per bin
 const BASS_END = 6    // ~0–258 Hz
@@ -18,40 +18,87 @@ function avg(data: Uint8Array, start: number, end: number): number {
 
 // Updates CSS custom properties on :root every animation frame so child
 // components can react via pure CSS calc() — zero React re-renders at runtime.
-export function useAudioAnalyzer(audioRef: RefObject<HTMLAudioElement>): void {
+// Returns ctxRef so callers can invoke ctx.resume() on user gestures.
+export function useAudioAnalyzer(
+  audioRef: RefObject<HTMLAudioElement>
+): MutableRefObject<AudioContext | null> {
   const rafRef = useRef<number>(0)
   const bassHistory = useRef<number[]>(new Array(HISTORY_LEN).fill(0))
+  const ctxRef = useRef<AudioContext | null>(null)
+  const analyserRef = useRef<AnalyserNode | null>(null)
+  // Defers ctx.close() past the StrictMode remount (macrotask fires after the
+  // synchronous cleanup+remount cycle, so the new effect can cancel it and
+  // reuse the intact pipeline instead of creating a second broken one).
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
+    // If this is a StrictMode remount, cancel the deferred close and reuse
+    if (closeTimerRef.current !== null) {
+      clearTimeout(closeTimerRef.current)
+      closeTimerRef.current = null
+      console.log('[AUDIO_DEBUG] StrictMode remount detected — cancelled ctx.close(), reusing pipeline')
+    }
+
     const audio = audioRef.current
     if (!audio) return
 
+    const root = document.documentElement
+
+    const existingCtx = ctxRef.current
+    const existingAnalyser = analyserRef.current
+
     let ctx: AudioContext
-    try {
-      ctx = new AudioContext()
-    } catch {
-      return
+    let analyser: AnalyserNode
+
+    if (existingCtx && existingCtx.state !== 'closed' && existingAnalyser) {
+      // Reuse pipeline kept open by the deferred close above
+      ctx = existingCtx
+      analyser = existingAnalyser
+      try {
+        analyser.connect(ctx.destination)
+        console.log('[AUDIO_DEBUG] Analyser reconnected to destination (reuse path)')
+      } catch {
+        // already connected — fine
+      }
+    } else {
+      // Fresh setup
+      let newCtx: AudioContext
+      try {
+        newCtx = new AudioContext()
+      } catch (e) {
+        console.error('[AUDIO_DEBUG] new AudioContext() failed:', e)
+        return
+      }
+      console.log(`[AUDIO_DEBUG] AudioContext created — state: ${newCtx.state}`)
+      ctxRef.current = newCtx
+
+      const newAnalyser = newCtx.createAnalyser()
+      newAnalyser.fftSize = 2048
+      newAnalyser.smoothingTimeConstant = 0.75
+      analyserRef.current = newAnalyser
+
+      try {
+        const source = newCtx.createMediaElementSource(audio)
+        source.connect(newAnalyser)
+        newAnalyser.connect(newCtx.destination)
+        console.log('[AUDIO_DEBUG] Pipeline connected: audio → source → analyser → destination ✓')
+      } catch (e) {
+        console.error('[AUDIO_DEBUG] createMediaElementSource failed (pipeline broken):', e)
+        newCtx.close()
+        ctxRef.current = null
+        analyserRef.current = null
+        return
+      }
+
+      ctx = newCtx
+      analyser = newAnalyser
     }
 
-    const analyser = ctx.createAnalyser()
-    analyser.fftSize = 2048
-    analyser.smoothingTimeConstant = 0.75
-
-    try {
-      const source = ctx.createMediaElementSource(audio)
-      source.connect(analyser)
-      analyser.connect(ctx.destination)
-    } catch {
-      // Already connected (React StrictMode double-invoke in dev). Close and bail.
-      ctx.close()
-      return
-    }
-
-    // Resume in case browser auto-suspended the context (common on mobile).
-    ctx.resume().catch(() => {})
+    ctx.resume()
+      .then(() => console.log(`[AUDIO_DEBUG] ctx.resume() resolved — state: ${ctx.state}`))
+      .catch(e => console.warn('[AUDIO_DEBUG] ctx.resume() failed (needs user gesture):', e))
 
     const data = new Uint8Array(analyser.frequencyBinCount)
-    const root = document.documentElement
 
     function tick() {
       rafRef.current = requestAnimationFrame(tick)
@@ -83,13 +130,22 @@ export function useAudioAnalyzer(audioRef: RefObject<HTMLAudioElement>): void {
     return () => {
       cancelAnimationFrame(rafRef.current)
       try { analyser.disconnect() } catch { /* ignore */ }
-      ctx.close()
-      // Clear vars so CSS fallbacks take over immediately
       root.style.removeProperty('--audio-mids')
       root.style.removeProperty('--audio-treble')
       for (let i = 0; i < 4; i++) root.style.removeProperty(`--audio-bass-${i}`)
+      // Defer the close — if StrictMode remounts us before this macrotask fires,
+      // the new effect will clearTimeout and reuse the intact pipeline.
+      closeTimerRef.current = setTimeout(() => {
+        closeTimerRef.current = null
+        console.log('[AUDIO_DEBUG] ctx.close() — real unmount confirmed')
+        ctxRef.current?.close()
+        ctxRef.current = null
+        analyserRef.current = null
+      }, 0)
     }
   // audioRef is a stable object — intentional empty deps
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  return ctxRef
 }
