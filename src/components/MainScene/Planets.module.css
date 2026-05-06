@@ -72,8 +72,8 @@
   animation: drift1 48s ease-in-out infinite;
 }
 .wrapper2 {
-  top: 40%;
-  right: 5%;
+  top: 70%;
+  left: 6%;
   animation: drift2 63s ease-in-out infinite;
 }
 .wrapper3 {
@@ -398,7 +398,7 @@
 @media (max-width: 480px) {
   .wrapper0 { left: 2%; }
   .wrapper1 { right: 2%; }
-  .wrapper2 { right: 2%; }
+  .wrapper2 { left: 2%; }
   .wrapper3 { left: 2%; }
   .wrapper4 { right: 2%; }
 }

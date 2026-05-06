@@ -31,16 +31,10 @@ export default function Planets() {
         </div>
       </div>
 
-      {/* ── Planeta 2 — Rosa magenta texturizado com aura ciano — 2ª viewport ── */}
+      {/* ── Planeta 2 — Rosa magenta texturizado — 3ª viewport esquerda ── */}
       <div className={styles.wrapper2}>
         <div className={styles.glow2} />
         <div className={styles.planet2} />
-        <img
-          src={nebulaVibrante}
-          alt=""
-          aria-hidden="true"
-          className={styles.nebula2}
-        />
       </div>
 
       {/* ── Planeta 3 — Azul gigante gasoso (maior) — 2ª viewport ── */}
