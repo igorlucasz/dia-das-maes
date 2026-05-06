@@ -181,13 +181,15 @@
   left: 50%;
   width: 0;
   height: 0;
+  /* ~156% do raio mobile (45px). Override no desktop abaixo. */
+  --orbit-r: 70px;
   animation: orbit 6s linear infinite;
   z-index: 2;
 }
 
 @keyframes orbit {
-  from { transform: rotate(0deg) translateX(70px); }
-  to   { transform: rotate(360deg) translateX(70px); }
+  from { transform: rotate(0deg)   translateX(var(--orbit-r)); }
+  to   { transform: rotate(360deg) translateX(var(--orbit-r)); }
 }
 
 .moon {
@@ -343,6 +345,8 @@
 
   .planet1          { width: 135px; height: 135px; }
   .glow1            { width: 135px; height: 135px; }
+  /* ~140% do raio desktop (67.5px × 1.4 ≈ 95px) — proporcional ao mobile */
+  .moonOrbit        { --orbit-r: 95px; }
 
   .planet2          { width: 120px; height: 120px; }
   .glow2            { width: 120px; height: 120px; }
