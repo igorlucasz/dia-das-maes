@@ -3,7 +3,9 @@
   position: relative;
   min-height: 300vh;
   background: var(--color-space);
-  overflow-x: hidden;
+  /* clip em vez de hidden: corta overflow horizontal sem criar scroll context.
+     overflow-x:hidden força overflow-y:auto (CSS spec), gerando scroll duplo. */
+  overflow-x: clip;
 }
 
 /* Full-bleed layer, esticado para cobrir as 300vh */
