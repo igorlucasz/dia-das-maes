@@ -75,27 +75,27 @@
   animation: drift0 55s ease-in-out infinite;
 }
 .wrapper1 {
-  top: 62%;
+  top: 55%;
   right: 6%;
   animation: drift1 48s ease-in-out infinite;
 }
 .wrapper2 {
-  top: 73%;
+  top: 67%;
   left: 6%;
   animation: drift2 63s ease-in-out infinite;
 }
 .wrapper3 {
-  top: 50%;
+  top: 43%;
   left: 4%;
   animation: drift3 42s ease-in-out infinite;
 }
 .wrapper4 {
-  top: 84%;
+  top: 78%;
   right: 7%;
   animation: drift4 50s ease-in-out infinite;
 }
 .wrapper5 {
-  top: 40%;
+  top: 33%;
   right: 5%;
   animation: drift5 57s ease-in-out infinite;
 }

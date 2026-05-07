@@ -5,9 +5,9 @@
 }
 
 :root {
-  --page-height: 460vh;   /* altura total da página — mudar aqui afeta tudo */
-  --timeline-gap: 160px;  /* espaçamento entre quadros da timeline — ajuste aqui */
-  --content-top: 120vh;   /* distância do topo da página onde a timeline + placeholder começam — ajuste aqui */
+  --page-height: 445vh;   /* altura total da página — mudar aqui afeta tudo */
+  --timeline-gap: 165px;  /* espaçamento entre quadros da timeline — ajuste aqui */
+  --content-top: -35vh;   /* distância do topo da página onde a timeline + placeholder começam — ajuste aqui */
 
   --color-space: #0a0015;
   --color-deep: #06000f;
