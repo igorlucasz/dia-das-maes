@@ -36,6 +36,10 @@ export default function DateGate({ onSuccess }: Props) {
   // pois não precisa ser determinístico entre renders.
   const stars = useMemo(() => generateStars(65), [])
 
+  // 'error' não bloqueia o input: a usuária precisa digitar para limpar a mensagem
+  const isDisabled = status === 'checking' || status === 'success' || status === 'exiting'
+  const isExiting = status === 'exiting'
+
   async function handleSubmit(submittedValue: string) {
     if (submittedValue.length !== 10 || status !== 'idle') return
     setStatus('checking')
@@ -91,10 +95,6 @@ export default function DateGate({ onSuccess }: Props) {
     audio.pause()
     audio.currentTime = 0
   }, [isExiting])
-
-  // 'error' não bloqueia o input: a usuária precisa digitar para limpar a mensagem
-  const isDisabled = status === 'checking' || status === 'success' || status === 'exiting'
-  const isExiting = status === 'exiting'
 
   return (
     <motion.div
