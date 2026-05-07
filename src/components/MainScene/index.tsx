@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useAudioAnalyzer } from '../../hooks/useAudioAnalyzer'
+import { fadeAudio } from '../../hooks/useAudioFade'
 import TopBar from './TopBar'
 import Nebulae from './Nebulae'
 import Constellations from './Constellations'
@@ -11,11 +12,18 @@ import ShootingStars from './ShootingStars'
 import Timeline from '../Timeline'
 import Bottle from '../Bottle'
 import audioSrc from '../../assets/audio/astronauta-de-marmore.mp3'
+import musicaEmocionante from '../../assets/audio/som-emocionante.mp3'
 import styles from './MainScene.module.css'
 
 export default function MainScene() {
   const audioRef = useRef<HTMLAudioElement>(null)
+  const emocionanteRef = useRef<HTMLAudioElement>(null)
   const [isPlaying, setIsPlaying] = useState(false)
+  const wasPlayingBeforeBottleRef = useRef(false)
+  const fadeIntervalsRef = useRef<{
+    astronauta?: ReturnType<typeof setInterval>
+    emocionante?: ReturnType<typeof setInterval>
+  }>({})
 
   // Conecta Web Audio API e escreve CSS vars no :root (sem re-renders).
   // Retorna ctxRef para que possamos chamar ctx.resume() em gestos do usuário.
@@ -60,6 +68,58 @@ export default function MainScene() {
     }
   }
 
+  function handleBottleOpen() {
+    const astronauta = audioRef.current
+    const emocionante = emocionanteRef.current
+    if (!astronauta || !emocionante) return
+
+    wasPlayingBeforeBottleRef.current = isPlaying
+
+    clearInterval(fadeIntervalsRef.current.astronauta)
+    clearInterval(fadeIntervalsRef.current.emocionante)
+    fadeIntervalsRef.current = {}
+
+    if (isPlaying) {
+      fadeIntervalsRef.current.astronauta = fadeAudio(astronauta, 0.05, 3500, () => {
+        astronauta.pause()
+        delete fadeIntervalsRef.current.astronauta
+      })
+    }
+
+    emocionante.currentTime = 0
+    emocionante.volume = 0
+    emocionante.play().catch(() => {})
+    fadeIntervalsRef.current.emocionante = fadeAudio(emocionante, 0.8, 400, () => {
+      delete fadeIntervalsRef.current.emocionante
+    })
+  }
+
+  function handleBottleClose() {
+    const astronauta = audioRef.current
+    const emocionante = emocionanteRef.current
+    if (!astronauta || !emocionante) return
+
+    clearInterval(fadeIntervalsRef.current.astronauta)
+    clearInterval(fadeIntervalsRef.current.emocionante)
+    fadeIntervalsRef.current = {}
+
+    fadeIntervalsRef.current.emocionante = fadeAudio(emocionante, 0, 1500, () => {
+      emocionante.pause()
+      delete fadeIntervalsRef.current.emocionante
+    })
+
+    if (wasPlayingBeforeBottleRef.current) {
+      if (astronauta.paused) {
+        astronauta.volume = 0.05
+        audioCtxRef.current?.resume().catch(() => {})
+        astronauta.play().catch(() => {})
+      }
+      fadeIntervalsRef.current.astronauta = fadeAudio(astronauta, 0.7, 3000, () => {
+        delete fadeIntervalsRef.current.astronauta
+      })
+    }
+  }
+
   return (
     <>
       {/* ShootingStars fora do motion.div — position:fixed precisa de viewport como containing block */}
@@ -72,6 +132,7 @@ export default function MainScene() {
         transition={{ duration: 1, ease: 'easeOut' }}
       >
         <audio ref={audioRef} src={audioSrc} loop preload="auto" />
+        <audio ref={emocionanteRef} src={musicaEmocionante} preload="auto" />
 
         {/* TopBar position:absolute — fica no topo da página e some ao rolar */}
         <TopBar isPlaying={isPlaying} onToggle={togglePlay} audioRef={audioRef} />
@@ -102,7 +163,7 @@ export default function MainScene() {
           <Timeline />
 
           {/* Garrafa animada — após o último quadro */}
-          <Bottle />
+          <Bottle onOpen={handleBottleOpen} onClose={handleBottleClose} />
         </div>
       </motion.div>
     </>
