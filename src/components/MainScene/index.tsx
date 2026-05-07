@@ -60,43 +60,50 @@ export default function MainScene() {
   }
 
   return (
-    <motion.div
-      className={styles.wrapper}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1, ease: 'easeOut' }}
-    >
-      <audio ref={audioRef} src={audioSrc} loop preload="auto" />
-
-      {/* TopBar fica fixo no topo durante o scroll */}
+    <>
+      {/*
+        TopBar e ShootingStars ficam FORA do motion.div.
+        Motivo: motion.div com opacity:0→1 cria um stacking context
+        (CSS spec) que quebra position:fixed — o elemento passa a ser
+        posicionado relativo ao motion.div, não ao viewport.
+        Framer Motion também mantém will-change:opacity após a animação,
+        perpetuando o problema. A solução é isolar elementos fixed.
+      */}
       <TopBar isPlaying={isPlaying} onToggle={togglePlay} audioRef={audioRef} />
-
-      {/* Camada de fundo: cobre toda a altura de --page-height (ver global.css) */}
-      <div className={styles.background} aria-hidden="true">
-        <Nebulae />         {/* atrás de tudo — z-index 0 */}
-        <Constellations />  {/* z-index 1 */}
-        <CosmicDust />      {/* z-index 2, só desktop */}
-        <StarField />       {/* z-index 3 */}
-        <Planets />         {/* z-index 4 */}
-      </div>
-
-      {/* Estrelas cadentes: position:fixed, independe do scroll */}
       <ShootingStars />
 
-      {/* Boas-vindas — primeira viewport */}
-      <div className={styles.content}>
-        <p className={styles.label}>Bem-Vinda, Mãe🌟</p>
-        <p className={styles.sub}>Uma viagem pelo nosso tempo juntos ✨</p>
-      </div>
+      <motion.div
+        className={styles.wrapper}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, ease: 'easeOut' }}
+      >
+        <audio ref={audioRef} src={audioSrc} loop preload="auto" />
 
-      {/* Placeholder do conteúdo principal — entre boas-vindas e timeline */}
-      <div className={styles.contentPlaceholder}>
-        <span className={styles.placeholderIcon}>🚀</span>
-        <span className={styles.placeholderText}>elemento principal em breve</span>
-      </div>
+        {/* Camada de fundo: cobre toda a altura de --page-height (ver global.css) */}
+        <div className={styles.background} aria-hidden="true">
+          <Nebulae />         {/* atrás de tudo — z-index 0 */}
+          <Constellations />  {/* z-index 1 */}
+          <CosmicDust />      {/* z-index 2, só desktop */}
+          <StarField />       {/* z-index 3 */}
+          <Planets />         {/* z-index 4 */}
+        </div>
 
-      {/* Timeline vertical — começa após o placeholder */}
-      <Timeline />
-    </motion.div>
+        {/* Boas-vindas — primeira viewport */}
+        <div className={styles.content}>
+          <p className={styles.label}>Bem-Vinda, Mãe🌟</p>
+          <p className={styles.sub}>Uma viagem pelo nosso tempo juntos ✨</p>
+        </div>
+
+        {/* Placeholder do conteúdo principal — entre boas-vindas e timeline */}
+        <div className={styles.contentPlaceholder}>
+          <span className={styles.placeholderIcon}>🚀</span>
+          <span className={styles.placeholderText}>elemento principal em breve</span>
+        </div>
+
+        {/* Timeline vertical — começa após o placeholder */}
+        <Timeline />
+      </motion.div>
+    </>
   )
 }
