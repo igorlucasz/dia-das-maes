@@ -1,0 +1,109 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+/* A carta — fundo creme/papel antigo */
+.letter {
+  position: relative;
+  width: min(85vw, 420px);
+  max-height: 90vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: rgba(255, 248, 220, 0.95);
+  border: 2px solid rgba(180, 140, 80, 0.4);
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  padding: 32px;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: rgba(61, 43, 31, 0.6);
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: color 0.2s;
+}
+
+.closeBtn:hover { color: #3d2b1f; }
+
+/* Cabeçalho com ícone + linha separadora */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.headerIcon { font-size: 1.8rem; margin-bottom: 10px; }
+
+.headerLine {
+  width: 100%;
+  height: 1px;
+  background: rgba(180, 140, 80, 0.4);
+}
+
+/* Texto com typewriter */
+.text {
+  font-family: Georgia, 'Playfair Display', serif;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #3d2b1f;
+  min-height: 5em;
+}
+
+/* Cursor piscante */
+.cursor {
+  display: inline-block;
+  color: #3d2b1f;
+  animation: blink 0.8s ease-in-out infinite;
+  margin-left: 1px;
+}
+
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+/* Rodapé: assinatura */
+.footer { margin-top: 20px; }
+
+.footerLine {
+  height: 1px;
+  background: rgba(180, 140, 80, 0.4);
+  margin-bottom: 16px;
+}
+
+.signature {
+  font-family: Georgia, 'Playfair Display', serif;
+  font-size: 1rem;
+  color: #3d2b1f;
+  font-style: italic;
+  text-align: right;
+}
+
+@media (max-width: 480px) {
+  .letter { padding: 24px; }
+}
+
+@media (min-width: 768px) {
+  .text { font-size: 1.05rem; }
+}

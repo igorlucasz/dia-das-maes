@@ -9,6 +9,7 @@ import StarField from './StarField'
 import Planets from './Planets'
 import ShootingStars from './ShootingStars'
 import Timeline from '../Timeline'
+import Bottle from '../Bottle'
 import audioSrc from '../../assets/audio/astronauta-de-marmore.mp3'
 import styles from './MainScene.module.css'
 
@@ -99,6 +100,9 @@ export default function MainScene() {
 
           {/* Timeline vertical — começa após o placeholder */}
           <Timeline />
+
+          {/* Garrafa animada — após o último quadro */}
+          <Bottle />
         </div>
       </motion.div>
     </>

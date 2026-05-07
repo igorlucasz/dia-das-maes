@@ -1,0 +1,52 @@
+/* container — posição vertical: margin-top (var(--timeline-gap))
+   posição horizontal: justify-content: center
+   Ajuste manual: margin-top e padding-bottom aqui */
+.container {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--timeline-gap);
+  padding-bottom: 80px;
+}
+
+.bottleBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  /* remove tap highlight on mobile */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Elemento externo: animação de flutuação vertical */
+.floatWrapper {
+  animation: float 4s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Imagem: animação de balanço rotacional */
+.bottle {
+  display: block;
+  width: 140px;
+  height: auto;
+  animation: tilt 6s ease-in-out infinite;
+  will-change: transform;
+  transition: filter 0.3s ease;
+}
+
+.bottleBtn:hover .bottle {
+  filter: brightness(1.15);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-12px); }
+}
+
+@keyframes tilt {
+  0%, 100% { transform: rotate(-4deg); }
+  50%       { transform: rotate(4deg); }
+}
+
+@media (min-width: 768px) {
+  .bottle { width: 200px; }
+}
