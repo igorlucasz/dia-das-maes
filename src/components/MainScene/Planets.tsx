@@ -1,8 +1,44 @@
+import { useState } from 'react'
 import styles from './Planets.module.css'
 import planetaAmarelo from '../../assets/images/planeta-amarelo.svg'
 import planetaAzul from '../../assets/images/planeta-azul.svg'
 import planetaVerde from '../../assets/images/planeta-verde.svg'
 import nebulaVibrante from '../../assets/images/nebula-vibrante.svg'
+
+// Placeholder colorido enquanto o SVG carrega + crossfade suave no onLoad.
+function PlanetSvg({ src, alt, placeholderColor }: {
+  src: string
+  alt: string
+  placeholderColor: string
+}) {
+  const [loaded, setLoaded] = useState(false)
+  return (
+    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          borderRadius: '50%',
+          background: placeholderColor,
+          opacity: loaded ? 0 : 1,
+          transition: 'opacity 0.3s ease',
+          pointerEvents: 'none',
+        }}
+      />
+      <img
+        src={src}
+        alt={alt}
+        className={styles.planetImg}
+        loading="eager"
+        fetchPriority="high"
+        decoding="async"
+        onLoad={() => setLoaded(true)}
+        style={{ opacity: loaded ? 1 : 0, transition: 'opacity 0.3s ease' }}
+      />
+    </div>
+  )
+}
 
 // Glow pulsing: CSS vars --audio-bass-{0-3} atualizados pelo useAudioAnalyzer
 // Drift: keyframe CSS puro (transform:translate) — GPU-composited, sem JS
@@ -22,12 +58,7 @@ export default function Planets() {
       <div className={styles.wrapper1}>
         <div className={styles.glow1} />
         <div className={styles.planet1}>
-          <img
-            src={planetaVerde}
-            alt="Planeta verde esmeralda"
-            className={styles.planetImg}
-            loading="eager"
-          />
+          <PlanetSvg src={planetaVerde} alt="Planeta verde esmeralda" placeholderColor="#10B981" />
         </div>
       </div>
 
@@ -53,12 +84,7 @@ export default function Planets() {
       <div className={styles.wrapper3}>
         <div className={styles.glow3} />
         <div className={styles.planet3}>
-          <img
-            src={planetaAzul}
-            alt="Planeta azul gigante gasoso"
-            className={styles.planetImg}
-            loading="eager"
-          />
+          <PlanetSvg src={planetaAzul} alt="Planeta azul gigante gasoso" placeholderColor="#06B6D4" />
         </div>
         <div className={styles.moonOrbit1}><div className={styles.moon1} /></div>
         <div className={styles.moonOrbit2}><div className={styles.moon2} /></div>
@@ -69,12 +95,7 @@ export default function Planets() {
       <div className={styles.wrapper4}>
         <div className={styles.glow4} />
         <div className={styles.planet4}>
-          <img
-            src={planetaAmarelo}
-            alt="Planeta dourado cristalino"
-            className={styles.planetImg}
-            loading="eager"
-          />
+          <PlanetSvg src={planetaAmarelo} alt="Planeta dourado cristalino" placeholderColor="#F59E0B" />
         </div>
         {/* Partículas de energia/fogo ao redor — posicionadas na borda do planeta */}
         <div className={`${styles.particle} ${styles.fp1}`} />
