@@ -37,6 +37,18 @@ export default function Planets() {
         <div className={styles.planet2} />
       </div>
 
+      {/* ── Planeta 5 — Roxo vibrante #A020F0 + nebula — lugar antigo do rosa ── */}
+      <div className={styles.wrapper5}>
+        <div className={styles.glow5} />
+        <div className={styles.planet5} />
+        <img
+          src={nebulaVibrante}
+          alt=""
+          aria-hidden="true"
+          className={styles.nebula2}
+        />
+      </div>
+
       {/* ── Planeta 3 — Azul gigante gasoso (maior) — 2ª viewport ── */}
       <div className={styles.wrapper3}>
         <div className={styles.glow3} />

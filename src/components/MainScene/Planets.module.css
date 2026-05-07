@@ -48,6 +48,13 @@
   80%  { transform: translate(-6px, 14px); }
   100% { transform: translate(0px, 0px); }
 }
+@keyframes drift5 {
+  0%   { transform: translate(0px, 0px); }
+  28%  { transform: translate(16px, -12px); }
+  52%  { transform: translate(-10px, 16px); }
+  78%  { transform: translate(12px, -6px); }
+  100% { transform: translate(0px, 0px); }
+}
 
 /* ════════════════════════════════════════════
    Wrappers — posição na página (% de 300vh)
@@ -57,7 +64,8 @@
 .wrapper1,
 .wrapper2,
 .wrapper3,
-.wrapper4 {
+.wrapper4,
+.wrapper5 {
   position: absolute;
 }
 
@@ -85,6 +93,11 @@
   top: 80%;
   right: 7%;
   animation: drift4 50s ease-in-out infinite;
+}
+.wrapper5 {
+  top: 40%;
+  right: 5%;
+  animation: drift5 57s ease-in-out infinite;
 }
 
 /* ════════════════════════════════════════════
@@ -204,7 +217,7 @@
   z-index: 1;
 }
 
-/* Nebula como halo ao redor do planeta rosa — 170% do diâmetro (136px mobile).
+/* Nebula como halo ao redor do planeta roxo5 — 170% do diâmetro (88px mobile → 150px).
    Centralizada no planeta com translate(-50%,-50%), rotação lenta (75s).
    Vai dentro do mesmo wrapper → acompanha o drift automaticamente. */
 @keyframes nebulaRotate {
@@ -216,8 +229,8 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 136px;
-  height: 136px;
+  width: 150px;
+  height: 150px;
   animation: nebulaRotate 75s linear infinite;
   z-index: 2;
   pointer-events: none;
@@ -226,9 +239,38 @@
 
 @media (min-width: 900px) {
   .nebula2 {
-    width: 204px;  /* 170% de 120px */
-    height: 204px;
+    width: 224px;  /* 170% de 132px */
+    height: 224px;
   }
+}
+
+/* ════════════════════════════════════════════
+   PLANETA 5 — Roxo vibrante #A020F0 + nebula
+   Tamanho: 88px mobile / 132px desktop
+════════════════════════════════════════════ */
+.glow5 {
+  position: absolute;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: rgba(160, 32, 240, 0.50);
+  filter: blur(24px);
+  transform: scale(calc(1.1 + var(--audio-bass-1, 0.05) * 2.2));
+  opacity: calc(0.44 + var(--audio-bass-1, 0.05) * 0.56);
+  will-change: transform, opacity;
+}
+
+.planet5 {
+  position: relative;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255, 180, 255, 0.32) 0%, transparent 36%),
+    radial-gradient(circle at 68% 70%, rgba(30, 0, 70, 0.52) 0%, transparent 30%),
+    radial-gradient(circle at 35% 35%, #C239FF, #A020F0, #5B0F8E);
+  box-shadow: inset -10px -7px 22px rgba(0, 0, 0, 0.60);
+  z-index: 1;
 }
 
 /* ════════════════════════════════════════════
@@ -390,6 +432,9 @@
 
   .planet4          { width: 150px; height: 150px; }
   .glow4            { width: 150px; height: 150px; }
+
+  .planet5          { width: 132px; height: 132px; }
+  .glow5            { width: 132px; height: 132px; }
 }
 
 /* ════════════════════════════════════════════
@@ -401,4 +446,5 @@
   .wrapper2 { left: 2%; }
   .wrapper3 { left: 2%; }
   .wrapper4 { right: 2%; }
+  .wrapper5 { right: 2%; }
 }
