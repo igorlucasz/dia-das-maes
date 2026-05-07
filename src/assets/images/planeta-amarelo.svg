@@ -1,173 +1,333 @@
-<svg width="500" height="500" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
-<defs>
-  <radialGradient id="volGrad" cx="36%" cy="30%" r="70%">
-    <stop offset="0%"   stop-color="#fff4b0"/>
-    <stop offset="15%"  stop-color="#ffca50"/>
-    <stop offset="38%"  stop-color="#e07010"/>
-    <stop offset="68%"  stop-color="#922000"/>
-    <stop offset="100%" stop-color="#320800"/>
-  </radialGradient>
-  <radialGradient id="limb" cx="50%" cy="50%" r="50%">
-    <stop offset="52%"  stop-color="#000" stop-opacity="0"/>
-    <stop offset="100%" stop-color="#000" stop-opacity="0.78"/>
-  </radialGradient>
-  <radialGradient id="spec" cx="33%" cy="27%" r="28%">
-    <stop offset="0%"   stop-color="#fff8d8" stop-opacity="0.82"/>
-    <stop offset="50%"  stop-color="#ffd070" stop-opacity="0.2"/>
-    <stop offset="100%" stop-color="#ffaa30" stop-opacity="0"/>
-  </radialGradient>
-  <clipPath id="sph"><circle cx="250" cy="250" r="218"/></clipPath>
-  <style>
-    .la { animation: rot  90s linear infinite;         transform-origin: 250px 250px; }
-    .lb { animation: rot  60s linear infinite reverse; transform-origin: 250px 250px; }
-    .lc { animation: rot  75s linear infinite;         transform-origin: 250px 250px; }
-    .ld { animation: rot 120s linear infinite reverse; transform-origin: 250px 250px; }
-    @keyframes rot {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
+<svg width="100%" viewBox="0 0 500 500" role="img" xmlns="http://www.w3.org/2000/svg" overflow="hidden">
+  <title>Kawaii planet with fire aura</title>
+
+  <defs>
+    <radialGradient id="planetBody" cx="36%" cy="30%" r="70%">
+      <stop offset="0%"   stop-color="#fffbe0"/>
+      <stop offset="18%"  stop-color="#ffe97a"/>
+      <stop offset="42%"  stop-color="#ffc733"/>
+      <stop offset="75%"  stop-color="#ffab00"/>
+      <stop offset="100%" stop-color="#ff8c00"/>
+    </radialGradient>
+    <radialGradient id="spec" cx="33%" cy="27%" r="30%">
+      <stop offset="0%"   stop-color="#ffffff" stop-opacity="0.85"/>
+      <stop offset="55%"  stop-color="#fff5c0" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#ffe083" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="haloGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="58%"  stop-color="#ffe97a" stop-opacity="0"/>
+      <stop offset="76%"  stop-color="#ffd54f" stop-opacity="0.28"/>
+      <stop offset="88%"  stop-color="#ffe082" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#fff8dc" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="bubbleA" cx="35%" cy="30%" r="60%">
+      <stop offset="0%"   stop-color="#fff0c0"/>
+      <stop offset="55%"  stop-color="#ffb347"/>
+      <stop offset="100%" stop-color="#ff6f00"/>
+    </radialGradient>
+    <radialGradient id="bubbleB" cx="35%" cy="30%" r="60%">
+      <stop offset="0%"   stop-color="#fffde7"/>
+      <stop offset="55%"  stop-color="#ffd740"/>
+      <stop offset="100%" stop-color="#ffa000"/>
+    </radialGradient>
+    <radialGradient id="bubbleC" cx="35%" cy="30%" r="60%">
+      <stop offset="0%"   stop-color="#fff3e0"/>
+      <stop offset="55%"  stop-color="#ffcc80"/>
+      <stop offset="100%" stop-color="#ff8f00"/>
+    </radialGradient>
+
+    <clipPath id="sph"><circle cx="250" cy="250" r="218"/></clipPath>
+
+    <!-- Clip aura particles to a ring just outside the planet -->
+    <clipPath id="auraClip">
+      <circle cx="250" cy="250" r="248"/>
+    </clipPath>
+
+    <filter id="fGlow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="2.5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="fSoft" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <style>
+      .planet-group { transform-origin: 250px 250px; }
+      .la { animation: rot    90s  linear infinite; transform-origin: 250px 250px; }
+      .lb { animation: rotRev 60s  linear infinite; transform-origin: 250px 250px; }
+      .lc { animation: rot    75s  linear infinite; transform-origin: 250px 250px; }
+      .ld { animation: rotRev 120s linear infinite; transform-origin: 250px 250px; }
+      @keyframes rot    { from{transform:rotate(0deg)}   to{transform:rotate(360deg)}  }
+      @keyframes rotRev { from{transform:rotate(0deg)}   to{transform:rotate(-360deg)} }
+      @keyframes haloBreath { 0%,100%{opacity:0.8} 50%{opacity:1} }
+      .halo { animation: haloBreath 3.5s ease-in-out infinite; }
+      @keyframes pulseA    { 0%,100%{r:44px} 50%{r:52px} }
+      @keyframes pulseB    { 0%,100%{r:29px} 50%{r:35px} }
+      @keyframes pulseC    { 0%,100%{r:18px} 50%{r:23px} }
+      @keyframes pulseTiny { 0%,100%{r:11px} 50%{r:14px} }
+      .bA { animation: pulseA    3.0s ease-in-out infinite; }
+      .bB { animation: pulseB    2.5s ease-in-out infinite 0.5s; }
+      .bC { animation: pulseC    2.0s ease-in-out infinite 1.0s; }
+      .bT { animation: pulseTiny 1.8s ease-in-out infinite 0.3s; }
+    </style>
+  </defs>
+
+  <!-- Aura BEHIND planet -->
+  <g id="aura-back" clip-path="url(#auraClip)"></g>
+
+  <!-- ══ PLANET (unchanged) ══ -->
+  <g class="planet-group">
+    <circle class="halo" cx="250" cy="250" r="265" fill="url(#haloGrad)"/>
+    <circle class="halo" cx="250" cy="250" r="240" fill="none" stroke="#ffe97a" stroke-width="7" stroke-opacity="0.22"/>
+    <circle class="halo" cx="250" cy="250" r="228" fill="none" stroke="#fff5b0" stroke-width="3" stroke-opacity="0.16"/>
+
+    <circle cx="250" cy="250" r="218" fill="url(#planetBody)"/>
+
+    <g clip-path="url(#sph)">
+      <g class="la">
+        <polygon fill="none" stroke="#ffcc44" stroke-width="1.6" opacity="0.55" points="250,32 270,82 295,48 325,94 362,68 370,120 412,108 398,158 438,164 408,206 444,228 404,254 438,276 406,300 436,330 394,342 414,378 372,376 362,412 326,398 296,430 270,408 250,448 230,408 204,430 174,398 138,412 128,376 86,378 106,342 64,330 94,300 62,276 100,254 62,228 96,206 62,164 102,158 88,108 130,120 138,68 175,94 205,48 230,82"/>
+        <polygon fill="#ffe57a" opacity="0.25" points="250,32  270,82  250,78"/>
+        <polygon fill="#ffcc44" opacity="0.20" points="270,82  295,48  282,86"/>
+        <polygon fill="#ffe57a" opacity="0.25" points="295,48  325,94  310,106"/>
+        <polygon fill="#ffcc44" opacity="0.20" points="325,94  362,68  328,136"/>
+        <polygon fill="#ffe57a" opacity="0.25" points="362,68  370,120 332,170"/>
+        <polygon fill="#ffcc44" opacity="0.20" points="370,120 412,108 318,202"/>
+        <polygon fill="#ffe57a" opacity="0.25" points="412,108 398,158 292,220"/>
+        <polygon fill="#ffcc44" opacity="0.20" points="398,158 438,164 260,226"/>
+        <polygon fill="#ffe57a" opacity="0.25" points="438,164 408,206 228,220"/>
+        <polygon fill="#ffcc44" opacity="0.20" points="408,206 444,228 202,200"/>
+        <polygon fill="#ffe57a" opacity="0.25" points="444,228 404,254 190,168"/>
+        <polygon fill="#ffcc44" opacity="0.20" points="404,254 438,276 196,136"/>
+        <polygon fill="#ffe57a" opacity="0.25" points="438,276 406,300 216,108"/>
+        <polygon fill="#ffcc44" opacity="0.20" points="406,300 436,330 242,90"/>
+        <polygon fill="#ffe57a" opacity="0.25" points="436,330 394,342 250,78"/>
+        <polygon fill="#ffcc44" opacity="0.20" points="394,342 414,378 270,82"/>
+        <polygon fill="#ffe57a" opacity="0.25" points="414,378 372,376 282,86"/>
+        <polygon fill="#ffcc44" opacity="0.20" points="372,376 362,412 310,106"/>
+        <polygon fill="#ffe57a" opacity="0.25" points="362,412 326,398 328,136"/>
+        <polygon fill="#ffcc44" opacity="0.20" points="326,398 296,430 332,170"/>
+        <polygon fill="#ffe57a" opacity="0.25" points="296,430 270,408 318,202"/>
+        <polygon fill="#ffcc44" opacity="0.20" points="270,408 250,448 292,220"/>
+        <polygon fill="#ffe57a" opacity="0.25" points="250,448 230,408 260,226"/>
+        <polygon fill="#ffcc44" opacity="0.20" points="230,408 204,430 228,220"/>
+        <polygon fill="#ffe57a" opacity="0.25" points="204,430 174,398 202,200"/>
+        <polygon fill="#ffcc44" opacity="0.20" points="174,398 138,412 190,168"/>
+        <polygon fill="#ffe57a" opacity="0.25" points="138,412 128,376 196,136"/>
+        <polygon fill="#ffcc44" opacity="0.20" points="128,376  86,378 216,108"/>
+        <polygon fill="#ffe57a" opacity="0.25" points=" 86,378 106,342 242,90"/>
+        <polygon fill="#ffcc44" opacity="0.20" points="106,342  64,330 250,78"/>
+        <polygon fill="#ffe57a" opacity="0.25" points=" 64,330  94,300 270,82"/>
+        <polygon fill="#ffcc44" opacity="0.20" points=" 94,300  62,276 282,86"/>
+        <polygon fill="#ffe57a" opacity="0.25" points=" 62,276 100,254 310,106"/>
+        <polygon fill="#ffcc44" opacity="0.20" points="100,254  62,228 328,136"/>
+        <polygon fill="#ffe57a" opacity="0.25" points=" 62,228  96,206 332,170"/>
+        <polygon fill="#ffcc44" opacity="0.20" points=" 96,206  62,164 318,202"/>
+        <polygon fill="#ffe57a" opacity="0.25" points=" 62,164 102,158 292,220"/>
+        <polygon fill="#ffcc44" opacity="0.20" points="102,158  88,108 260,226"/>
+        <polygon fill="#ffe57a" opacity="0.25" points=" 88,108 130,120 228,220"/>
+        <polygon fill="#ffcc44" opacity="0.20" points="130,120 138,68  202,200"/>
+        <polygon fill="#ffe57a" opacity="0.25" points="138,68  175,94  190,168"/>
+        <polygon fill="#ffcc44" opacity="0.20" points="175,94  205,48  196,136"/>
+        <polygon fill="#ffe57a" opacity="0.25" points="205,48  230,82  216,108"/>
+        <polygon fill="#ffcc44" opacity="0.20" points="230,82  250,32  242,90"/>
+      </g>
+      <g class="lb">
+        <polygon fill="none" stroke="#ffb3c6" stroke-width="1.3" opacity="0.5" points="250,85 306,90 356,109 392,144 407,191 400,240 380,283 347,315 305,332 258,332 213,318 175,291 152,250 155,205 172,163 204,132 248,114"/>
+      </g>
+      <g class="lc">
+        <polygon fill="none" stroke="#ffe082" stroke-width="1.2" opacity="0.55" points="250,135 294,141 331,161 354,195 360,235 347,273 320,300 283,312 243,309 206,295 180,267 168,231 172,193 191,160 222,139 250,133"/>
+        <polygon fill="none" stroke="#fffde7" stroke-width="1"   opacity="0.45" points="250,180 278,184 302,198 315,220 316,246 306,269 286,283 260,288 234,285 212,271 200,249 200,223 211,199 232,183 250,179"/>
+        <polygon fill="#a5f3c4" opacity="0.30" points="250,148 273,180 306,158 308,194 342,186 330,220 364,228 340,254 358,278 328,282 330,314 304,306 288,334 266,316 250,340 234,316 212,334 196,306 170,314 172,282 142,278 160,254 136,228 170,220 158,186 192,194 194,158 227,180"/>
+        <polygon fill="#ffe082" opacity="0.25" points="273,180 306,158 308,194"/>
+        <polygon fill="#c8f7e0" opacity="0.30" points="306,158 308,194 342,186"/>
+        <polygon fill="#ffe082" opacity="0.25" points="308,194 342,186 330,220"/>
+        <polygon fill="#c8f7e0" opacity="0.30" points="342,186 330,220 364,228"/>
+        <polygon fill="#ffe082" opacity="0.25" points="330,220 364,228 340,254"/>
+        <polygon fill="#ffd0e8" opacity="0.28" points="364,228 340,254 358,278"/>
+        <polygon fill="#ffe082" opacity="0.25" points="340,254 358,278 328,282"/>
+        <polygon fill="#c8f7e0" opacity="0.30" points="358,278 328,282 330,314"/>
+        <polygon fill="#ffe082" opacity="0.25" points="328,282 330,314 304,306"/>
+        <polygon fill="#ffd0e8" opacity="0.28" points="330,314 304,306 288,334"/>
+        <polygon fill="#ffe082" opacity="0.25" points="304,306 288,334 266,316"/>
+        <polygon fill="#c8f7e0" opacity="0.30" points="288,334 266,316 250,340"/>
+        <polygon fill="#ffe082" opacity="0.25" points="266,316 250,340 234,316"/>
+        <polygon fill="#ffd0e8" opacity="0.28" points="250,340 234,316 212,334"/>
+        <polygon fill="#ffe082" opacity="0.25" points="234,316 212,334 196,306"/>
+        <polygon fill="#c8f7e0" opacity="0.30" points="212,334 196,306 170,314"/>
+        <polygon fill="#ffe082" opacity="0.25" points="196,306 170,314 172,282"/>
+        <polygon fill="#ffd0e8" opacity="0.28" points="170,314 172,282 142,278"/>
+        <polygon fill="#ffe082" opacity="0.25" points="172,282 142,278 160,254"/>
+        <polygon fill="#c8f7e0" opacity="0.30" points="142,278 160,254 136,228"/>
+        <polygon fill="#ffe082" opacity="0.25" points="160,254 136,228 170,220"/>
+        <polygon fill="#ffd0e8" opacity="0.28" points="136,228 170,220 158,186"/>
+        <polygon fill="#ffe082" opacity="0.25" points="170,220 158,186 192,194"/>
+        <polygon fill="#c8f7e0" opacity="0.30" points="158,186 192,194 194,158"/>
+        <polygon fill="#ffe082" opacity="0.25" points="192,194 194,158 227,180"/>
+        <polygon fill="#ffd0e8" opacity="0.28" points="194,158 227,180 250,148"/>
+        <polygon fill="#ffe082" opacity="0.25" points="227,180 250,148 273,180"/>
+        <polygon fill="none" stroke="#ffe57a" stroke-width="1.4" opacity="0.7" points="250,148 273,180 306,158 308,194 342,186 330,220 364,228 340,254 358,278 328,282 330,314 304,306 288,334 266,316 250,340 234,316 212,334 196,306 170,314 172,282 142,278 160,254 136,228 170,220 158,186 192,194 194,158 227,180"/>
+      </g>
+      <g class="ld">
+        <polygon fill="none" stroke="#fff9c4" stroke-width="1.5" opacity="0.75" points="250,192 264,210 278,196 284,214 298,210 290,228 308,234 294,246 302,260 284,260 282,276 268,268 260,282 250,272 240,282 232,268 218,276 216,260 198,260 206,246 192,234 210,228 202,210 216,214 222,196 236,210"/>
+        <polygon fill="#fff59d" opacity="0.35" points="250,192 264,210 278,196 284,214 298,210 290,228 308,234 294,246 302,260 284,260 282,276 268,268 260,282 250,272 240,282 232,268 218,276 216,260 198,260 206,246 192,234 210,228 202,210 216,214 222,196 236,210"/>
+      </g>
+
+      <circle class="bA" cx="210" cy="205" r="44" fill="url(#bubbleA)" stroke="#ff8f00" stroke-width="3" stroke-opacity="0.6"/>
+      <ellipse cx="198" cy="192" rx="15" ry="10" fill="#ffffff" fill-opacity="0.6" transform="rotate(-20,198,192)"/>
+      <circle cx="222" cy="218" r="10" fill="#ffcc80" fill-opacity="0.4"/>
+      <circle cx="195" cy="196" r="4"  fill="#ffffff" fill-opacity="0.9"/>
+
+      <circle class="bB" cx="315" cy="310" r="29" fill="url(#bubbleB)" stroke="#ffa000" stroke-width="2.5" stroke-opacity="0.55"/>
+      <ellipse cx="305" cy="300" rx="10" ry="7" fill="#ffffff" fill-opacity="0.55" transform="rotate(-15,305,300)"/>
+      <circle cx="304" cy="302" r="3" fill="#ffffff" fill-opacity="0.85"/>
+
+      <circle class="bC" cx="310" cy="185" r="18" fill="url(#bubbleC)" stroke="#ffb74d" stroke-width="2" stroke-opacity="0.5"/>
+      <ellipse cx="303" cy="177" rx="6" ry="4" fill="#ffffff" fill-opacity="0.6"/>
+      <circle cx="303" cy="178" r="2.5" fill="#ffffff" fill-opacity="0.9"/>
+
+      <circle class="bT" cx="190" cy="300" r="11" fill="#ffe0b2" stroke="#ffb74d" stroke-width="1.8" stroke-opacity="0.45"/>
+      <circle cx="185" cy="295" r="2" fill="#ffffff" fill-opacity="0.8"/>
+
+      <circle cx="285" cy="230" r="7" fill="#fff59d" fill-opacity="0.7"/>
+      <circle cx="270" cy="250" r="5" fill="#ffe082" fill-opacity="0.6"/>
+      <circle cx="340" cy="220" r="6" fill="#ffe57a" fill-opacity="0.55"/>
+      <circle cx="230" cy="270" r="5" fill="#ffcc80" fill-opacity="0.5"/>
+      <circle cx="340" cy="270" r="4" fill="#fff9c4" fill-opacity="0.65"/>
+    </g>
+
+    <circle cx="250" cy="250" r="218" fill="url(#spec)"/>
+    <circle cx="250" cy="250" r="218" fill="none" stroke="#fff5c0" stroke-width="4"   stroke-opacity="0.5"/>
+    <circle cx="250" cy="250" r="218" fill="none" stroke="#ffe97a" stroke-width="1.5" stroke-opacity="0.3"/>
+  </g>
+
+  <!-- Aura FRONT of planet -->
+  <g id="aura-front" clip-path="url(#auraClip)"></g>
+
+  <script><![CDATA[
+    const NS = "http://www.w3.org/2000/svg";
+    const CX = 250, CY = 250, PR = 218;
+
+    // Max drift so particles never leave the clipping circle (r=248)
+    // A particle spawns at PR + dist (max 218+26=244) and drifts max 4px outward → stays under 248
+    const MAX_OUTER_R = 248;
+
+    const fireColors = [
+      "#ffffff","#fffde7","#fff9c4","#fff59d","#ffee58",
+      "#ffca28","#ffd740","#ffab00","#ffa726","#ff8f00",
+      "#ff7043","#ff6d00","#ff5722","#f4511e","#e64a19",
+      "#bf360c","#ff3d00"
+    ];
+
+    function rnd(a, b) { return a + Math.random() * (b - a); }
+    function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+    function anim(el, attr, values, dur, begin, extra) {
+      const a = document.createElementNS(NS, "animate");
+      a.setAttribute("attributeName", attr);
+      a.setAttribute("values",        values);
+      a.setAttribute("dur",           dur + "s");
+      a.setAttribute("repeatCount",   "indefinite");
+      a.setAttribute("begin",         begin + "s");
+      if (extra) Object.entries(extra).forEach(([k,v]) => a.setAttribute(k, v));
+      el.appendChild(a);
     }
-  </style>
-</defs>
 
-<circle cx="250" cy="250" r="218" fill="url(#volGrad)"/>
+    // Build one aura particle.
+    // spawnDist: how far from planet center the particle starts (PR..PR+26)
+    // drift: how far it travels outward (capped so it stays inside MAX_OUTER_R)
+    function makeAura(angle, layer) {
+      // Spawn right on the planet edge + small offset
+      const spawnDist = PR + rnd(1, 20);
+      // Cap drift so final position ≤ MAX_OUTER_R
+      const maxDrift  = MAX_OUTER_R - spawnDist - 2;
+      const drift     = rnd(4, Math.max(5, maxDrift));
 
-<g clip-path="url(#sph)">
+      const sx = CX + spawnDist * Math.cos(angle);
+      const sy = CY + spawnDist * Math.sin(angle);
 
-  <g class="la">
-    <polygon fill="none" stroke="#ff7010" stroke-width="1.4" opacity="0.55" points="
-      250,32  270,82  295,48  325,94
-      362,68  370,120 412,108 398,158
-      438,164 408,206 444,228 404,254
-      438,276 406,300 436,330 394,342
-      414,378 372,376 362,412 326,398
-      296,430 270,408 250,448 230,408
-      204,430 174,398 138,412 128,376
-       86,378 106,342  64,330  94,300
-       62,276 100,254  62,228  96,206
-       62,164 102,158  88,108 130,120
-      138,68  175,94  205,48  230,82"/>
-    <polygon fill="none" stroke="#e06010" stroke-width="1" opacity="0.45" points="
-      250,78  282,86  310,106 328,136
-      332,170 318,202 292,220 260,226
-      228,220 202,200 190,168 196,136
-      216,108 242,90"/>
-    <polygon fill="#cc5500" opacity="0.28" points="250,32  270,82  250,78"/>
-    <polygon fill="#ff9030" opacity="0.22" points="270,82  295,48  282,86"/>
-    <polygon fill="#cc5500" opacity="0.28" points="295,48  325,94  310,106"/>
-    <polygon fill="#ff9030" opacity="0.22" points="325,94  362,68  328,136"/>
-    <polygon fill="#cc5500" opacity="0.28" points="362,68  370,120 332,170"/>
-    <polygon fill="#ff9030" opacity="0.22" points="370,120 412,108 318,202"/>
-    <polygon fill="#cc5500" opacity="0.28" points="412,108 398,158 292,220"/>
-    <polygon fill="#ff9030" opacity="0.22" points="398,158 438,164 260,226"/>
-    <polygon fill="#cc5500" opacity="0.28" points="438,164 408,206 228,220"/>
-    <polygon fill="#ff9030" opacity="0.22" points="408,206 444,228 202,200"/>
-    <polygon fill="#cc5500" opacity="0.28" points="444,228 404,254 190,168"/>
-    <polygon fill="#ff9030" opacity="0.22" points="404,254 438,276 196,136"/>
-    <polygon fill="#cc5500" opacity="0.28" points="438,276 406,300 216,108"/>
-    <polygon fill="#ff9030" opacity="0.22" points="406,300 436,330 242,90"/>
-    <polygon fill="#cc5500" opacity="0.28" points="436,330 394,342 250,78"/>
-    <polygon fill="#ff9030" opacity="0.22" points="394,342 414,378 270,82"/>
-    <polygon fill="#cc5500" opacity="0.28" points="414,378 372,376 282,86"/>
-    <polygon fill="#ff9030" opacity="0.22" points="372,376 362,412 310,106"/>
-    <polygon fill="#cc5500" opacity="0.28" points="362,412 326,398 328,136"/>
-    <polygon fill="#ff9030" opacity="0.22" points="326,398 296,430 332,170"/>
-    <polygon fill="#cc5500" opacity="0.28" points="296,430 270,408 318,202"/>
-    <polygon fill="#ff9030" opacity="0.22" points="270,408 250,448 292,220"/>
-    <polygon fill="#cc5500" opacity="0.28" points="250,448 230,408 260,226"/>
-    <polygon fill="#ff9030" opacity="0.22" points="230,408 204,430 228,220"/>
-    <polygon fill="#cc5500" opacity="0.28" points="204,430 174,398 202,200"/>
-    <polygon fill="#ff9030" opacity="0.22" points="174,398 138,412 190,168"/>
-    <polygon fill="#cc5500" opacity="0.28" points="138,412 128,376 196,136"/>
-    <polygon fill="#ff9030" opacity="0.22" points="128,376  86,378 216,108"/>
-    <polygon fill="#cc5500" opacity="0.28" points=" 86,378 106,342 242,90"/>
-    <polygon fill="#ff9030" opacity="0.22" points="106,342  64,330 250,78"/>
-    <polygon fill="#cc5500" opacity="0.28" points=" 64,330  94,300 270,82"/>
-    <polygon fill="#ff9030" opacity="0.22" points=" 94,300  62,276 282,86"/>
-    <polygon fill="#cc5500" opacity="0.28" points=" 62,276 100,254 310,106"/>
-    <polygon fill="#ff9030" opacity="0.22" points="100,254  62,228 328,136"/>
-    <polygon fill="#cc5500" opacity="0.28" points=" 62,228  96,206 332,170"/>
-    <polygon fill="#ff9030" opacity="0.22" points=" 96,206  62,164 318,202"/>
-    <polygon fill="#cc5500" opacity="0.28" points=" 62,164 102,158 292,220"/>
-    <polygon fill="#ff9030" opacity="0.22" points="102,158  88,108 260,226"/>
-    <polygon fill="#cc5500" opacity="0.28" points=" 88,108 130,120 228,220"/>
-    <polygon fill="#ff9030" opacity="0.22" points="130,120 138,68  202,200"/>
-    <polygon fill="#cc5500" opacity="0.28" points="138,68  175,94  190,168"/>
-    <polygon fill="#ff9030" opacity="0.22" points="175,94  205,48  196,136"/>
-    <polygon fill="#cc5500" opacity="0.28" points="205,48  230,82  216,108"/>
-    <polygon fill="#ff9030" opacity="0.22" points="230,82  250,32  242,90"/>
-  </g>
+      // Drift direction: outward radially + slight tangential wobble
+      const spread = rnd(-0.35, 0.35);
+      const dAngle = angle + spread;
+      const ex = sx + drift * Math.cos(dAngle);
+      const ey = sy + drift * Math.sin(dAngle);
 
-  <g class="lb">
-    <polygon fill="none" stroke="#d06818" stroke-width="1.1" opacity="0.45" points="
-      250,85  306,90  356,109 392,144
-      407,191 400,240 380,283 347,315
-      305,332 258,332 213,318 175,291
-      152,250 155,205 172,163 204,132 248,114"/>
-  </g>
+      const baseR  = rnd(1.2, 4.5);
+      const color  = pick(fireColors);
+      const baseOp = rnd(0.35, 0.90);
+      const dur    = rnd(0.45, 1.60);
+      const begin  = rnd(0, dur); // stagger so they don't all pulse together
 
-  <g class="lc">
-    <polygon fill="none" stroke="#e07820" stroke-width="1" opacity="0.45" points="
-      250,135 294,141 331,161 354,195
-      360,235 347,273 320,300 283,312
-      243,309 206,295 180,267 168,231
-      172,193 191,160 222,139 250,133"/>
-    <polygon fill="none" stroke="#f09030" stroke-width="0.9" opacity="0.4" points="
-      250,180 278,184 302,198 315,220
-      316,246 306,269 286,283 260,288
-      234,285 212,271 200,249 200,223
-      211,199 232,183 250,179"/>
-    <polygon fill="#ffaa30" opacity="0.3"  points="250,148 273,180 306,158 308,194 342,186 330,220 364,228 340,254 358,278 328,282 330,314 304,306 288,334 266,316 250,340 234,316 212,334 196,306 170,314 172,282 142,278 160,254 136,228 170,220 158,186 192,194 194,158 227,180"/>
-    <polygon fill="#882000" opacity="0.32" points="273,180 306,158 308,194"/>
-    <polygon fill="#ffaa30" opacity="0.3"  points="306,158 308,194 342,186"/>
-    <polygon fill="#882000" opacity="0.32" points="308,194 342,186 330,220"/>
-    <polygon fill="#ffaa30" opacity="0.3"  points="342,186 330,220 364,228"/>
-    <polygon fill="#882000" opacity="0.32" points="330,220 364,228 340,254"/>
-    <polygon fill="#ffaa30" opacity="0.3"  points="364,228 340,254 358,278"/>
-    <polygon fill="#882000" opacity="0.32" points="340,254 358,278 328,282"/>
-    <polygon fill="#ffaa30" opacity="0.3"  points="358,278 328,282 330,314"/>
-    <polygon fill="#882000" opacity="0.32" points="328,282 330,314 304,306"/>
-    <polygon fill="#ffaa30" opacity="0.3"  points="330,314 304,306 288,334"/>
-    <polygon fill="#882000" opacity="0.32" points="304,306 288,334 266,316"/>
-    <polygon fill="#ffaa30" opacity="0.3"  points="288,334 266,316 250,340"/>
-    <polygon fill="#882000" opacity="0.32" points="266,316 250,340 234,316"/>
-    <polygon fill="#ffaa30" opacity="0.3"  points="250,340 234,316 212,334"/>
-    <polygon fill="#882000" opacity="0.32" points="234,316 212,334 196,306"/>
-    <polygon fill="#ffaa30" opacity="0.3"  points="212,334 196,306 170,314"/>
-    <polygon fill="#882000" opacity="0.32" points="196,306 170,314 172,282"/>
-    <polygon fill="#ffaa30" opacity="0.3"  points="170,314 172,282 142,278"/>
-    <polygon fill="#882000" opacity="0.32" points="172,282 142,278 160,254"/>
-    <polygon fill="#ffaa30" opacity="0.3"  points="142,278 160,254 136,228"/>
-    <polygon fill="#882000" opacity="0.32" points="160,254 136,228 170,220"/>
-    <polygon fill="#ffaa30" opacity="0.3"  points="136,228 170,220 158,186"/>
-    <polygon fill="#882000" opacity="0.32" points="170,220 158,186 192,194"/>
-    <polygon fill="#ffaa30" opacity="0.3"  points="158,186 192,194 194,158"/>
-    <polygon fill="#882000" opacity="0.32" points="192,194 194,158 227,180"/>
-    <polygon fill="#ffaa30" opacity="0.3"  points="194,158 227,180 250,148"/>
-    <polygon fill="#882000" opacity="0.32" points="227,180 250,148 273,180"/>
-    <polygon fill="none" stroke="#f09028" stroke-width="1.2" opacity="0.65" points="
-      250,148 273,180 306,158 308,194 342,186 330,220 364,228 340,254 358,278 328,282 330,314 304,306 288,334 266,316 250,340 234,316 212,334 196,306 170,314 172,282 142,278 160,254 136,228 170,220 158,186 192,194 194,158 227,180"/>
-  </g>
+      const g = document.createElementNS(NS, "g");
+      const c = document.createElementNS(NS, "circle");
+      c.setAttribute("cx",      sx.toFixed(2));
+      c.setAttribute("cy",      sy.toFixed(2));
+      c.setAttribute("r",       baseR.toFixed(2));
+      c.setAttribute("fill",    color);
+      c.setAttribute("opacity", "0");
+      c.setAttribute("filter",  "url(#fGlow)");
 
-  <g class="ld">
-    <polygon fill="none" stroke="#ffc040" stroke-width="1.3" opacity="0.7" points="
-      250,192 264,210 278,196 284,214
-      298,210 290,228 308,234 294,246
-      302,260 284,260 282,276 268,268
-      260,282 250,272 240,282 232,268
-      218,276 216,260 198,260 206,246
-      192,234 210,228 202,210 216,214
-      222,196 236,210"/>
-    <polygon fill="#ffcc50" opacity="0.35" points="
-      250,192 264,210 278,196 284,214 298,210 290,228 308,234
-      294,246 302,260 284,260 282,276 268,268 260,282 250,272
-      240,282 232,268 218,276 216,260 198,260 206,246 192,234
-      210,228 202,210 216,214 222,196 236,210"/>
-  </g>
+      const spline = { calcMode: "spline", keySplines: "0.25 0 0.75 1" };
 
-</g>
+      anim(c, "cx",      `${sx.toFixed(2)};${ex.toFixed(2)};${sx.toFixed(2)}`, dur, begin, spline);
+      anim(c, "cy",      `${sy.toFixed(2)};${ey.toFixed(2)};${sy.toFixed(2)}`, dur, begin, spline);
+      anim(c, "r",       `${baseR.toFixed(2)};${(baseR*0.12).toFixed(2)};${baseR.toFixed(2)}`, dur, begin, spline);
+      anim(c, "opacity", `0;${baseOp.toFixed(2)};0`, dur, begin, spline);
 
-<circle cx="250" cy="250" r="218" fill="url(#limb)"/>
-<circle cx="250" cy="250" r="218" fill="url(#spec)"/>
-<circle cx="250" cy="250" r="218" fill="none" stroke="#ff8822" stroke-width="3"  opacity="0.28"/>
-<circle cx="250" cy="250" r="218" fill="none" stroke="#ffdd88" stroke-width="1"  opacity="0.18"/>
+      g.appendChild(c);
+      return g;
+    }
+
+    // Glow blob: larger, very soft, sits right on edge, just pulses opacity
+    function makeGlowBlob(angle) {
+      const dist  = PR + rnd(0, 14);
+      const x     = CX + dist * Math.cos(angle);
+      const y     = CY + dist * Math.sin(angle);
+      const baseR = rnd(6, 18);
+      const color = pick(["#ff4400","#ff6600","#ff8800","#ffaa00","#ff3300","#ffcc00"]);
+      const baseOp = rnd(0.06, 0.20);
+      const dur   = rnd(0.3, 1.1);
+      const begin = rnd(0, dur);
+
+      const c = document.createElementNS(NS, "circle");
+      c.setAttribute("cx",      x.toFixed(2));
+      c.setAttribute("cy",      y.toFixed(2));
+      c.setAttribute("r",       baseR.toFixed(2));
+      c.setAttribute("fill",    color);
+      c.setAttribute("opacity", baseOp.toFixed(3));
+      c.setAttribute("filter",  "url(#fSoft)");
+      anim(c, "opacity",
+        `${baseOp.toFixed(3)};${(baseOp*0.15).toFixed(3)};${baseOp.toFixed(3)}`,
+        dur, begin, null);
+      return c;
+    }
+
+    const backEl  = document.getElementById("aura-back");
+    const frontEl = document.getElementById("aura-front");
+
+    const PARTICLE_COUNT = 600;
+    const BLOB_COUNT     = 160;
+
+    // Particles spread evenly around the full circle
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      // Jitter angle so they're not perfectly uniform
+      const angle = (i / PARTICLE_COUNT) * Math.PI * 2 + rnd(-0.15, 0.15);
+
+      // Back half: angle where sin < 0 (visually upper arc when no tilt = behind)
+      // Front half: sin >= 0
+      // Since aura is always "in front of" or "on the rim" conceptually,
+      // we split: back layer gets upper hemisphere (y < CY side), front gets lower
+      const isUpper = (CY + PR * Math.sin(angle)) < CY; // sin(angle) < 0
+
+      const p = makeAura(angle, isUpper ? "back" : "front");
+      if (isUpper) backEl.appendChild(p);
+      else         frontEl.appendChild(p);
+    }
+
+    // Glow blobs — all go to front layer (they're on the surface rim)
+    for (let i = 0; i < BLOB_COUNT; i++) {
+      const angle = rnd(0, Math.PI * 2);
+      frontEl.appendChild(makeGlowBlob(angle));
+    }
+  ]]></script>
+
 </svg>
