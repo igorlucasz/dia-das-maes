@@ -8,6 +8,7 @@ import CosmicDust from './CosmicDust'
 import StarField from './StarField'
 import Planets from './Planets'
 import ShootingStars from './ShootingStars'
+import Timeline from '../Timeline'
 import audioSrc from '../../assets/audio/astronauta-de-marmore.mp3'
 import styles from './MainScene.module.css'
 
@@ -87,6 +88,9 @@ export default function MainScene() {
         <p className={styles.label}>Bem-vinda 🌟</p>
         <p className={styles.sub}>A cena principal vem na próxima etapa…</p>
       </div>
+
+      {/* Timeline vertical — começa após a primeira viewport */}
+      <Timeline />
     </motion.div>
   )
 }

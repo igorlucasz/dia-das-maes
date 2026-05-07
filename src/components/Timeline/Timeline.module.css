@@ -1,0 +1,30 @@
+.timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 60px;
+  padding: 80px 8px 120px;
+}
+
+/* Linha vertical central — gradiente some nas pontas */
+.line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(255, 255, 255, 0.25) 8%,
+    rgba(255, 255, 255, 0.25) 92%,
+    transparent
+  );
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .timeline { gap: 80px; padding: 100px 0 140px; }
+}
