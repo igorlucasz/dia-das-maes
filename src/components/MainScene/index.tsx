@@ -61,15 +61,7 @@ export default function MainScene() {
 
   return (
     <>
-      {/*
-        TopBar e ShootingStars ficam FORA do motion.div.
-        Motivo: motion.div com opacity:0→1 cria um stacking context
-        (CSS spec) que quebra position:fixed — o elemento passa a ser
-        posicionado relativo ao motion.div, não ao viewport.
-        Framer Motion também mantém will-change:opacity após a animação,
-        perpetuando o problema. A solução é isolar elementos fixed.
-      */}
-      <TopBar isPlaying={isPlaying} onToggle={togglePlay} audioRef={audioRef} />
+      {/* ShootingStars fora do motion.div — position:fixed precisa de viewport como containing block */}
       <ShootingStars />
 
       <motion.div
@@ -79,6 +71,9 @@ export default function MainScene() {
         transition={{ duration: 1, ease: 'easeOut' }}
       >
         <audio ref={audioRef} src={audioSrc} loop preload="auto" />
+
+        {/* TopBar position:absolute — fica no topo da página e some ao rolar */}
+        <TopBar isPlaying={isPlaying} onToggle={togglePlay} audioRef={audioRef} />
 
         {/* Camada de fundo: cobre toda a altura de --page-height (ver global.css) */}
         <div className={styles.background} aria-hidden="true">

@@ -25,11 +25,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 80px 2rem 2rem;  /* top: compensa TopBar 70px mobile */
-}
-
-@media (min-width: 768px) {
-  .content { padding-top: 60px; }  /* compensa TopBar 50px desktop */
+  padding: 2rem;
 }
 
 .label {
