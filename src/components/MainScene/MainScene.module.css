@@ -1,14 +1,14 @@
-/* Wrapper expande para 300vh — fundo cobre toda a página */
+/* Wrapper expande para 260vh — fundo cobre toda a página */
 .wrapper {
   position: relative;
-  min-height: 300vh;
+  min-height: 260vh;
   background: var(--color-space);
   /* clip em vez de hidden: corta overflow horizontal sem criar scroll context.
      overflow-x:hidden força overflow-y:auto (CSS spec), gerando scroll duplo. */
   overflow-x: clip;
 }
 
-/* Full-bleed layer, esticado para cobrir as 300vh */
+/* Full-bleed layer, esticado para cobrir as 260vh */
 .background {
   position: absolute;
   inset: 0;
