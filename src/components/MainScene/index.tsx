@@ -70,7 +70,7 @@ export default function MainScene() {
       {/* TopBar fica fixo no topo durante o scroll */}
       <TopBar isPlaying={isPlaying} onToggle={togglePlay} audioRef={audioRef} />
 
-      {/* Camada de fundo: cobre toda a altura de 300vh */}
+      {/* Camada de fundo: cobre toda a altura de --page-height (ver global.css) */}
       <div className={styles.background} aria-hidden="true">
         <Nebulae />         {/* atrás de tudo — z-index 0 */}
         <Constellations />  {/* z-index 1 */}

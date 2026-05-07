@@ -24,7 +24,7 @@ function generateDust(count: number): Dust[] {
   return Array.from({ length: count }, (_, i) => ({
     id: i,
     x: Math.random() * 100,
-    y: Math.random() * 300,  // % de 300vh
+    y: Math.random() * 100,  // % da altura do container (escala com --page-height)
     delay: Math.random() * 20,
     duration: 18 + Math.random() * 22,
     driftIdx: Math.floor(Math.random() * DRIFT_CLASSES.length),

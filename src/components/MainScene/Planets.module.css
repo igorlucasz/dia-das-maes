@@ -57,7 +57,7 @@
 }
 
 /* ════════════════════════════════════════════
-   Wrappers — posição na página (% de 260vh)
+   Wrappers — posição na página (% de --page-height, ver :root em global.css)
    + animação de drift CSS (GPU-composited)
 ════════════════════════════════════════════ */
 .wrapper0,

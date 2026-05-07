@@ -1,7 +1,7 @@
 import styles from './Constellations.module.css'
 
-// Coordenadas em % do container (x: largura, y: altura total da página 300vh)
-// → funciona diretamente como % em atributos SVG
+// Coordenadas em % do container (x: largura, y: altura total da página).
+// O SVG ocupa position:absolute inset:0 → escala automaticamente com --page-height.
 const CONSTELLATIONS = [
   {
     // Constelação A — área superior central, entre os dois planetas do topo
