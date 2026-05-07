@@ -1,8 +1,9 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import DateInput from './DateInput'
 import { generateStars } from './starfield'
 import styles from './DateGate.module.css'
+import musicaEntradaSrc from '../../assets/audio/música-entrada.mp3'
 
 // hash da data — não decifrável a olho nu
 const CORRECT_HASH =
@@ -29,6 +30,7 @@ async function hashDate(date: string): Promise<string> {
 export default function DateGate({ onSuccess }: Props) {
   const [value, setValue] = useState('')
   const [status, setStatus] = useState<Status>('idle')
+  const audioRef = useRef<HTMLAudioElement>(null)
 
   // Geradas uma vez — Math.random() dentro de useMemo não viola nenhuma regra
   // pois não precisa ser determinístico entre renders.
@@ -64,6 +66,32 @@ export default function DateGate({ onSuccess }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value])
 
+  // Autoplay da música de entrada. Se bloqueado pela política do browser,
+  // aguarda o primeiro clique ou tecla do usuário (once: true).
+  useEffect(() => {
+    const audio = audioRef.current
+    if (!audio) return
+    audio.volume = 0.6
+    const unlock = () => { audio.play().catch(() => {}) }
+    audio.play().catch(() => {
+      document.addEventListener('click', unlock, { once: true })
+      document.addEventListener('keydown', unlock, { once: true })
+    })
+    return () => {
+      document.removeEventListener('click', unlock)
+      document.removeEventListener('keydown', unlock)
+    }
+  }, [])
+
+  // Para a música no mesmo instante que a transição cinematográfica começa.
+  useEffect(() => {
+    if (!isExiting) return
+    const audio = audioRef.current
+    if (!audio) return
+    audio.pause()
+    audio.currentTime = 0
+  }, [isExiting])
+
   // 'error' não bloqueia o input: a usuária precisa digitar para limpar a mensagem
   const isDisabled = status === 'checking' || status === 'success' || status === 'exiting'
   const isExiting = status === 'exiting'
@@ -81,6 +109,8 @@ export default function DateGate({ onSuccess }: Props) {
         if (def === 'exiting') onSuccess()
       }}
     >
+      <audio ref={audioRef} src={musicaEntradaSrc} loop preload="auto" />
+
       {/* Starfield — escala para criar efeito de "voando para o espaço" */}
       <motion.div
         className={styles.starfield}
