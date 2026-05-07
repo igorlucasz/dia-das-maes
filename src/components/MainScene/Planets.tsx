@@ -31,7 +31,7 @@ function PlanetSvg({ src, alt, placeholderColor }: {
         alt={alt}
         className={styles.planetImg}
         loading="eager"
-        fetchPriority="high"
+        fetchpriority="high"
         decoding="async"
         onLoad={() => setLoaded(true)}
         style={{ opacity: loaded ? 1 : 0, transition: 'opacity 0.3s ease' }}
