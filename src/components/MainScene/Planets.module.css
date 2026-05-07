@@ -70,32 +70,32 @@
 }
 
 .wrapper0 {
-  top: 8%;
+  top: 3%;
   left: 5%;
   animation: drift0 55s ease-in-out infinite;
 }
 .wrapper1 {
-  top: 4%;
+  top: 62%;
   right: 6%;
   animation: drift1 48s ease-in-out infinite;
 }
 .wrapper2 {
-  top: 82%;
+  top: 73%;
   left: 6%;
   animation: drift2 63s ease-in-out infinite;
 }
 .wrapper3 {
-  top: 52%;
+  top: 50%;
   left: 4%;
   animation: drift3 42s ease-in-out infinite;
 }
 .wrapper4 {
-  top: 86%;
+  top: 84%;
   right: 7%;
   animation: drift4 50s ease-in-out infinite;
 }
 .wrapper5 {
-  top: 32%;
+  top: 40%;
   right: 5%;
   animation: drift5 57s ease-in-out infinite;
 }
@@ -441,10 +441,10 @@
    Mobile — pequenos ajustes de posição
 ════════════════════════════════════════════ */
 @media (max-width: 480px) {
-  .wrapper0 { left: 2%; }
+  .wrapper0 { left: 20%; }
   .wrapper1 { right: 2%; }
-  .wrapper2 { left: 2%; }
+  .wrapper2 { left: 10%; }
   .wrapper3 { left: 2%; }
   .wrapper4 { right: 2%; }
-  .wrapper5 { right: 2%; }
+  .wrapper5 { right: 13%; }
 }
