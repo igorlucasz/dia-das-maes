@@ -15,15 +15,16 @@
 }
 
 .counter {
+  display: flex;
+  flex-direction: column;   /* 2 linhas no mobile */
   font-size: 0.75rem;
   color: rgba(255, 255, 255, 0.70);
   font-family: var(--font-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1.4;
   min-width: 0;
   flex: 1;
   user-select: none;
+  overflow: hidden;
 }
 
 .controls {
@@ -60,9 +61,16 @@
 }
 
 @media (min-width: 768px) {
-  .counter { font-size: 0.85rem; }
+  .bar    { height: 50px; }
+  .counter {
+    flex-direction: row;    /* 1 linha no desktop */
+    white-space: nowrap;
+    font-size: 0.85rem;
+    gap: 0.3em;
+    align-items: center;
+  }
 }
 
 @media (max-width: 768px) {
-  .bar { height: 44px; }
+  .bar { height: 70px; }
 }

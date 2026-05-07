@@ -15,7 +15,7 @@
   z-index: 0;
 }
 
-/* Texto placeholder na primeira viewport, z-index acima do fundo */
+/* Boas-vindas na primeira viewport, z-index acima do fundo */
 .content {
   position: relative;
   z-index: 1;
@@ -25,7 +25,11 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 2rem;
+  padding: 80px 2rem 2rem;  /* top: compensa TopBar 70px mobile */
+}
+
+@media (min-width: 768px) {
+  .content { padding-top: 60px; }  /* compensa TopBar 50px desktop */
 }
 
 .label {

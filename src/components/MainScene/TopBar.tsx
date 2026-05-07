@@ -17,7 +17,8 @@ export default function TopBar({ isPlaying, onToggle, audioRef }: Props) {
   return (
     <div className={styles.bar}>
       <p className={styles.counter}>
-        nos conhecemos há {days} dias, {hours} horas e {seconds} segundos
+        <span>nos conhecemos há </span>
+        <span>{days} dias, {hours} horas e {seconds} segundos</span>
       </p>
       <div className={styles.controls}>
         <VolumeControl audioRef={audioRef} />
