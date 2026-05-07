@@ -4,7 +4,7 @@
 .container {
   display: flex;
   justify-content: center;
-  margin-top: var(--timeline-gap);
+  margin-top: 70px;
   padding-bottom: 80px;
 }
 
