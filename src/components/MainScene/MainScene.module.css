@@ -34,13 +34,36 @@
 
 .label {
   font-family: var(--font-heading);
-  font-size: clamp(1.75rem, 7vw, 2.5rem);
+  font-size: clamp(2.2rem, 9vw, 3.5rem);
   font-weight: 600;
   color: var(--color-star);
-  text-shadow: 0 0 30px rgba(192, 132, 252, 0.5);
+  text-shadow: 0 0 40px rgba(192, 132, 252, 0.55);
+  margin-bottom: 0.5rem;
 }
 
 .sub {
-  font-size: 0.95rem;
-  color: rgba(232, 224, 255, 0.5);
+  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+  color: rgba(232, 224, 255, 0.55);
+}
+
+/* ── Placeholder do conteúdo principal ───────── */
+.contentPlaceholder {
+  position: relative;
+  z-index: 1;
+  height: 35vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 40px 16px 0;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+}
+
+.placeholderIcon { font-size: 2.5rem; }
+
+.placeholderText {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.3);
 }

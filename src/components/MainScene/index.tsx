@@ -83,13 +83,19 @@ export default function MainScene() {
       {/* Estrelas cadentes: position:fixed, independe do scroll */}
       <ShootingStars />
 
-      {/* Texto placeholder — visível na primeira viewport */}
+      {/* Boas-vindas — primeira viewport */}
       <div className={styles.content}>
-        <p className={styles.label}>Bem-vinda 🌟</p>
-        <p className={styles.sub}>A cena principal vem na próxima etapa…</p>
+        <p className={styles.label}>Bem-Vinda, Mãe🌟</p>
+        <p className={styles.sub}>Uma viagem pelo nosso tempo juntos ✨</p>
       </div>
 
-      {/* Timeline vertical — começa após a primeira viewport */}
+      {/* Placeholder do conteúdo principal — entre boas-vindas e timeline */}
+      <div className={styles.contentPlaceholder}>
+        <span className={styles.placeholderIcon}>🚀</span>
+        <span className={styles.placeholderText}>elemento principal em breve</span>
+      </div>
+
+      {/* Timeline vertical — começa após o placeholder */}
       <Timeline />
     </motion.div>
   )
