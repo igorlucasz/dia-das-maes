@@ -3,10 +3,12 @@ import styles from './TimelineCard.module.css'
 
 interface Props {
   date: string
+  text: string
   position: 'left' | 'right'
+  onClick: () => void
 }
 
-export default function TimelineCard({ date, position }: Props) {
+export default function TimelineCard({ date, text, position, onClick }: Props) {
   const ref = useRef<HTMLDivElement>(null)
   const [visible, setVisible] = useState(false)
 
@@ -24,6 +26,11 @@ export default function TimelineCard({ date, position }: Props) {
   return (
     <div
       ref={ref}
+      role="button"
+      tabIndex={0}
+      aria-label={`Abrir memória de ${date}`}
+      onClick={onClick}
+      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') onClick() }}
       className={[
         styles.card,
         styles[position],
@@ -35,9 +42,7 @@ export default function TimelineCard({ date, position }: Props) {
         <span className={styles.photoIcon}>🖼️</span>
         <span className={styles.photoLabel}>foto em breve</span>
       </div>
-      <p className={styles.text}>
-        Texto placeholder que será substituído com a memória real deste momento especial.
-      </p>
+      <p className={styles.text}>{text}</p>
     </div>
   )
 }
