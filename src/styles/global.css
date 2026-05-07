@@ -5,7 +5,7 @@
 }
 
 :root {
-  --page-height: 420vh; /* altura total da página — mudar aqui afeta tudo */
+  --page-height: 460vh; /* altura total da página — mudar aqui afeta tudo */
 
   --color-space: #0a0015;
   --color-deep: #06000f;

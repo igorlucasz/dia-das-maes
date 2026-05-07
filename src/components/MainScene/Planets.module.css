@@ -57,7 +57,7 @@
 }
 
 /* ════════════════════════════════════════════
-   Wrappers — posição em % de --page-height (420vh, ver :root em global.css)
+   Wrappers — posição em % de --page-height (460vh, ver :root em global.css)
    + animação de drift CSS (GPU-composited)
 ════════════════════════════════════════════ */
 .wrapper0,
@@ -80,7 +80,7 @@
   animation: drift1 48s ease-in-out infinite;
 }
 .wrapper2 {
-  top: 71%;
+  top: 82%;
   left: 6%;
   animation: drift2 63s ease-in-out infinite;
 }
@@ -90,7 +90,7 @@
   animation: drift3 42s ease-in-out infinite;
 }
 .wrapper4 {
-  top: 90%;
+  top: 86%;
   right: 7%;
   animation: drift4 50s ease-in-out infinite;
 }
