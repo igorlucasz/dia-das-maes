@@ -1,18 +1,19 @@
 import { useState, useEffect } from 'react'
 
-interface TimeCounter {
+export interface TimeCounter {
   days: number
   hours: number
+  minutes: number
   seconds: number
 }
 
 function calc(startDate: Date): TimeCounter {
-  const diff = Math.max(0, Date.now() - startDate.getTime())
-  const totalSeconds = Math.floor(diff / 1000)
-  const days = Math.floor(totalSeconds / 86400)
-  const hours = Math.floor((totalSeconds % 86400) / 3600)
-  const seconds = totalSeconds % 60
-  return { days, hours, seconds }
+  const diff = Math.max(0, Math.floor((Date.now() - startDate.getTime()) / 1000))
+  const days    = Math.floor(diff / 86400)
+  const hours   = Math.floor((diff % 86400) / 3600)
+  const minutes = Math.floor((diff % 3600) / 60)
+  const seconds = diff % 60
+  return { days, hours, minutes, seconds }
 }
 
 export function useTimeCounter(startDate: Date): TimeCounter {

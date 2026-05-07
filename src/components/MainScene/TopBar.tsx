@@ -2,8 +2,8 @@ import { useTimeCounter } from '../../hooks/useTimeCounter'
 import VolumeControl from './VolumeControl'
 import styles from './TopBar.module.css'
 
-// 08/05/2007 16:00:00 BRT (UTC-3) = 19:00:00 UTC
-const START_DATE = new Date('2007-05-08T19:00:00Z')
+// 08/05/2007 16:00:00 horário de Brasília (UTC-3)
+const START_DATE = new Date('2007-05-08T16:00:00-03:00')
 
 interface Props {
   isPlaying: boolean
@@ -12,13 +12,20 @@ interface Props {
 }
 
 export default function TopBar({ isPlaying, onToggle, audioRef }: Props) {
-  const { days, hours, seconds } = useTimeCounter(START_DATE)
+  const { days, hours, minutes, seconds } = useTimeCounter(START_DATE)
 
   return (
     <div className={styles.bar}>
       <p className={styles.counter}>
         <span>nos conhecemos há </span>
-        <span>{days} dias, {hours} horas e {seconds} segundos</span>
+        {/* mobile: abreviado pra caber na 2ª linha */}
+        <span className={styles.short}>
+          {days} dias, {hours} horas, {minutes} min e {seconds} seg
+        </span>
+        {/* desktop: formato completo numa linha */}
+        <span className={styles.long}>
+          {days} dias, {hours} horas, {minutes} minutos e {seconds} segundos
+        </span>
       </p>
       <div className={styles.controls}>
         <VolumeControl audioRef={audioRef} />

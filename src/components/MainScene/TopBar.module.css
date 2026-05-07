@@ -60,6 +60,10 @@
   outline-offset: 2px;
 }
 
+/* Mobile: exibe formato abreviado, esconde completo */
+.short { display: inline; }
+.long  { display: none; }
+
 @media (min-width: 768px) {
   .bar    { height: 50px; }
   .counter {
@@ -69,6 +73,9 @@
     gap: 0.3em;
     align-items: center;
   }
+  /* Desktop: exibe formato completo, esconde abreviado */
+  .short { display: none; }
+  .long  { display: inline; }
 }
 
 @media (max-width: 768px) {
