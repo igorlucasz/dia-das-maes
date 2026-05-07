@@ -8,11 +8,13 @@ import musicaEntradaSrc from '../../assets/audio/música-entrada.mp3'
 // hash da data — não decifrável a olho nu
 const CORRECT_HASH =
   '3a794b9c0ab82aee74fc126cab085f86cc3a2783b535201088d5a166685fe188'
+const EASTER_HASH =
+  'eb23c6d7913a9103a7d97860daa24f87146cf68717a33ffad1d84eb0a9f232da'
 
 type Status = 'idle' | 'checking' | 'error' | 'success' | 'exiting'
 
 interface Props {
-  onSuccess: () => void
+  onSuccess: (destination: 'main' | 'easter') => void
 }
 
 // Web Crypto API é nativa do navegador — sem dependências externas e roda
@@ -31,6 +33,7 @@ export default function DateGate({ onSuccess }: Props) {
   const [value, setValue] = useState('')
   const [status, setStatus] = useState<Status>('idle')
   const audioRef = useRef<HTMLAudioElement>(null)
+  const destinationRef = useRef<'main' | 'easter'>('main')
 
   // Geradas uma vez — Math.random() dentro de useMemo não viola nenhuma regra
   // pois não precisa ser determinístico entre renders.
@@ -47,9 +50,13 @@ export default function DateGate({ onSuccess }: Props) {
     const hash = await hashDate(submittedValue)
 
     if (hash === CORRECT_HASH) {
+      destinationRef.current = 'main'
       setStatus('success')
       // 2s de mensagem → inicia transição cinematográfica
       setTimeout(() => setStatus('exiting'), 2000)
+    } else if (hash === EASTER_HASH) {
+      destinationRef.current = 'easter'
+      setStatus('exiting')
     } else {
       setStatus('error')
     }
@@ -106,7 +113,7 @@ export default function DateGate({ onSuccess }: Props) {
         exiting: { opacity: 0, transition: { duration: 0.8, delay: 0.4 } },
       }}
       onAnimationComplete={def => {
-        if (def === 'exiting') onSuccess()
+        if (def === 'exiting') onSuccess(destinationRef.current)
       }}
     >
       <audio ref={audioRef} src={musicaEntradaSrc} loop preload="auto" />
@@ -170,7 +177,7 @@ export default function DateGate({ onSuccess }: Props) {
           />
         </motion.div>
 
-        {(status === 'success' || status === 'exiting') && (
+        {(status === 'success' || status === 'exiting') && destinationRef.current === 'main' && (
           <motion.p
             className={styles.messageSuccess}
             initial={{ opacity: 0, y: 10 }}
