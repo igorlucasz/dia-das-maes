@@ -90,14 +90,16 @@ export default function MainScene() {
           <p className={styles.sub}>Uma viagem pelo nosso tempo juntos ✨</p>
         </div>
 
-        {/* Placeholder do conteúdo principal — entre boas-vindas e timeline */}
-        <div className={styles.contentPlaceholder}>
-          <span className={styles.placeholderIcon}>🚀</span>
-          <span className={styles.placeholderText}>elemento principal em breve</span>
-        </div>
+        {/* Bloco unificado: placeholder + timeline — posição vertical controlada por --content-top */}
+        <div className={styles.contentBlock}>
+          <div className={styles.contentPlaceholder}>
+            <span className={styles.placeholderIcon}>🚀</span>
+            <span className={styles.placeholderText}>elemento principal em breve</span>
+          </div>
 
-        {/* Timeline vertical — começa após o placeholder */}
-        <Timeline />
+          {/* Timeline vertical — começa após o placeholder */}
+          <Timeline />
+        </div>
       </motion.div>
     </>
   )
