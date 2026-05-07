@@ -245,7 +245,7 @@
 }
 
 /* ════════════════════════════════════════════
-   PLANETA 5 — Roxo vibrante #A020F0 + nebula
+   PLANETA 5 — Midnight Blue #191970 + nebula
    Tamanho: 88px mobile / 132px desktop
 ════════════════════════════════════════════ */
 .glow5 {
@@ -253,7 +253,7 @@
   width: 88px;
   height: 88px;
   border-radius: 50%;
-  background: rgba(160, 32, 240, 0.50);
+  background: rgba(30, 30, 140, 0.50);
   filter: blur(24px);
   transform: scale(calc(1.1 + var(--audio-bass-1, 0.05) * 2.2));
   opacity: calc(0.44 + var(--audio-bass-1, 0.05) * 0.56);
@@ -266,10 +266,10 @@
   height: 88px;
   border-radius: 50%;
   background:
-    radial-gradient(circle at 32% 28%, rgba(255, 180, 255, 0.32) 0%, transparent 36%),
-    radial-gradient(circle at 68% 70%, rgba(30, 0, 70, 0.52) 0%, transparent 30%),
-    radial-gradient(circle at 35% 35%, #C239FF, #A020F0, #5B0F8E);
-  box-shadow: inset -10px -7px 22px rgba(0, 0, 0, 0.60);
+    radial-gradient(circle at 32% 28%, rgba(100, 120, 220, 0.28) 0%, transparent 36%),
+    radial-gradient(circle at 68% 70%, rgba(0, 0, 25, 0.55) 0%, transparent 30%),
+    radial-gradient(circle at 35% 35%, #2E2EB8, #191970, #0A0A3E);
+  box-shadow: inset -10px -7px 22px rgba(0, 0, 0, 0.65);
   z-index: 1;
 }
 
