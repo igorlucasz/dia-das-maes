@@ -6,12 +6,32 @@
   height: 50px;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  gap: 2px;
+  justify-content: space-between;
+  gap: 8px;
   padding: 0 1rem;
-  /* Totalmente transparente — ícones flutuam sobre o cenário */
+  /* Totalmente transparente — elementos flutuam sobre o cenário */
   z-index: 100;
   pointer-events: none;
+}
+
+.counter {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.70);
+  font-family: var(--font-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  flex: 1;
+  user-select: none;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+  pointer-events: all;
 }
 
 .btn {
@@ -37,6 +57,10 @@
 .btn:focus-visible {
   outline: 2px solid rgba(255, 255, 255, 0.45);
   outline-offset: 2px;
+}
+
+@media (min-width: 768px) {
+  .counter { font-size: 0.85rem; }
 }
 
 @media (max-width: 768px) {
