@@ -33,6 +33,7 @@ export default function MainScene({ onGoAngelic }: Props) {
 
   const { unlocked, unlock } = useBottleUnlock()
   const [scrolledHalf, setScrolledHalf] = useState(false)
+  const [isTransitioning, setIsTransitioning] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -150,6 +151,9 @@ export default function MainScene({ onGoAngelic }: Props) {
   }
 
   function handleGoAngelic() {
+    if (isTransitioning) return
+    setIsTransitioning(true)
+
     clearInterval(fadeIntervalsRef.current.astronauta)
     clearInterval(fadeIntervalsRef.current.emocionante)
     clearTimeout(fadeIntervalsRef.current.emocionanteDelay)
@@ -193,6 +197,7 @@ export default function MainScene({ onGoAngelic }: Props) {
           <motion.button
             className={styles.angelicHint}
             onClick={handleGoAngelic}
+            style={{ pointerEvents: isTransitioning ? 'none' : 'auto' }}
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.5, ease: 'easeOut' }}
