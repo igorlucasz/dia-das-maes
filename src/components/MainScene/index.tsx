@@ -35,6 +35,7 @@ export default function MainScene({ onGoAngelic, hidden }: Props) {
   const { unlocked, unlock } = useBottleUnlock()
   const [scrolledHalf, setScrolledHalf] = useState(false)
   const [isTransitioning, setIsTransitioning] = useState(false)
+  const volumeBeforeBottleRef = useRef(0.7)
   const preAngelicVolumeRef = useRef(0.7)
   const wasPlayingBeforeAngelicRef = useRef(false)
   const prevHiddenRef = useRef(false)
@@ -122,6 +123,7 @@ export default function MainScene({ onGoAngelic, hidden }: Props) {
     if (!astronauta || !emocionante) return
 
     wasPlayingBeforeBottleRef.current = isPlaying
+    volumeBeforeBottleRef.current = astronauta.volume
 
     clearInterval(fadeIntervalsRef.current.astronauta)
     clearInterval(fadeIntervalsRef.current.emocionante)
@@ -169,7 +171,7 @@ export default function MainScene({ onGoAngelic, hidden }: Props) {
         audioCtxRef.current?.resume().catch(() => {})
         astronauta.play().catch(() => {})
       }
-      fadeIntervalsRef.current.astronauta = fadeAudio(astronauta, 0.7, 3000, () => {
+      fadeIntervalsRef.current.astronauta = fadeAudio(astronauta, volumeBeforeBottleRef.current, 3000, () => {
         delete fadeIntervalsRef.current.astronauta
       })
     }
