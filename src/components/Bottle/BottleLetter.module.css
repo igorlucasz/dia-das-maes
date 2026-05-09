@@ -19,10 +19,11 @@
 
 .paper {
   position: relative;
+  display: flex;
+  flex-direction: column;
   width: min(85vw, 420px);
   max-height: 90vh;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
   background: linear-gradient(160deg, #fdf6e3 0%, #f5e6c8 100%);
   border: 1px solid rgba(180, 140, 80, 0.35);
   border-radius: 12px;
@@ -46,6 +47,10 @@
 .content {
   position: relative;
   z-index: 2;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .closeBtn {
@@ -74,6 +79,7 @@
   flex-direction: column;
   align-items: center;
   margin-bottom: 20px;
+  flex-shrink: 0;
 }
 
 .headerIcon { font-size: 1.8rem; margin-bottom: 10px; }
@@ -84,40 +90,52 @@
   background: rgba(180, 140, 80, 0.4);
 }
 
-.text {
+.letterContainer {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.letterTitle {
   font-family: Georgia, 'Playfair Display', serif;
-  font-size: 1rem;
+  font-size: clamp(1.2rem, 5vw, 1.6rem);
+  color: #3d2b1f;
+  text-align: center;
+  margin-bottom: 1.2rem;
+  flex-shrink: 0;
+}
+
+.letterBody {
+  text-align: left;
+  color: #3d2b1f;
+  font-size: clamp(0.9rem, 3.5vw, 1rem);
   line-height: 1.8;
-  color: #3d2b1f;
-  min-height: 5em;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
-.cursor {
-  display: inline-block;
-  color: #3d2b1f;
-  animation: blink 0.8s ease-in-out infinite;
-  margin-left: 1px;
+.letterBody p {
+  margin-bottom: 1.2rem;
 }
 
-@keyframes blink {
-  0%, 49% { opacity: 1; }
-  50%, 100% { opacity: 0; }
+.letterBody p:last-child {
+  margin-bottom: 0;
 }
 
-.footer { margin-top: 20px; }
-
-.footerLine {
-  height: 1px;
-  background: rgba(180, 140, 80, 0.4);
-  margin-bottom: 16px;
-}
-
-.signature {
-  font-family: Georgia, 'Playfair Display', serif;
-  font-size: 1rem;
-  color: #3d2b1f;
-  font-style: italic;
+.letterFooter {
+  flex-shrink: 0;
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid rgba(180, 140, 80, 0.3);
   text-align: right;
+  font-style: italic;
+  color: #92400e;
+  font-size: 0.9rem;
+  font-family: Georgia, 'Playfair Display', serif;
 }
 
 @media (max-width: 480px) {
@@ -125,5 +143,5 @@
 }
 
 @media (min-width: 768px) {
-  .text { font-size: 1.05rem; }
+  .letterBody { font-size: 1.05rem; }
 }

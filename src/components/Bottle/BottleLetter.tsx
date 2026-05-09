@@ -3,51 +3,22 @@ import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import styles from './BottleLetter.module.css'
 
-const FULL_TEXT =
-  'Mãe, existem palavras que o coração guarda há tempo demais para não dizer. Esta mensagem é uma delas...'
-const CHAR_DELAY_MS = 40
-
 interface Props {
   open: boolean
   onClose: () => void
 }
 
 export default function BottleLetter({ open, onClose }: Props) {
-  const [displayed, setDisplayed] = useState('')
-  const [done, setDone] = useState(false)
   const [paperOpen, setPaperOpen] = useState(false)
-  const [contentVisible, setContentVisible] = useState(false)
   const [closing, setClosing] = useState(false)
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     if (!open) {
-      if (timerRef.current) clearTimeout(timerRef.current)
-      if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
-      setDisplayed('')
-      setDone(false)
       setPaperOpen(false)
-      setContentVisible(false)
       setClosing(false)
     }
   }, [open])
-
-  useEffect(() => {
-    if (!contentVisible) return
-    let i = 0
-    function type() {
-      i++
-      setDisplayed(FULL_TEXT.slice(0, i))
-      if (i < FULL_TEXT.length) {
-        timerRef.current = setTimeout(type, CHAR_DELAY_MS)
-      } else {
-        setDone(true)
-      }
-    }
-    timerRef.current = setTimeout(type, 100)
-    return () => { if (timerRef.current) clearTimeout(timerRef.current) }
-  }, [contentVisible])
 
   const handleClose = useCallback(() => {
     if (closing) return
@@ -120,33 +91,58 @@ export default function BottleLetter({ open, onClose }: Props) {
                 animate={{ opacity: closing ? 0 : (paperOpen ? 1 : 0) }}
                 initial={{ opacity: 0 }}
                 transition={{ duration: closing ? 0.15 : 0.4 }}
-                onAnimationComplete={() => {
-                  if (paperOpen && !closing) setContentVisible(true)
-                }}
               >
                 <div className={styles.header}>
                   <span className={styles.headerIcon}>🌊</span>
                   <div className={styles.headerLine} />
                 </div>
 
-                <p className={styles.text}>
-                  {displayed}
-                  {!done && <span className={styles.cursor} aria-hidden="true">|</span>}
-                </p>
+                <div className={styles.letterContainer}>
+                  <h2 className={styles.letterTitle}>Nossos agradecimentos😉</h2>
 
-                <AnimatePresence>
-                  {done && (
-                    <motion.div
-                      className={styles.footer}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.6 }}
-                    >
-                      <div className={styles.footerLine} />
-                      <p className={styles.signature}>Com amor, Igor 🚀</p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                  <div className={styles.letterBody}>
+                    <p>
+                      Oi tikiwiki, acho que já ficou claro o quanto eu e meu pai te amamos.
+                      Então essa mensagem aqui é uma forma de agradecermos por TUDO que você
+                      fez e AINDA FAZ todos os dias da sua vida.
+                    </p>
+
+                    <p>
+                      Mãe, você é a melhor coisa que já aconteceu na minha vida! A pessoa
+                      mais engraçada, mais divertida, mais carinhosa, mais atenciosa e a que
+                      mais me faz sorrir mesmo em momentos ruins é você. A definição de ser
+                      mãe não poderia estar mais bem representada! Ser mãe vai muito além do
+                      que cuidar de seu filho, tem a ver com todas as vezes que você teve
+                      paciência comigo pra explicar o motivo do que eu fiz ser errado, em vez
+                      de ficar gritando e brigando quando eu era pequeno; com todas as viagens
+                      que fizemos juntos e você pensou em cada detalhe para aqueles momentos
+                      se tornarem memórias boas; com todas as vezes que você foi em minhas
+                      apresentações da escola toda produzida e arrumada só pra me ver; todas
+                      as vezes que você se empolgou junto comigo pra arrumar fantasia pro
+                      halloween, pintar meu cabelo pro dia do cabelo maluco, achar uma roupa
+                      pra festa junina, ou qualquer outra maluquice que você entrou de ponta
+                      cabeça comigo; com todas as vezes que você me tranquilizou porque eu
+                      estava ansioso com alguma prova; com todas as vezes que você disse que
+                      eu não precisava ser perfeito porque me cobrava demais; com todas as
+                      vezes que você sorriu pra mim e me animou em dias mais difíceis; com
+                      todas as vezes que você demonstrou amar e se importar comigo e com meu
+                      pai. Tudo isso, tudo que você fez até os dias de hoje, me moldou como
+                      pessoa e me fez enxergar o mundo de uma forma muito mais leve e feliz.
+                      Você melhorou e melhora constantemente a minha vida.
+                    </p>
+
+                    <p>
+                      Obrigado por ser tão carinhosa. Obrigado por ser tão compreensiva.
+                      Obrigado por se preocupar. Obrigado por cuidar de mim. Obrigado por
+                      amar tanto. Obrigado por cada sorriso. Obrigado por cada abraço.
+                      Você é e sempre foi a MELHOR MÃE e a MELHOR ESPOSA. OBRIGADO!
+                    </p>
+                  </div>
+
+                  <div className={styles.letterFooter}>
+                    Com amor, Igor e Márcio🫶
+                  </div>
+                </div>
               </motion.div>
             </motion.div>
           </div>
