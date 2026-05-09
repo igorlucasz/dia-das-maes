@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { PlayIcon, PauseIcon, VolumeIcon, MutedIcon } from '../icons/AudioIcons'
 import styles from './AngelicAudioControls.module.css'
 
 interface Props {
@@ -46,10 +47,10 @@ export default function AngelicAudioControls({ skydance }: Props) {
         aria-label="Volume da música"
       />
       <button className={styles.btn} onClick={toggleMute} aria-label={muted ? 'Ativar som' : 'Silenciar'}>
-        {muted ? '🔇' : '🔊'}
+        {muted ? <MutedIcon /> : <VolumeIcon />}
       </button>
       <button className={styles.btn} onClick={togglePlay} aria-label={paused ? 'Tocar' : 'Pausar'}>
-        {paused ? '▶' : '⏸'}
+        {paused ? <PlayIcon /> : <PauseIcon />}
       </button>
     </div>
   )
