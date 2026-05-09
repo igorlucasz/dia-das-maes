@@ -146,6 +146,8 @@ export default function TimelineModal({ card, photoIndex, onPhotoChange, onClose
               </div>
             )}
 
+            <p className={styles.text}>{pages[textPage]}</p>
+
             {totalPages > 1 && (
               <div className={styles.textPagination}>
                 <button
@@ -163,8 +165,6 @@ export default function TimelineModal({ card, photoIndex, onPhotoChange, onClose
                 >›</button>
               </div>
             )}
-
-            <p className={styles.text}>{pages[textPage]}</p>
           </motion.div>
         </motion.div>
       )}
