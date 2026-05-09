@@ -70,27 +70,12 @@
   padding-top: 3rem;
 }
 
-.imagePlaceholder {
-  background: rgba(254, 243, 199, 0.8);
-  border: 2px dashed rgba(245, 158, 11, 0.4);
-  border-radius: 20px;
+.photo {
   width: min(80vw, 400px);
-  aspect-ratio: 4 / 3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-.placeholderIcon {
-  font-size: 2rem;
-}
-
-.placeholderText {
-  color: #b45309;
-  font-size: 0.8rem;
-  opacity: 0.65;
+  height: auto;
+  border-radius: 20px;
+  object-fit: contain;
+  display: block;
 }
 
 .title {
@@ -105,7 +90,9 @@
 .body {
   color: #92400e;
   font-size: clamp(0.9rem, 3vw, 1rem);
-  line-height: 1.75;
+  line-height: 1.8;
   margin: 0;
-  max-width: 340px;
+  max-width: 440px;
+  padding: 0 24px;
+  text-align: center;
 }

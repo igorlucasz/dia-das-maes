@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import vo2 from '../../assets/images/vo2.jpg'
 import AngelicAudioControls from './AngelicAudioControls'
 import styles from './AngelicScene.module.css'
 
@@ -60,15 +61,17 @@ export default function AngelicScene({ onGoBack, skydance, initialVolume, onVolu
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 0.3, ease: 'easeOut' }}
       >
-        <div className={styles.imagePlaceholder}>
-          <span className={styles.placeholderIcon}>🌟</span>
-          <span className={styles.placeholderText}>foto especial em breve</span>
-        </div>
+        <img
+          src={vo2}
+          alt=""
+          className={styles.photo}
+          loading="eager"
+        />
 
-        <h1 className={styles.title}>Um momento especial</h1>
+        <h1 className={styles.title}>Nós te amamos!</h1>
 
         <p className={styles.body}>
-          Aqui viverá uma mensagem especial, guardada com carinho para este momento único e inesquecível.
+          É verdade que os últimos anos foram muito difíceis, você passou por coisas que poucos seres humanos já passaram, mas mesmo assim nunca abaixou a cabeça e seguiu corajosa como sempre. E assim, um dia após o outro, enfrentou a maior dificuldade da sua vida de frente! Com muita fé, você conseguiu e consegue a cada dia superar esses desafios. Tenha certeza, mãe, que eu e o Dono Lafaiete estamos orgulhosos de você! Nesse momento imagino ele no céu olhando pra tudo que você fez por ele com muita gratidão e tranquilidade no coração, porque a filha dele conseguiu honrá-lo de verdade, agora, enfim, ele poderá descansar de verdade graças a você, mãe. Você, Maria Regina, é mais que a MELHOR MÃE, é a MELHOR FILHA DO MUNDO, OBRIGADO!
         </p>
       </motion.div>
     </div>
