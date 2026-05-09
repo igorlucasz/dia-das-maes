@@ -293,7 +293,7 @@ export default function MainScene({ onGoAngelic, hidden, onSkydanceReady, skydan
         transition={{ duration: 1, ease: 'easeOut' }}
       >
         <audio ref={audioRef} src={audioSrc} loop preload="auto" />
-        <audio ref={emocionanteRef} src={musicaEmocionante} preload="auto" />
+        <audio ref={emocionanteRef} src={musicaEmocionante} loop preload="auto" />
         <audio ref={skydanceRef} src={skydanceSrc} loop preload="auto" />
 
         {/* TopBar position:absolute — fica no topo da página e some ao rolar */}
@@ -311,7 +311,6 @@ export default function MainScene({ onGoAngelic, hidden, onSkydanceReady, skydan
             aria-label="Descobrir algo especial"
           >
             <span className={styles.angelicHintIcon}>🕊️</span>
-            <span className={styles.angelicHintText}>algo mudou...</span>
           </motion.button>
         )}
 
