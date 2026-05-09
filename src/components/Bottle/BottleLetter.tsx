@@ -92,11 +92,6 @@ export default function BottleLetter({ open, onClose }: Props) {
                 initial={{ opacity: 0 }}
                 transition={{ duration: closing ? 0.15 : 0.4 }}
               >
-                <div className={styles.header}>
-                  <span className={styles.headerIcon}>🌊</span>
-                  <div className={styles.headerLine} />
-                </div>
-
                 <div className={styles.letterContainer}>
                   <h2 className={styles.letterTitle}>Nossos agradecimentos😉</h2>
 
@@ -140,7 +135,7 @@ export default function BottleLetter({ open, onClose }: Props) {
                   </div>
 
                   <div className={styles.letterFooter}>
-                    Com amor, Igor e Márcio🫶
+                    <em>Com amor, Igor e Márcio</em>🫶
                   </div>
                 </div>
               </motion.div>

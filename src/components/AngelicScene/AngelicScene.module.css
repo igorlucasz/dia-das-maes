@@ -36,10 +36,19 @@
   100% { transform: translateY(-100vh); opacity: 0; }
 }
 
+.angelicTopBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+}
+
 .backBtn {
-  position: fixed;
-  top: 1.5rem;
-  left: 1.5rem;
   background: none;
   border: none;
   cursor: pointer;
@@ -47,8 +56,7 @@
   font-size: 0.9rem;
   font-family: inherit;
   opacity: 0.65;
-  z-index: 10;
-  padding: 0.5rem 0.75rem;
+  padding: 0.5rem 0;
   transition: opacity 0.2s;
   -webkit-tap-highlight-color: transparent;
 }

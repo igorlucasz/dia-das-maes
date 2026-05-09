@@ -23,11 +23,20 @@ interface Props {
 export default function AngelicScene({ onGoBack, skydance, initialVolume, onVolumeChange }: Props) {
   return (
     <div className={styles.scene}>
-      <AngelicAudioControls
-        skydance={skydance ?? null}
-        initialVolume={initialVolume ?? 0.75}
-        onVolumeChange={onVolumeChange}
-      />
+      <motion.div
+        className={styles.angelicTopBar}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.6, duration: 0.6 }}
+      >
+        <button className={styles.backBtn} onClick={onGoBack}>← voltar</button>
+        <AngelicAudioControls
+          skydance={skydance ?? null}
+          initialVolume={initialVolume ?? 0.75}
+          onVolumeChange={onVolumeChange}
+        />
+      </motion.div>
+
       <div className={styles.particles} aria-hidden="true">
         {PARTICLES.map(p => (
           <div
@@ -44,16 +53,6 @@ export default function AngelicScene({ onGoBack, skydance, initialVolume, onVolu
           />
         ))}
       </div>
-
-      <motion.button
-        className={styles.backBtn}
-        onClick={onGoBack}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.6, duration: 0.6 }}
-      >
-        ← voltar
-      </motion.button>
 
       <motion.div
         className={styles.content}
