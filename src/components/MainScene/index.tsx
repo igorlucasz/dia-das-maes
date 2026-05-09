@@ -40,6 +40,7 @@ export default function MainScene({ onGoAngelic, hidden }: Props) {
   const [isTransitioning, setIsTransitioning] = useState(false)
   const volumeBeforeBottleRef = useRef(0.7)
   const preAngelicVolumeRef = useRef(0.7)
+  const skydancePositionRef = useRef(0)
   const wasPlayingBeforeAngelicRef = useRef(false)
   const prevHiddenRef = useRef(false)
 
@@ -59,9 +60,10 @@ export default function MainScene({ onGoAngelic, hidden }: Props) {
   // Detecta retorno da AngelicScene (hidden true → false) e retoma a música
   useEffect(() => {
     if (prevHiddenRef.current && !hidden) {
-      // Fade out skydance e pausa após 2s
+      // Fade out skydance, salva posição e pausa após 2s
       const skydance = skydanceRef.current
       if (skydance && !skydance.paused) {
+        skydancePositionRef.current = skydance.currentTime
         clearInterval(fadeIntervalsRef.current.skydance)
         fadeIntervalsRef.current.skydance = fadeAudio(skydance, 0, 2000, () => {
           skydance.pause()
@@ -219,7 +221,7 @@ export default function MainScene({ onGoAngelic, hidden }: Props) {
     const skydance = skydanceRef.current
     if (skydance) {
       clearInterval(fadeIntervalsRef.current.skydance)
-      skydance.currentTime = 0
+      skydance.currentTime = skydancePositionRef.current
       skydance.volume = 0
       skydance.play().catch(() => {})
       fadeIntervalsRef.current.skydance = fadeAudio(skydance, 0.75, 2500, () => {
