@@ -14,6 +14,7 @@ import Timeline from '../Timeline'
 import Bottle from '../Bottle'
 import audioSrc from '../../assets/audio/astronauta-de-marmore.mp3'
 import musicaEmocionante from '../../assets/audio/som-emocionante.mp3'
+import skydanceSrc from '../../assets/audio/skydance.mp3'
 import styles from './MainScene.module.css'
 
 interface Props {
@@ -24,12 +25,14 @@ interface Props {
 export default function MainScene({ onGoAngelic, hidden }: Props) {
   const audioRef = useRef<HTMLAudioElement>(null)
   const emocionanteRef = useRef<HTMLAudioElement>(null)
+  const skydanceRef = useRef<HTMLAudioElement>(null)
   const [isPlaying, setIsPlaying] = useState(false)
   const wasPlayingBeforeBottleRef = useRef(false)
   const fadeIntervalsRef = useRef<{
     astronauta?: ReturnType<typeof setInterval>
     emocionante?: ReturnType<typeof setInterval>
     emocionanteDelay?: ReturnType<typeof setTimeout>
+    skydance?: ReturnType<typeof setInterval>
   }>({})
 
   const { unlocked, unlock } = useBottleUnlock()
@@ -56,6 +59,17 @@ export default function MainScene({ onGoAngelic, hidden }: Props) {
   // Detecta retorno da AngelicScene (hidden true → false) e retoma a música
   useEffect(() => {
     if (prevHiddenRef.current && !hidden) {
+      // Fade out skydance e pausa após 2s
+      const skydance = skydanceRef.current
+      if (skydance && !skydance.paused) {
+        clearInterval(fadeIntervalsRef.current.skydance)
+        fadeIntervalsRef.current.skydance = fadeAudio(skydance, 0, 2000, () => {
+          skydance.pause()
+          delete fadeIntervalsRef.current.skydance
+        })
+      }
+
+      // Retoma astronauta
       const audio = audioRef.current
       if (audio && wasPlayingBeforeAngelicRef.current) {
         audio.volume = 0.01
@@ -63,7 +77,7 @@ export default function MainScene({ onGoAngelic, hidden }: Props) {
         audio.play()
           .then(() => {
             setIsPlaying(true)
-            fadeAudio(audio, preAngelicVolumeRef.current, 2000)
+            fadeAudio(audio, preAngelicVolumeRef.current, 2500)
           })
           .catch(() => {})
       }
@@ -201,6 +215,18 @@ export default function MainScene({ onGoAngelic, hidden }: Props) {
       fadeAudio(emocionante, 0.01, 1000, () => { emocionante.pause() })
     }
 
+    // Skydance: começa imediatamente com fade in ao entrar na cena angelical
+    const skydance = skydanceRef.current
+    if (skydance) {
+      clearInterval(fadeIntervalsRef.current.skydance)
+      skydance.currentTime = 0
+      skydance.volume = 0
+      skydance.play().catch(() => {})
+      fadeIntervalsRef.current.skydance = fadeAudio(skydance, 0.75, 2500, () => {
+        delete fadeIntervalsRef.current.skydance
+      })
+    }
+
     // Overlay takes 800ms to cover — start at 1700ms so music fades to silence
     // before MainScene unmounts (1700 + 800 = 2500ms = fade duration)
     setTimeout(() => onGoAngelic?.(), audioPlaying ? 1700 : 0)
@@ -220,6 +246,7 @@ export default function MainScene({ onGoAngelic, hidden }: Props) {
       >
         <audio ref={audioRef} src={audioSrc} loop preload="auto" />
         <audio ref={emocionanteRef} src={musicaEmocionante} preload="auto" />
+        <audio ref={skydanceRef} src={skydanceSrc} loop preload="auto" />
 
         {/* TopBar position:absolute — fica no topo da página e some ao rolar */}
         <TopBar isPlaying={isPlaying} onToggle={togglePlay} audioRef={audioRef} />
