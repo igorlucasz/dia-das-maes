@@ -102,7 +102,7 @@ export default function MainScene({ onGoAngelic }: Props) {
     fadeIntervalsRef.current = {}
 
     if (isPlaying) {
-      fadeIntervalsRef.current.astronauta = fadeAudio(astronauta, 0.05, 4000, () => {
+      fadeIntervalsRef.current.astronauta = fadeAudio(astronauta, 0.01, 4000, () => {
         astronauta.pause()
         delete fadeIntervalsRef.current.astronauta
       })
