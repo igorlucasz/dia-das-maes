@@ -102,13 +102,13 @@ export default function MainScene({ onGoAngelic }: Props) {
     fadeIntervalsRef.current = {}
 
     if (isPlaying) {
-      fadeIntervalsRef.current.astronauta = fadeAudio(astronauta, 0.01, 7000, () => {
+      fadeIntervalsRef.current.astronauta = fadeAudio(astronauta, 0.01, 4000, () => {
         astronauta.pause()
         delete fadeIntervalsRef.current.astronauta
       })
     }
 
-    // emocionante entra após 5.5s — deixa o fade do astronauta descer bem antes
+    // emocionante entra após 3s — curva exponencial já tornou o astronauta quase inaudível
     fadeIntervalsRef.current.emocionanteDelay = setTimeout(() => {
       delete fadeIntervalsRef.current.emocionanteDelay
       emocionante.currentTime = 0
@@ -117,7 +117,7 @@ export default function MainScene({ onGoAngelic }: Props) {
       fadeIntervalsRef.current.emocionante = fadeAudio(emocionante, 0.8, 2500, () => {
         delete fadeIntervalsRef.current.emocionante
       })
-    }, 5500)
+    }, 3000)
   }
 
   function handleBottleClose() {
