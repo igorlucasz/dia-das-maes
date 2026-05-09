@@ -1,11 +1,11 @@
-/* container — posição vertical: margin-top (var(--timeline-gap))
-   posição horizontal: justify-content: center
-   Ajuste manual: margin-top e padding-bottom aqui */
+/* container — posição vertical: margin-top
+   posição horizontal: justify-content (flex-start | center | flex-end)
+   Ajuste manual: trocar justify-content pra mover esquerda/direita */
 .container {
   display: flex;
-  justify-content: center;
-  margin-top: 70px;
-  padding-bottom: 80px;
+  justify-content: flex-start;   /* flex-start = esquerda | center = centro | flex-end = direita */
+  margin-top: 0px;
+  padding-bottom: 0px;
 }
 
 .bottleBtn {

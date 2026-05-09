@@ -113,7 +113,7 @@ export default function BottleLetter({ open, onClose }: Props) {
                       de ficar gritando e brigando quando eu era pequeno; com todas as viagens
                       que fizemos juntos e você pensou em cada detalhe para aqueles momentos
                       se tornarem memórias boas; com todas as vezes que você foi em minhas
-                      apresentações da escola toda produzida e arrumada só pra me ver; todas
+                      apresentações da escola toda produzida e arrumada só pra me ver; com todas
                       as vezes que você se empolgou junto comigo pra arrumar fantasia pro
                       halloween, pintar meu cabelo pro dia do cabelo maluco, achar uma roupa
                       pra festa junina, ou qualquer outra maluquice que você entrou de ponta

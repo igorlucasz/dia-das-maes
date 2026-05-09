@@ -32,7 +32,7 @@ export interface CardData {
 
 const CARDS: CardData[] = [
   {
-    title: 'Maio 2007',
+    title: 'Maio | 2007',
     position: 'left',
     photos: [eu1, eu2],
     text: `Tudo começou quando eu nasci! Desde pequeno já me senti muito amado por você, mãe. A forma como você era paciente comigo, nunca brigando mas sempre explicando com muito carinho quando eu fazia algo de errado kkkk, fez toda diferença! Nunca me bateu e sempre cuidou de mim, OBRIGADO, MÃE!`,
