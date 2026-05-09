@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useAudioAnalyzer } from '../../hooks/useAudioAnalyzer'
 import { fadeAudio } from '../../hooks/useAudioFade'
+import { useBottleUnlock } from '../../hooks/useBottleUnlock'
 import TopBar from './TopBar'
 import Nebulae from './Nebulae'
 import Constellations from './Constellations'
@@ -15,7 +16,11 @@ import audioSrc from '../../assets/audio/astronauta-de-marmore.mp3'
 import musicaEmocionante from '../../assets/audio/som-emocionante.mp3'
 import styles from './MainScene.module.css'
 
-export default function MainScene() {
+interface Props {
+  onGoAngelic?: () => void
+}
+
+export default function MainScene({ onGoAngelic }: Props) {
   const audioRef = useRef<HTMLAudioElement>(null)
   const emocionanteRef = useRef<HTMLAudioElement>(null)
   const [isPlaying, setIsPlaying] = useState(false)
@@ -24,6 +29,8 @@ export default function MainScene() {
     astronauta?: ReturnType<typeof setInterval>
     emocionante?: ReturnType<typeof setInterval>
   }>({})
+
+  const { unlocked, unlock } = useBottleUnlock()
 
   // Conecta Web Audio API e escreve CSS vars no :root (sem re-renders).
   // Retorna ctxRef para que possamos chamar ctx.resume() em gestos do usuário.
@@ -95,6 +102,8 @@ export default function MainScene() {
   }
 
   function handleBottleClose() {
+    unlock()
+
     const astronauta = audioRef.current
     const emocionante = emocionanteRef.current
     if (!astronauta || !emocionante) return
@@ -120,6 +129,24 @@ export default function MainScene() {
     }
   }
 
+  function handleGoAngelic() {
+    clearInterval(fadeIntervalsRef.current.astronauta)
+    clearInterval(fadeIntervalsRef.current.emocionante)
+    fadeIntervalsRef.current = {}
+
+    const astronauta = audioRef.current
+    if (astronauta && !astronauta.paused) {
+      fadeAudio(astronauta, 0, 2000, () => { astronauta.pause() })
+    }
+
+    const emocionante = emocionanteRef.current
+    if (emocionante && !emocionante.paused) {
+      fadeAudio(emocionante, 0, 1000, () => { emocionante.pause() })
+    }
+
+    onGoAngelic?.()
+  }
+
   return (
     <>
       {/* ShootingStars fora do motion.div — position:fixed precisa de viewport como containing block */}
@@ -136,6 +163,21 @@ export default function MainScene() {
 
         {/* TopBar position:absolute — fica no topo da página e some ao rolar */}
         <TopBar isPlaying={isPlaying} onToggle={togglePlay} audioRef={audioRef} />
+
+        {/* Ícone angelical — aparece discretamente após a garrafa ser aberta */}
+        {unlocked && (
+          <motion.button
+            className={styles.angelicHint}
+            onClick={handleGoAngelic}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.5, ease: 'easeOut' }}
+            aria-label="Descobrir algo especial"
+          >
+            <span className={styles.angelicHintIcon}>✨</span>
+            <span className={styles.angelicHintText}>algo mudou...</span>
+          </motion.button>
+        )}
 
         {/* Camada de fundo: cobre toda a altura de --page-height (ver global.css) */}
         <div className={styles.background} aria-hidden="true">
