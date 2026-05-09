@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from 'react'
+import maeGif from '../../assets/images/maegif.gif'
 import { motion } from 'framer-motion'
 import { useAudioAnalyzer } from '../../hooks/useAudioAnalyzer'
 import { fadeAudio } from '../../hooks/useAudioFade'
@@ -297,10 +298,12 @@ export default function MainScene({ onGoAngelic, hidden, onSkydanceReady, skydan
 
         {/* Bloco unificado: placeholder + timeline — posição vertical controlada por --content-top */}
         <div className={styles.contentBlock}>
-          <div className={styles.contentPlaceholder}>
-            <span className={styles.placeholderIcon}>🚀</span>
-            <span className={styles.placeholderText}>elemento principal em breve</span>
-          </div>
+          <img
+            src={maeGif}
+            alt="Momento especial"
+            loading="eager"
+            className={styles.mainGif}
+          />
 
           {/* Timeline vertical — começa após o placeholder */}
           <Timeline />
