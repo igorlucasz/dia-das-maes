@@ -145,7 +145,7 @@ export default function MainScene({ onGoAngelic, hidden }: Props) {
       fadeIntervalsRef.current.emocionante = fadeAudio(emocionante, 0.8, 2500, () => {
         delete fadeIntervalsRef.current.emocionante
       })
-    }, 3000)
+    }, 2000)
   }
 
   function handleBottleClose() {
