@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import type { CardData } from './index'
@@ -11,9 +11,14 @@ interface Props {
   onClose: () => void
 }
 
+const slideVariants = {
+  enter: (dir: number) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 1 }),
+  center: { x: 0, opacity: 1 },
+  exit: (dir: number) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 1 }),
+}
+
 export default function TimelineModal({ card, photoIndex, onPhotoChange, onClose }: Props) {
-  const touchStartX = useRef(0)
-  const touchStartY = useRef(0)
+  const [direction, setDirection] = useState(0)
 
   useEffect(() => {
     if (card) {
@@ -38,11 +43,13 @@ export default function TimelineModal({ card, photoIndex, onPhotoChange, onClose
 
   const prevPhoto = () => {
     if (!card || card.photos.length <= 1) return
+    setDirection(-1)
     onPhotoChange((photoIndex - 1 + card.photos.length) % card.photos.length)
   }
 
   const nextPhoto = () => {
     if (!card || card.photos.length <= 1) return
+    setDirection(1)
     onPhotoChange((photoIndex + 1) % card.photos.length)
   }
 
@@ -69,31 +76,26 @@ export default function TimelineModal({ card, photoIndex, onPhotoChange, onClose
             <p className={styles.date}>{card.title}</p>
 
             {card.photos.length > 0 && (
-              <div
-                className={styles.photoContainer}
-                onTouchStart={e => {
-                  touchStartX.current = e.touches[0].clientX
-                  touchStartY.current = e.touches[0].clientY
-                }}
-                onTouchEnd={e => {
-                  const diffX = touchStartX.current - e.changedTouches[0].clientX
-                  const diffY = touchStartY.current - e.changedTouches[0].clientY
-                  if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
-                    if (diffX > 0) nextPhoto()
-                    else prevPhoto()
-                  }
-                }}
-              >
-                <AnimatePresence mode="wait">
+              <div className={styles.photoContainer}>
+                <AnimatePresence initial={false} custom={direction}>
                   <motion.img
                     key={photoIndex}
                     src={card.photos[photoIndex]}
                     alt=""
                     className={styles.photo}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.35, ease: 'easeInOut' }}
+                    custom={direction}
+                    variants={slideVariants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{ type: 'tween', duration: 0.25, ease: 'easeInOut' }}
+                    drag="x"
+                    dragConstraints={{ left: 0, right: 0 }}
+                    dragElastic={0.2}
+                    onDragEnd={(_, info) => {
+                      if (info.offset.x < -50) nextPhoto()
+                      else if (info.offset.x > 50) prevPhoto()
+                    }}
                     loading="eager"
                   />
                 </AnimatePresence>
