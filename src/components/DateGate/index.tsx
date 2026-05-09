@@ -50,6 +50,7 @@ export default function DateGate({ onSuccess }: Props) {
     const hash = await hashDate(submittedValue)
 
     if (hash === CORRECT_HASH) {
+      localStorage.setItem('validated', 'true')
       destinationRef.current = 'main'
       setStatus('success')
       // 2s de mensagem → inicia transição cinematográfica
