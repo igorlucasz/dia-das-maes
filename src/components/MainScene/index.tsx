@@ -28,6 +28,7 @@ export default function MainScene({ onGoAngelic }: Props) {
   const fadeIntervalsRef = useRef<{
     astronauta?: ReturnType<typeof setInterval>
     emocionante?: ReturnType<typeof setInterval>
+    emocionanteDelay?: ReturnType<typeof setTimeout>
   }>({})
 
   const { unlocked, unlock } = useBottleUnlock()
@@ -87,18 +88,22 @@ export default function MainScene({ onGoAngelic }: Props) {
     fadeIntervalsRef.current = {}
 
     if (isPlaying) {
-      fadeIntervalsRef.current.astronauta = fadeAudio(astronauta, 0.05, 3500, () => {
+      fadeIntervalsRef.current.astronauta = fadeAudio(astronauta, 0.05, 4000, () => {
         astronauta.pause()
         delete fadeIntervalsRef.current.astronauta
       })
     }
 
-    emocionante.currentTime = 0
-    emocionante.volume = 0
-    emocionante.play().catch(() => {})
-    fadeIntervalsRef.current.emocionante = fadeAudio(emocionante, 0.8, 400, () => {
-      delete fadeIntervalsRef.current.emocionante
-    })
+    // emocionante entra após 3.5s — momento de quase silêncio cria tensão emocional
+    fadeIntervalsRef.current.emocionanteDelay = setTimeout(() => {
+      delete fadeIntervalsRef.current.emocionanteDelay
+      emocionante.currentTime = 0
+      emocionante.volume = 0
+      emocionante.play().catch(() => {})
+      fadeIntervalsRef.current.emocionante = fadeAudio(emocionante, 0.8, 2000, () => {
+        delete fadeIntervalsRef.current.emocionante
+      })
+    }, 3500)
   }
 
   function handleBottleClose() {
@@ -110,6 +115,7 @@ export default function MainScene({ onGoAngelic }: Props) {
 
     clearInterval(fadeIntervalsRef.current.astronauta)
     clearInterval(fadeIntervalsRef.current.emocionante)
+    clearTimeout(fadeIntervalsRef.current.emocionanteDelay)
     fadeIntervalsRef.current = {}
 
     fadeIntervalsRef.current.emocionante = fadeAudio(emocionante, 0, 1500, () => {
@@ -132,6 +138,7 @@ export default function MainScene({ onGoAngelic }: Props) {
   function handleGoAngelic() {
     clearInterval(fadeIntervalsRef.current.astronauta)
     clearInterval(fadeIntervalsRef.current.emocionante)
+    clearTimeout(fadeIntervalsRef.current.emocionanteDelay)
     fadeIntervalsRef.current = {}
 
     const astronauta = audioRef.current
