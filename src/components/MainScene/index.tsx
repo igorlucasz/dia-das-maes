@@ -41,6 +41,7 @@ export default function MainScene({ onGoAngelic, hidden, onSkydanceReady, skydan
   const { unlocked, unlock } = useBottleUnlock()
   const [scrolledHalf, setScrolledHalf] = useState(false)
   const [isTransitioning, setIsTransitioning] = useState(false)
+  const [gifLoaded, setGifLoaded] = useState(false)
   const volumeBeforeBottleRef = useRef(0.7)
   const preAngelicVolumeRef = useRef(0.7)
   const skydancePositionRef = useRef(0)
@@ -298,12 +299,18 @@ export default function MainScene({ onGoAngelic, hidden, onSkydanceReady, skydan
 
         {/* Bloco unificado: placeholder + timeline — posição vertical controlada por --content-top */}
         <div className={styles.contentBlock}>
-          <img
-            src={maeGif}
-            alt="Momento especial"
-            loading="eager"
-            className={styles.mainGif}
-          />
+          <div className={styles.gifWrapper}>
+            {!gifLoaded && <div className={styles.gifPlaceholder} />}
+            <img
+              src={maeGif}
+              alt="Momento especial"
+              loading="eager"
+              fetchPriority="high"
+              onLoad={() => setGifLoaded(true)}
+              className={styles.mainGif}
+              style={{ opacity: gifLoaded ? 1 : 0, transition: 'opacity 0.4s ease' }}
+            />
+          </div>
 
           {/* Timeline vertical — começa após o placeholder */}
           <Timeline />
