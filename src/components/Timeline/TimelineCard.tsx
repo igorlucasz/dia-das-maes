@@ -61,6 +61,7 @@ export default function TimelineCard({ title, text, photos, position, globalPhot
               exit={{ opacity: 0 }}
               transition={{ duration: 0.6, ease: 'easeInOut' }}
               loading="eager"
+              fetchpriority="low"
             />
           </AnimatePresence>
         ) : (

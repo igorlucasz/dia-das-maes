@@ -1,5 +1,24 @@
 import { useRef, useState, useEffect } from 'react'
 import maeGif from '../../assets/images/maegif.gif'
+import eu1 from '../../assets/images/eu1.jpg'
+import eu2 from '../../assets/images/eu2.jpg'
+import mae1 from '../../assets/images/mae1.jpg'
+import mae2 from '../../assets/images/mae2.jpg'
+import mae3 from '../../assets/images/mae3.jpg'
+import mae4 from '../../assets/images/mae4.jpg'
+import mae5 from '../../assets/images/mae5.jpg'
+import gramado from '../../assets/images/gramado.jpg'
+import vo3 from '../../assets/images/vo3.jpg'
+import fam1 from '../../assets/images/fam1.jpg'
+import fam2 from '../../assets/images/fam2.jpg'
+import fam3 from '../../assets/images/fam3.jpg'
+import fam4 from '../../assets/images/fam4.jpg'
+import aleg1 from '../../assets/images/aleg1.jpg'
+import aleg2 from '../../assets/images/aleg2.jpg'
+import aleg3 from '../../assets/images/aleg3.jpg'
+import aleg4 from '../../assets/images/aleg4.jpg'
+import aleg5 from '../../assets/images/aleg5.jpg'
+import aleg6 from '../../assets/images/aleg6.jpg'
 import { motion } from 'framer-motion'
 import { useAudioAnalyzer } from '../../hooks/useAudioAnalyzer'
 import { fadeAudio } from '../../hooks/useAudioFade'
@@ -26,6 +45,20 @@ interface Props {
 }
 
 export default function MainScene({ onGoAngelic, hidden, onSkydanceReady, skydanceVolumeRef }: Props) {
+  useEffect(() => {
+    const allPhotos = [
+      eu1, eu2,
+      mae1, mae2, mae3, mae4, mae5,
+      gramado, vo3,
+      fam1, fam2, fam3, fam4,
+      aleg1, aleg2, aleg3, aleg4, aleg5, aleg6,
+    ]
+    allPhotos.forEach(src => {
+      const img = new Image()
+      img.src = src
+    })
+  }, [])
+
   const audioRef = useRef<HTMLAudioElement>(null)
   const emocionanteRef = useRef<HTMLAudioElement>(null)
   const skydanceRef = useRef<HTMLAudioElement>(null)
