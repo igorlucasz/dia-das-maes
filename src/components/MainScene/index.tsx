@@ -32,6 +32,20 @@ export default function MainScene({ onGoAngelic }: Props) {
   }>({})
 
   const { unlocked, unlock } = useBottleUnlock()
+  const [scrolledHalf, setScrolledHalf] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const pageHeight = document.documentElement.scrollHeight
+      const scrolled = window.scrollY + window.innerHeight
+      if (scrolled >= pageHeight * 0.5) {
+        setScrolledHalf(true)
+        window.removeEventListener('scroll', handleScroll)
+      }
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   // Conecta Web Audio API e escreve CSS vars no :root (sem re-renders).
   // Retorna ctxRef para que possamos chamar ctx.resume() em gestos do usuário.
@@ -174,8 +188,8 @@ export default function MainScene({ onGoAngelic }: Props) {
         {/* TopBar position:absolute — fica no topo da página e some ao rolar */}
         <TopBar isPlaying={isPlaying} onToggle={togglePlay} audioRef={audioRef} />
 
-        {/* Ícone angelical — aparece discretamente após a garrafa ser aberta */}
-        {unlocked && (
+        {/* Ícone angelical — visível após abrir a garrafa E rolar 50% da página */}
+        {unlocked && scrolledHalf && (
           <motion.button
             className={styles.angelicHint}
             onClick={handleGoAngelic}
