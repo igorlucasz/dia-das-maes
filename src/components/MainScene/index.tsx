@@ -21,9 +21,10 @@ interface Props {
   onGoAngelic?: () => void
   hidden?: boolean
   onSkydanceReady?: (audio: HTMLAudioElement) => void
+  skydanceVolumeRef?: React.MutableRefObject<number>
 }
 
-export default function MainScene({ onGoAngelic, hidden, onSkydanceReady }: Props) {
+export default function MainScene({ onGoAngelic, hidden, onSkydanceReady, skydanceVolumeRef }: Props) {
   const audioRef = useRef<HTMLAudioElement>(null)
   const emocionanteRef = useRef<HTMLAudioElement>(null)
   const skydanceRef = useRef<HTMLAudioElement>(null)
@@ -67,15 +68,18 @@ export default function MainScene({ onGoAngelic, hidden, onSkydanceReady }: Prop
   // Detecta retorno da AngelicScene (hidden true → false) e retoma a música
   useEffect(() => {
     if (prevHiddenRef.current && !hidden) {
-      // Fade out skydance, salva posição e pausa após 2s
+      // Salva volume e posição, depois fade out
       const skydance = skydanceRef.current
-      if (skydance && !skydance.paused) {
-        skydancePositionRef.current = skydance.currentTime
-        clearInterval(fadeIntervalsRef.current.skydance)
-        fadeIntervalsRef.current.skydance = fadeAudio(skydance, 0, 2000, () => {
-          skydance.pause()
-          delete fadeIntervalsRef.current.skydance
-        })
+      if (skydance) {
+        if (skydanceVolumeRef) skydanceVolumeRef.current = skydance.volume
+        if (!skydance.paused) {
+          skydancePositionRef.current = skydance.currentTime
+          clearInterval(fadeIntervalsRef.current.skydance)
+          fadeIntervalsRef.current.skydance = fadeAudio(skydance, 0, 2000, () => {
+            skydance.pause()
+            delete fadeIntervalsRef.current.skydance
+          })
+        }
       }
 
       // Retoma astronauta
@@ -231,7 +235,7 @@ export default function MainScene({ onGoAngelic, hidden, onSkydanceReady }: Prop
       skydance.volume = 0
       skydance.currentTime = skydancePositionRef.current
       skydance.play().catch(() => {})
-      fadeIntervalsRef.current.skydance = fadeAudio(skydance, 0.75, 2500, () => {
+      fadeIntervalsRef.current.skydance = fadeAudio(skydance, skydanceVolumeRef?.current ?? 0.75, 2500, () => {
         delete fadeIntervalsRef.current.skydance
       })
     }

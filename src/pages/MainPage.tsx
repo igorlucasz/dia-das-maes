@@ -9,6 +9,7 @@ export default function MainPage() {
   const [overlayPhase, setOverlayPhase] = useState<'in' | 'out'>('in')
   const pendingAngelic = useRef(false)
   const skydanceAudioRef = useRef<HTMLAudioElement | null>(null)
+  const skydanceVolumeRef = useRef(0.75)
 
   function transitionTo(toAngelic: boolean) {
     pendingAngelic.current = toAngelic
@@ -32,11 +33,14 @@ export default function MainPage() {
         onGoAngelic={() => transitionTo(true)}
         hidden={showAngelic}
         onSkydanceReady={(audio) => { skydanceAudioRef.current = audio }}
+        skydanceVolumeRef={skydanceVolumeRef}
       />
       {showAngelic && (
         <AngelicScene
           onGoBack={() => transitionTo(false)}
           skydance={skydanceAudioRef.current}
+          initialVolume={skydanceVolumeRef.current}
+          onVolumeChange={(v) => { skydanceVolumeRef.current = v }}
         />
       )}
 

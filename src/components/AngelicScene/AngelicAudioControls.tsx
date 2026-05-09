@@ -4,12 +4,14 @@ import styles from './AngelicAudioControls.module.css'
 
 interface Props {
   skydance: HTMLAudioElement | null
+  initialVolume: number
+  onVolumeChange?: (v: number) => void
 }
 
-export default function AngelicAudioControls({ skydance }: Props) {
+export default function AngelicAudioControls({ skydance, initialVolume, onVolumeChange }: Props) {
   const [paused, setPaused] = useState(false)
   const [muted, setMuted] = useState(false)
-  const [volume, setVolume] = useState(0.75)
+  const [volume, setVolume] = useState(initialVolume)
 
   function togglePlay() {
     if (!skydance) return
@@ -32,6 +34,7 @@ export default function AngelicAudioControls({ skydance }: Props) {
     const val = parseFloat(e.target.value)
     if (skydance) skydance.volume = val
     setVolume(val)
+    onVolumeChange?.(val)
   }
 
   return (
