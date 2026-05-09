@@ -14,17 +14,28 @@ interface Star {
 
 const STAR_COLORS = ['#ffffff', '#e8f0ff', '#fff8e8', '#f0e8ff', '#e8fff8']
 
+const isInExclusionZone = (x: number, y: number) =>
+  x > 20 && x < 80 && y > 25 && y < 55
+
 function generateStars(count: number): Star[] {
-  return Array.from({ length: count }, (_, i) => ({
-    id: i,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    size: 1 + Math.random() * 2,
-    reactivity: Math.random(),
-    color: STAR_COLORS[Math.floor(Math.random() * STAR_COLORS.length)],
-    delay: Math.random() * 6,
-    duration: 2.5 + Math.random() * 4,
-  }))
+  return Array.from({ length: count }, (_, i) => {
+    let x, y
+    do {
+      x = Math.random() * 100
+      y = Math.random() * 100
+    } while (isInExclusionZone(x, y))
+
+    return {
+      id: i,
+      x,
+      y,
+      size: 1 + Math.random() * 2,
+      reactivity: Math.random(),
+      color: STAR_COLORS[Math.floor(Math.random() * STAR_COLORS.length)],
+      delay: Math.random() * 6,
+      duration: 2.5 + Math.random() * 4,
+    }
+  })
 }
 
 // CSS custom properties (--audio-mids, --audio-treble) on :root drive all

@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from 'react'
+import maeGif from '../../assets/images/maegif.gif'
 import { motion } from 'framer-motion'
 import { useAudioAnalyzer } from '../../hooks/useAudioAnalyzer'
 import { fadeAudio } from '../../hooks/useAudioFade'
@@ -14,30 +15,44 @@ import Timeline from '../Timeline'
 import Bottle from '../Bottle'
 import audioSrc from '../../assets/audio/astronauta-de-marmore.mp3'
 import musicaEmocionante from '../../assets/audio/som-emocionante.mp3'
+import skydanceSrc from '../../assets/audio/skydance.mp3'
 import styles from './MainScene.module.css'
 
 interface Props {
   onGoAngelic?: () => void
   hidden?: boolean
+  onSkydanceReady?: (audio: HTMLAudioElement) => void
+  skydanceVolumeRef?: React.MutableRefObject<number>
 }
 
-export default function MainScene({ onGoAngelic, hidden }: Props) {
+export default function MainScene({ onGoAngelic, hidden, onSkydanceReady, skydanceVolumeRef }: Props) {
   const audioRef = useRef<HTMLAudioElement>(null)
   const emocionanteRef = useRef<HTMLAudioElement>(null)
+  const skydanceRef = useRef<HTMLAudioElement>(null)
   const [isPlaying, setIsPlaying] = useState(false)
   const wasPlayingBeforeBottleRef = useRef(false)
   const fadeIntervalsRef = useRef<{
     astronauta?: ReturnType<typeof setInterval>
     emocionante?: ReturnType<typeof setInterval>
     emocionanteDelay?: ReturnType<typeof setTimeout>
+    skydance?: ReturnType<typeof setInterval>
   }>({})
 
   const { unlocked, unlock } = useBottleUnlock()
   const [scrolledHalf, setScrolledHalf] = useState(false)
   const [isTransitioning, setIsTransitioning] = useState(false)
+  const [gifLoaded, setGifLoaded] = useState(false)
+  const volumeBeforeBottleRef = useRef(0.7)
   const preAngelicVolumeRef = useRef(0.7)
+  const skydancePositionRef = useRef(0)
   const wasPlayingBeforeAngelicRef = useRef(false)
   const prevHiddenRef = useRef(false)
+
+  useEffect(() => {
+    const audio = skydanceRef.current
+    if (audio) onSkydanceReady?.(audio)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -55,6 +70,21 @@ export default function MainScene({ onGoAngelic, hidden }: Props) {
   // Detecta retorno da AngelicScene (hidden true → false) e retoma a música
   useEffect(() => {
     if (prevHiddenRef.current && !hidden) {
+      // Salva volume e posição, depois fade out
+      const skydance = skydanceRef.current
+      if (skydance) {
+        if (skydanceVolumeRef) skydanceVolumeRef.current = skydance.volume
+        if (!skydance.paused) {
+          skydancePositionRef.current = skydance.currentTime
+          clearInterval(fadeIntervalsRef.current.skydance)
+          fadeIntervalsRef.current.skydance = fadeAudio(skydance, 0, 2000, () => {
+            skydance.pause()
+            delete fadeIntervalsRef.current.skydance
+          })
+        }
+      }
+
+      // Retoma astronauta
       const audio = audioRef.current
       if (audio && wasPlayingBeforeAngelicRef.current) {
         audio.volume = 0.01
@@ -62,7 +92,7 @@ export default function MainScene({ onGoAngelic, hidden }: Props) {
         audio.play()
           .then(() => {
             setIsPlaying(true)
-            fadeAudio(audio, preAngelicVolumeRef.current, 2000)
+            fadeAudio(audio, preAngelicVolumeRef.current, 2500)
           })
           .catch(() => {})
       }
@@ -122,6 +152,7 @@ export default function MainScene({ onGoAngelic, hidden }: Props) {
     if (!astronauta || !emocionante) return
 
     wasPlayingBeforeBottleRef.current = isPlaying
+    volumeBeforeBottleRef.current = astronauta.volume
 
     clearInterval(fadeIntervalsRef.current.astronauta)
     clearInterval(fadeIntervalsRef.current.emocionante)
@@ -143,7 +174,7 @@ export default function MainScene({ onGoAngelic, hidden }: Props) {
       fadeIntervalsRef.current.emocionante = fadeAudio(emocionante, 0.8, 2500, () => {
         delete fadeIntervalsRef.current.emocionante
       })
-    }, 3000)
+    }, 1000)
   }
 
   function handleBottleClose() {
@@ -169,7 +200,7 @@ export default function MainScene({ onGoAngelic, hidden }: Props) {
         audioCtxRef.current?.resume().catch(() => {})
         astronauta.play().catch(() => {})
       }
-      fadeIntervalsRef.current.astronauta = fadeAudio(astronauta, 0.7, 3000, () => {
+      fadeIntervalsRef.current.astronauta = fadeAudio(astronauta, volumeBeforeBottleRef.current, 3000, () => {
         delete fadeIntervalsRef.current.astronauta
       })
     }
@@ -199,6 +230,18 @@ export default function MainScene({ onGoAngelic, hidden }: Props) {
       fadeAudio(emocionante, 0.01, 1000, () => { emocionante.pause() })
     }
 
+    // Skydance: começa imediatamente com fade in ao entrar na cena angelical
+    const skydance = skydanceRef.current
+    if (skydance) {
+      clearInterval(fadeIntervalsRef.current.skydance)
+      skydance.volume = 0
+      skydance.currentTime = skydancePositionRef.current
+      skydance.play().catch(() => {})
+      fadeIntervalsRef.current.skydance = fadeAudio(skydance, skydanceVolumeRef?.current ?? 0.75, 2500, () => {
+        delete fadeIntervalsRef.current.skydance
+      })
+    }
+
     // Overlay takes 800ms to cover — start at 1700ms so music fades to silence
     // before MainScene unmounts (1700 + 800 = 2500ms = fade duration)
     setTimeout(() => onGoAngelic?.(), audioPlaying ? 1700 : 0)
@@ -218,6 +261,7 @@ export default function MainScene({ onGoAngelic, hidden }: Props) {
       >
         <audio ref={audioRef} src={audioSrc} loop preload="auto" />
         <audio ref={emocionanteRef} src={musicaEmocionante} preload="auto" />
+        <audio ref={skydanceRef} src={skydanceSrc} loop preload="auto" />
 
         {/* TopBar position:absolute — fica no topo da página e some ao rolar */}
         <TopBar isPlaying={isPlaying} onToggle={togglePlay} audioRef={audioRef} />
@@ -255,9 +299,17 @@ export default function MainScene({ onGoAngelic, hidden }: Props) {
 
         {/* Bloco unificado: placeholder + timeline — posição vertical controlada por --content-top */}
         <div className={styles.contentBlock}>
-          <div className={styles.contentPlaceholder}>
-            <span className={styles.placeholderIcon}>🚀</span>
-            <span className={styles.placeholderText}>elemento principal em breve</span>
+          <div className={styles.gifWrapper}>
+            {!gifLoaded && <div className={styles.gifPlaceholder} />}
+            <img
+              src={maeGif}
+              alt="Momento especial"
+              loading="eager"
+              fetchPriority="high"
+              onLoad={() => setGifLoaded(true)}
+              className={styles.mainGif}
+              style={{ opacity: gifLoaded ? 1 : 0, transition: 'opacity 0.4s ease' }}
+            />
           </div>
 
           {/* Timeline vertical — começa após o placeholder */}

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { VolumeIcon, MutedIcon } from '../icons/AudioIcons'
 import styles from './VolumeControl.module.css'
 
 const INITIAL_VOLUME = 0.7
@@ -61,7 +62,7 @@ export default function VolumeControl({ audioRef }: Props) {
         onClick={toggleMute}
         aria-label={muted ? 'Ativar som' : 'Silenciar'}
       >
-        {muted ? <SpeakerOff /> : volume < 0.4 ? <SpeakerLow /> : <SpeakerHigh />}
+        {muted ? <MutedIcon /> : <VolumeIcon />}
       </button>
       {!isMobile && (
         <input
@@ -79,31 +80,3 @@ export default function VolumeControl({ audioRef }: Props) {
   )
 }
 
-function SpeakerHigh() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-      <path d="M2 6.5h3l4-3.5v11L5 10.5H2V6.5z" fill="currentColor" />
-      <path d="M12.5 5.5a4.5 4.5 0 0 1 0 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-      <path d="M14.8 3.2a7.5 7.5 0 0 1 0 11.6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-    </svg>
-  )
-}
-
-function SpeakerLow() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-      <path d="M2 6.5h3l4-3.5v11L5 10.5H2V6.5z" fill="currentColor" />
-      <path d="M12.5 5.5a4.5 4.5 0 0 1 0 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-    </svg>
-  )
-}
-
-function SpeakerOff() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-      <path d="M2 6.5h3l4-3.5v11L5 10.5H2V6.5z" fill="currentColor" />
-      <line x1="13" y1="6" x2="17" y2="12" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-      <line x1="17" y1="6" x2="13" y2="12" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-    </svg>
-  )
-}
