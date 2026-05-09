@@ -32,7 +32,12 @@ export default function App() {
   return (
     <>
       {screen === 'gate' && <DateGate onSuccess={(dest) => setScreen(dest)} />}
-      {screen === 'main' && <MainScene onGoAngelic={() => transitionTo('angelic')} />}
+      {(screen === 'main' || screen === 'angelic') && (
+        <MainScene
+          onGoAngelic={() => transitionTo('angelic')}
+          hidden={screen === 'angelic'}
+        />
+      )}
       {screen === 'angelic' && <AngelicScene onGoBack={() => transitionTo('main')} />}
       {screen === 'easter' && <EasterEgg />}
 

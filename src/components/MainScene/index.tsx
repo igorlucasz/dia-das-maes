@@ -18,9 +18,10 @@ import styles from './MainScene.module.css'
 
 interface Props {
   onGoAngelic?: () => void
+  hidden?: boolean
 }
 
-export default function MainScene({ onGoAngelic }: Props) {
+export default function MainScene({ onGoAngelic, hidden }: Props) {
   const audioRef = useRef<HTMLAudioElement>(null)
   const emocionanteRef = useRef<HTMLAudioElement>(null)
   const [isPlaying, setIsPlaying] = useState(false)
@@ -34,6 +35,9 @@ export default function MainScene({ onGoAngelic }: Props) {
   const { unlocked, unlock } = useBottleUnlock()
   const [scrolledHalf, setScrolledHalf] = useState(false)
   const [isTransitioning, setIsTransitioning] = useState(false)
+  const preAngelicVolumeRef = useRef(0.7)
+  const wasPlayingBeforeAngelicRef = useRef(false)
+  const prevHiddenRef = useRef(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,6 +51,27 @@ export default function MainScene({ onGoAngelic }: Props) {
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  // Detecta retorno da AngelicScene (hidden true → false) e retoma a música
+  useEffect(() => {
+    if (prevHiddenRef.current && !hidden) {
+      const audio = audioRef.current
+      if (audio && wasPlayingBeforeAngelicRef.current) {
+        audio.volume = 0.01
+        audioCtxRef.current?.resume().catch(() => {})
+        audio.play()
+          .then(() => {
+            setIsPlaying(true)
+            fadeAudio(audio, preAngelicVolumeRef.current, 2000)
+          })
+          .catch(() => {})
+      }
+      setIsTransitioning(false)
+    }
+    prevHiddenRef.current = !!hidden
+  // audioCtxRef is a stable ref — eslint-disable intencional
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hidden])
 
   // Conecta Web Audio API e escreve CSS vars no :root (sem re-renders).
   // Retorna ctxRef para que possamos chamar ctx.resume() em gestos do usuário.
@@ -163,11 +188,15 @@ export default function MainScene({ onGoAngelic }: Props) {
     const emocionante = emocionanteRef.current
     const audioPlaying = (astronauta && !astronauta.paused) || (emocionante && !emocionante.paused)
 
+    // Capturar estado antes do fade para restaurar ao voltar
+    wasPlayingBeforeAngelicRef.current = isPlaying
+    preAngelicVolumeRef.current = astronauta && !astronauta.paused ? astronauta.volume : 0.7
+
     if (astronauta && !astronauta.paused) {
-      fadeAudio(astronauta, 0, 2500, () => { astronauta.pause() })
+      fadeAudio(astronauta, 0.01, 2500, () => { astronauta.pause() })
     }
     if (emocionante && !emocionante.paused) {
-      fadeAudio(emocionante, 0, 1000, () => { emocionante.pause() })
+      fadeAudio(emocionante, 0.01, 1000, () => { emocionante.pause() })
     }
 
     // Overlay takes 800ms to cover — start at 1700ms so music fades to silence
@@ -177,11 +206,12 @@ export default function MainScene({ onGoAngelic }: Props) {
 
   return (
     <>
-      {/* ShootingStars fora do motion.div — position:fixed precisa de viewport como containing block */}
-      <ShootingStars />
+      {/* ShootingStars position:fixed — ocultar quando hidden para não vazar sobre AngelicScene */}
+      {!hidden && <ShootingStars />}
 
       <motion.div
         className={styles.wrapper}
+        style={{ display: hidden ? 'none' : undefined }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, ease: 'easeOut' }}
