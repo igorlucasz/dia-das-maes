@@ -11,18 +11,39 @@
   padding: 16px;
 }
 
-/* A carta — fundo creme/papel antigo */
-.letter {
+.perspective {
+  perspective: 800px;
+}
+
+.paper {
   position: relative;
   width: min(85vw, 420px);
   max-height: 90vh;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  background: rgba(255, 248, 220, 0.95);
-  border: 2px solid rgba(180, 140, 80, 0.4);
+  background: linear-gradient(160deg, #fdf6e3 0%, #f5e6c8 100%);
+  border: 1px solid rgba(180, 140, 80, 0.35);
   border-radius: 12px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.6);
   padding: 32px;
+  transform-style: preserve-3d;
+}
+
+/* Linha de dobra — some após abertura */
+.foldLine {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(180, 140, 80, 0.25);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.content {
+  position: relative;
+  z-index: 2;
 }
 
 .closeBtn {
@@ -41,11 +62,11 @@
   cursor: pointer;
   border-radius: 50%;
   transition: color 0.2s;
+  z-index: 3;
 }
 
 .closeBtn:hover { color: #3d2b1f; }
 
-/* Cabeçalho com ícone + linha separadora */
 .header {
   display: flex;
   flex-direction: column;
@@ -61,7 +82,6 @@
   background: rgba(180, 140, 80, 0.4);
 }
 
-/* Texto com typewriter */
 .text {
   font-family: Georgia, 'Playfair Display', serif;
   font-size: 1rem;
@@ -70,7 +90,6 @@
   min-height: 5em;
 }
 
-/* Cursor piscante */
 .cursor {
   display: inline-block;
   color: #3d2b1f;
@@ -83,7 +102,6 @@
   50%, 100% { opacity: 0; }
 }
 
-/* Rodapé: assinatura */
 .footer { margin-top: 20px; }
 
 .footerLine {
@@ -101,7 +119,7 @@
 }
 
 @media (max-width: 480px) {
-  .letter { padding: 24px; }
+  .paper { padding: 24px; }
 }
 
 @media (min-width: 768px) {

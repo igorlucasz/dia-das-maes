@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import styles from './BottleLetter.module.css'
@@ -15,14 +15,26 @@ interface Props {
 export default function BottleLetter({ open, onClose }: Props) {
   const [displayed, setDisplayed] = useState('')
   const [done, setDone] = useState(false)
+  const [paperOpen, setPaperOpen] = useState(false)
+  const [contentVisible, setContentVisible] = useState(false)
+  const [closing, setClosing] = useState(false)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
     if (!open) {
+      if (timerRef.current) clearTimeout(timerRef.current)
+      if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
       setDisplayed('')
       setDone(false)
-      return
+      setPaperOpen(false)
+      setContentVisible(false)
+      setClosing(false)
     }
+  }, [open])
+
+  useEffect(() => {
+    if (!contentVisible) return
     let i = 0
     function type() {
       i++
@@ -33,17 +45,26 @@ export default function BottleLetter({ open, onClose }: Props) {
         setDone(true)
       }
     }
-    // small delay so the enter animation plays first
-    timerRef.current = setTimeout(type, 350)
+    timerRef.current = setTimeout(type, 100)
     return () => { if (timerRef.current) clearTimeout(timerRef.current) }
-  }, [open])
+  }, [contentVisible])
+
+  const handleClose = useCallback(() => {
+    if (closing) return
+    setClosing(true)
+    closeTimerRef.current = setTimeout(onClose, 450)
+  }, [closing, onClose])
 
   useEffect(() => {
     if (!open) return
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') handleClose() }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
-  }, [open, onClose])
+  }, [open, handleClose])
+
+  useEffect(() => {
+    return () => { if (closeTimerRef.current) clearTimeout(closeTimerRef.current) }
+  }, [])
 
   return createPortal(
     <AnimatePresence>
@@ -54,42 +75,67 @@ export default function BottleLetter({ open, onClose }: Props) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25 }}
-          onClick={onClose}
+          onClick={handleClose}
         >
-          <motion.div
-            className={styles.letter}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.2, ease: 'easeIn' } }}
-            transition={{ duration: 0.3, ease: 'easeOut' }}
-            onClick={e => e.stopPropagation()}
-          >
-            <button className={styles.closeBtn} onClick={onClose} aria-label="Fechar">✕</button>
+          <div className={styles.perspective}>
+            <motion.div
+              className={styles.paper}
+              initial={{ scaleY: 0.5 }}
+              animate={{ scaleY: closing ? 0.5 : 1 }}
+              transition={
+                closing
+                  ? { delay: 0.15, duration: 0.3, ease: 'easeIn' }
+                  : { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+              }
+              style={{ transformOrigin: 'top center' }}
+              onAnimationComplete={() => {
+                if (!closing && open) setPaperOpen(true)
+              }}
+              onClick={e => e.stopPropagation()}
+            >
+              <motion.div
+                className={styles.foldLine}
+                animate={{ opacity: paperOpen && !closing ? 0 : 1 }}
+                transition={{ duration: 0.4 }}
+              />
 
-            <div className={styles.header}>
-              <span className={styles.headerIcon}>🌊</span>
-              <div className={styles.headerLine} />
-            </div>
+              <button className={styles.closeBtn} onClick={handleClose} aria-label="Fechar">✕</button>
 
-            <p className={styles.text}>
-              {displayed}
-              {!done && <span className={styles.cursor} aria-hidden="true">|</span>}
-            </p>
+              <motion.div
+                className={styles.content}
+                animate={{ opacity: closing ? 0 : (paperOpen ? 1 : 0) }}
+                initial={{ opacity: 0 }}
+                transition={{ duration: closing ? 0.15 : 0.4 }}
+                onAnimationComplete={() => {
+                  if (paperOpen && !closing) setContentVisible(true)
+                }}
+              >
+                <div className={styles.header}>
+                  <span className={styles.headerIcon}>🌊</span>
+                  <div className={styles.headerLine} />
+                </div>
 
-            <AnimatePresence>
-              {done && (
-                <motion.div
-                  className={styles.footer}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.6 }}
-                >
-                  <div className={styles.footerLine} />
-                  <p className={styles.signature}>Com amor, Igor 🚀</p>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
+                <p className={styles.text}>
+                  {displayed}
+                  {!done && <span className={styles.cursor} aria-hidden="true">|</span>}
+                </p>
+
+                <AnimatePresence>
+                  {done && (
+                    <motion.div
+                      className={styles.footer}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.6 }}
+                    >
+                      <div className={styles.footerLine} />
+                      <p className={styles.signature}>Com amor, Igor 🚀</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            </motion.div>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>,
