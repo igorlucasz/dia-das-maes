@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import type { CardData } from './index'
@@ -6,10 +6,15 @@ import styles from './TimelineModal.module.css'
 
 interface Props {
   card: CardData | null
+  photoIndex: number
+  onPhotoChange: (index: number) => void
   onClose: () => void
 }
 
-export default function TimelineModal({ card, onClose }: Props) {
+export default function TimelineModal({ card, photoIndex, onPhotoChange, onClose }: Props) {
+  const touchStartX = useRef(0)
+  const touchStartY = useRef(0)
+
   useEffect(() => {
     if (card) {
       document.body.style.overflow = 'hidden'
@@ -31,6 +36,16 @@ export default function TimelineModal({ card, onClose }: Props) {
     return () => document.removeEventListener('keydown', onKey)
   }, [card, onClose])
 
+  const prevPhoto = () => {
+    if (!card || card.photos.length <= 1) return
+    onPhotoChange((photoIndex - 1 + card.photos.length) % card.photos.length)
+  }
+
+  const nextPhoto = () => {
+    if (!card || card.photos.length <= 1) return
+    onPhotoChange((photoIndex + 1) % card.photos.length)
+  }
+
   return createPortal(
     <AnimatePresence>
       {card && (
@@ -51,11 +66,55 @@ export default function TimelineModal({ card, onClose }: Props) {
             onClick={e => e.stopPropagation()}
           >
             <button className={styles.closeBtn} onClick={onClose} aria-label="Fechar">✕</button>
-            <p className={styles.date}>{card.date}</p>
-            <div className={styles.imagePlaceholder} aria-hidden="true">
-              <span className={styles.photoIcon}>🖼️</span>
-              <span className={styles.photoLabel}>foto em breve</span>
-            </div>
+            <p className={styles.date}>{card.title}</p>
+
+            {card.photos.length > 0 && (
+              <div
+                className={styles.photoContainer}
+                onTouchStart={e => {
+                  touchStartX.current = e.touches[0].clientX
+                  touchStartY.current = e.touches[0].clientY
+                }}
+                onTouchEnd={e => {
+                  const diffX = touchStartX.current - e.changedTouches[0].clientX
+                  const diffY = touchStartY.current - e.changedTouches[0].clientY
+                  if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+                    if (diffX > 0) nextPhoto()
+                    else prevPhoto()
+                  }
+                }}
+              >
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={photoIndex}
+                    src={card.photos[photoIndex]}
+                    alt=""
+                    className={styles.photo}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.35, ease: 'easeInOut' }}
+                    loading="eager"
+                  />
+                </AnimatePresence>
+
+                {card.photos.length > 1 && (
+                  <>
+                    <button
+                      className={`${styles.arrow} ${styles.arrowLeft}`}
+                      onClick={e => { e.stopPropagation(); prevPhoto() }}
+                      aria-label="Foto anterior"
+                    >‹</button>
+                    <button
+                      className={`${styles.arrow} ${styles.arrowRight}`}
+                      onClick={e => { e.stopPropagation(); nextPhoto() }}
+                      aria-label="Próxima foto"
+                    >›</button>
+                  </>
+                )}
+              </div>
+            )}
+
             <p className={styles.text}>{card.text}</p>
           </motion.div>
         </motion.div>
