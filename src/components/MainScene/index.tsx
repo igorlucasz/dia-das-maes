@@ -221,8 +221,8 @@ export default function MainScene({ onGoAngelic, hidden }: Props) {
     const skydance = skydanceRef.current
     if (skydance) {
       clearInterval(fadeIntervalsRef.current.skydance)
-      skydance.currentTime = skydancePositionRef.current
       skydance.volume = 0
+      skydance.currentTime = skydancePositionRef.current
       skydance.play().catch(() => {})
       fadeIntervalsRef.current.skydance = fadeAudio(skydance, 0.75, 2500, () => {
         delete fadeIntervalsRef.current.skydance
