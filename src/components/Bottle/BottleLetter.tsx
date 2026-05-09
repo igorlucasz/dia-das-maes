@@ -94,6 +94,7 @@ export default function BottleLetter({ open, onClose }: Props) {
               >
                 <div className={styles.letterContainer}>
                   <h2 className={styles.letterTitle}>Nossos agradecimentos😉</h2>
+                  <div className={styles.letterDivider} />
 
                   <div className={styles.letterBody}>
                     <p>
