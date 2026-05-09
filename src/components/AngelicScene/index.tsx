@@ -70,9 +70,26 @@ export default function AngelicScene({ onGoBack, skydance, initialVolume, onVolu
 
         <h1 className={styles.title}>Nós te amamos!</h1>
 
-        <p className={styles.body}>
-          É verdade que os últimos anos foram muito difíceis, você passou por coisas que poucos seres humanos já passaram, mas mesmo assim nunca abaixou a cabeça e seguiu corajosa como sempre. E assim, um dia após o outro, enfrentou a maior dificuldade da sua vida de frente! Com muita fé, você conseguiu e consegue a cada dia superar esses desafios. Tenha certeza, mãe, que eu e o Dono Lafaiete estamos orgulhosos de você! Nesse momento imagino ele no céu olhando pra tudo que você fez por ele com muita gratidão e tranquilidade no coração, porque a filha dele conseguiu honrá-lo de verdade, agora, enfim, ele poderá descansar de verdade graças a você, mãe. Você, Maria Regina, é mais que a MELHOR MÃE, é a MELHOR FILHA DO MUNDO, OBRIGADO!
-        </p>
+        <div className={styles.angelicText}>
+          <p>
+            É verdade que os últimos anos foram muito difíceis, você passou
+            por coisas que poucos seres humanos já passaram, mas mesmo assim
+            nunca abaixou a cabeça e seguiu corajosa como sempre. E assim,
+            um dia após o outro, enfrentou a maior dificuldade da sua vida
+            de frente! Com muita fé, você conseguiu e consegue a cada dia
+            superar esses desafios.
+          </p>
+          <p>
+            Tenha certeza, mãe, que eu e o Dono Lafaiete estamos orgulhosos
+            de você! Nesse momento imagino ele no céu olhando pra tudo que
+            você fez por ele com muita gratidão e tranquilidade no coração,
+            porque a filha dele conseguiu honrá-lo de verdade. Agora, enfim,
+            ele poderá descansar de verdade graças a você, mãe.
+          </p>
+          <p>
+            <strong>Você, Maria Regina, é mais que a MELHOR MÃE, é a MELHOR FILHA DO MUNDO, OBRIGADO!</strong>
+          </p>
+        </div>
       </motion.div>
     </div>
   )
