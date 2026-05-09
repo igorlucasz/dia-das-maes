@@ -11,6 +11,20 @@ interface Props {
 
 export default function TimelineModal({ card, onClose }: Props) {
   useEffect(() => {
+    if (card) {
+      document.body.style.overflow = 'hidden'
+      document.body.style.touchAction = 'none'
+    } else {
+      document.body.style.overflow = ''
+      document.body.style.touchAction = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+      document.body.style.touchAction = ''
+    }
+  }, [card])
+
+  useEffect(() => {
     if (!card) return
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
     document.addEventListener('keydown', onKey)
