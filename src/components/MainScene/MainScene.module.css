@@ -74,9 +74,12 @@
 
 /* ── Angelic hint ─────────────────────────────── */
 .angelicHint {
-  position: fixed;
+  position: absolute;
   bottom: 24px;
   right: 24px;
+  left: unset;
+  top: unset;
+  transform: none;
   z-index: 50;
   cursor: pointer;
   background: none;
