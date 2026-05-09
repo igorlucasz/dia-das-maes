@@ -20,9 +20,10 @@ import styles from './MainScene.module.css'
 interface Props {
   onGoAngelic?: () => void
   hidden?: boolean
+  onSkydanceReady?: (audio: HTMLAudioElement) => void
 }
 
-export default function MainScene({ onGoAngelic, hidden }: Props) {
+export default function MainScene({ onGoAngelic, hidden, onSkydanceReady }: Props) {
   const audioRef = useRef<HTMLAudioElement>(null)
   const emocionanteRef = useRef<HTMLAudioElement>(null)
   const skydanceRef = useRef<HTMLAudioElement>(null)
@@ -43,6 +44,12 @@ export default function MainScene({ onGoAngelic, hidden }: Props) {
   const skydancePositionRef = useRef(0)
   const wasPlayingBeforeAngelicRef = useRef(false)
   const prevHiddenRef = useRef(false)
+
+  useEffect(() => {
+    const audio = skydanceRef.current
+    if (audio) onSkydanceReady?.(audio)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => {

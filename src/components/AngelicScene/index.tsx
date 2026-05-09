@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import AngelicAudioControls from './AngelicAudioControls'
 import styles from './AngelicScene.module.css'
 
 // Deterministic particle values — stable across renders
@@ -13,11 +14,13 @@ const PARTICLES = Array.from({ length: 20 }, (_, i) => ({
 
 interface Props {
   onGoBack: () => void
+  skydance?: HTMLAudioElement | null
 }
 
-export default function AngelicScene({ onGoBack }: Props) {
+export default function AngelicScene({ onGoBack, skydance }: Props) {
   return (
     <div className={styles.scene}>
+      <AngelicAudioControls skydance={skydance ?? null} />
       <div className={styles.particles} aria-hidden="true">
         {PARTICLES.map(p => (
           <div
