@@ -305,7 +305,7 @@ export default function MainScene({ onGoAngelic, hidden, onSkydanceReady, skydan
               src={maeGif}
               alt="Momento especial"
               loading="eager"
-              fetchPriority="high"
+              fetchpriority="high"
               onLoad={() => setGifLoaded(true)}
               className={styles.mainGif}
               style={{ opacity: gifLoaded ? 1 : 0, transition: 'opacity 0.4s ease' }}
