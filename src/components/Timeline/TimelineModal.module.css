@@ -100,6 +100,49 @@
 .arrowLeft  { left: 8px; }
 .arrowRight { right: 8px; }
 
+.textPagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.pageBtn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, color 0.2s;
+  line-height: 1;
+}
+
+.pageBtn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 1);
+}
+
+.pageBtn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.pageIndicator {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: var(--font-heading);
+  letter-spacing: 0.05em;
+  min-width: 32px;
+  text-align: center;
+}
+
 .text {
   font-size: 0.9rem;
   line-height: 1.7;

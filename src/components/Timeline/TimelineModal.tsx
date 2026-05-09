@@ -17,8 +17,26 @@ const slideVariants = {
   exit: (dir: number) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 1 }),
 }
 
+function paginateText(text: string, charsPerPage = 200): string[] {
+  const words = text.split(' ')
+  const pages: string[] = []
+  let current = ''
+
+  for (const word of words) {
+    if ((current + ' ' + word).trim().length > charsPerPage) {
+      pages.push(current.trim())
+      current = word
+    } else {
+      current = (current + ' ' + word).trim()
+    }
+  }
+  if (current) pages.push(current.trim())
+  return pages
+}
+
 export default function TimelineModal({ card, photoIndex, onPhotoChange, onClose }: Props) {
   const [direction, setDirection] = useState(0)
+  const [textPage, setTextPage] = useState(0)
 
   useEffect(() => {
     if (card) {
@@ -33,6 +51,14 @@ export default function TimelineModal({ card, photoIndex, onPhotoChange, onClose
       document.body.style.touchAction = ''
     }
   }, [card])
+
+  useEffect(() => {
+    setTextPage(0)
+  }, [card])
+
+  useEffect(() => {
+    setTextPage(0)
+  }, [photoIndex])
 
   useEffect(() => {
     if (!card) return
@@ -52,6 +78,9 @@ export default function TimelineModal({ card, photoIndex, onPhotoChange, onClose
     setDirection(1)
     onPhotoChange((photoIndex + 1) % card.photos.length)
   }
+
+  const pages = card ? paginateText(card.text) : []
+  const totalPages = pages.length
 
   return createPortal(
     <AnimatePresence>
@@ -117,7 +146,25 @@ export default function TimelineModal({ card, photoIndex, onPhotoChange, onClose
               </div>
             )}
 
-            <p className={styles.text}>{card.text}</p>
+            {totalPages > 1 && (
+              <div className={styles.textPagination}>
+                <button
+                  className={styles.pageBtn}
+                  onClick={e => { e.stopPropagation(); setTextPage(p => Math.max(0, p - 1)) }}
+                  disabled={textPage === 0}
+                  aria-label="Página anterior"
+                >‹</button>
+                <span className={styles.pageIndicator}>{textPage + 1}/{totalPages}</span>
+                <button
+                  className={styles.pageBtn}
+                  onClick={e => { e.stopPropagation(); setTextPage(p => Math.min(totalPages - 1, p + 1)) }}
+                  disabled={textPage === totalPages - 1}
+                  aria-label="Próxima página"
+                >›</button>
+              </div>
+            )}
+
+            <p className={styles.text}>{pages[textPage]}</p>
           </motion.div>
         </motion.div>
       )}
