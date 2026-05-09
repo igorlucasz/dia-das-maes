@@ -76,7 +76,7 @@
   position: absolute;
   top: 5rem;
   left: 0;
-  right: 0;
+  right: -260px;
   margin: 0 auto;
   width: fit-content;
   z-index: 10;
