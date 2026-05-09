@@ -174,7 +174,7 @@ export default function MainScene({ onGoAngelic }: Props) {
             transition={{ duration: 1.5, ease: 'easeOut' }}
             aria-label="Descobrir algo especial"
           >
-            <span className={styles.angelicHintIcon}>✨</span>
+            <span className={styles.angelicHintIcon}>🕊️</span>
             <span className={styles.angelicHintText}>algo mudou...</span>
           </motion.button>
         )}
