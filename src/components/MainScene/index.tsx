@@ -135,16 +135,19 @@ export default function MainScene({ onGoAngelic }: Props) {
     fadeIntervalsRef.current = {}
 
     const astronauta = audioRef.current
-    if (astronauta && !astronauta.paused) {
-      fadeAudio(astronauta, 0, 2000, () => { astronauta.pause() })
-    }
-
     const emocionante = emocionanteRef.current
+    const audioPlaying = (astronauta && !astronauta.paused) || (emocionante && !emocionante.paused)
+
+    if (astronauta && !astronauta.paused) {
+      fadeAudio(astronauta, 0, 2500, () => { astronauta.pause() })
+    }
     if (emocionante && !emocionante.paused) {
       fadeAudio(emocionante, 0, 1000, () => { emocionante.pause() })
     }
 
-    onGoAngelic?.()
+    // Overlay takes 800ms to cover — start at 1700ms so music fades to silence
+    // before MainScene unmounts (1700 + 800 = 2500ms = fade duration)
+    setTimeout(() => onGoAngelic?.(), audioPlaying ? 1700 : 0)
   }
 
   return (
