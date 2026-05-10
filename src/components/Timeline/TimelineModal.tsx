@@ -57,10 +57,6 @@ export default function TimelineModal({ card, photoIndex, onPhotoChange, onClose
   }, [card])
 
   useEffect(() => {
-    setTextPage(0)
-  }, [photoIndex])
-
-  useEffect(() => {
     if (!card) return
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
     document.addEventListener('keydown', onKey)
